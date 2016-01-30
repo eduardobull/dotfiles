@@ -41,8 +41,8 @@ Plugin 'einars/js-beautify'
 Plugin 'othree/javascript-libraries-syntax.vim'
 
 " Themes
-Plugin 'fatih/molokai'
 Plugin 'chriskempson/base16-vim'
+Plugin 'fatih/molokai'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -110,7 +110,8 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:NERDTreeShowBookmarks = 1
 "autocmd vimenter * NERDTree
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif "open a NERDTree automatically when vim starts up if no files were specified
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "close vim if the only window left open is a NERDTree
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -120,16 +121,15 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Color scheme
-let base16colorspace=256
+set t_Co=256
+
+let base16colorspace=256  " Access colors present in 256 colorspace"
+
 set background=dark
 try
     colorscheme base16-default
 catch
 endtry
-
-if $COLORTERM == 'gnome-terminal'
-  set t_Co=256
-endif
 
 " Set 3 lines to the cursor - when moving vertically using j/k
 set so=3
