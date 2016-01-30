@@ -158,5 +158,5 @@ unmap <space>
 unmap <c-space>
 
 " Fast resizing
-map <c-w>> :vertical resize +10<cr>
-map <c-w>< :vertical resize -10<cr>
+map <c-w>> :vertical resize +8<cr>
+map <c-w>< :vertical resize -8<cr>
