@@ -24,9 +24,6 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'xolox/vim-session'
 Plugin 'xolox/vim-misc'
 
-" Ember
-Plugin 'dsawardekar/ember.vim'
-
 " Go
 Plugin 'fatih/vim-go'
 
@@ -36,20 +33,16 @@ Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-static'
 "Plugin 'guns/vim-clojure-highlight'
 Plugin 'venantius/vim-cljfmt'
-Plugin 'kien/rainbow_parentheses.vim'
 
 " JavsScript
 Plugin 'pangloss/vim-javascript'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'einars/js-beautify'
 Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'burnettk/vim-angular'
 
 " Themes
-"Plugin 'tomasr/molokai'
 Plugin 'fatih/molokai'
 Plugin 'chriskempson/base16-vim'
-"Plugin 'flazz/vim-colorschemes'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -58,11 +51,14 @@ filetype plugin indent on    " required
 " Plugins: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"let base16colorspace=256
-
 " Valloric/YouCompleteMe
 let g:ycm_min_num_of_chars_for_completion = 3
 let g:ycm_complete_in_strings = 0
+
+" kien/ctrlp.vim
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_working_path_mode = 'ra'
 
 " xolox/vim-session
 set sessionoptions-=buffers
@@ -79,12 +75,6 @@ let g:go_highlight_build_constraints = 1
 " vim-clojure-static
 let g:clojure_align_subforms = 1
 let g:clojure_align_multiline_strings = 1
-
-" kien/rainbow_parentheses
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 " vim-clojure-highlight
 "autocmd BufRead *.clj try | silent! Require | catch /^Fireplace/ | endtry
@@ -129,8 +119,11 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+" Color scheme
+let base16colorspace=256
+set background=dark
 try
-    colorscheme molokai
+    colorscheme base16-default
 catch
 endtry
 

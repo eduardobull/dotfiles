@@ -1,6 +1,13 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
+export TERM=screen-256color
+
+# Base16 Shell
+# https://github.com/chriskempson/base16-shell
+BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -82,3 +89,4 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
