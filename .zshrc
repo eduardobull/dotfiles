@@ -1,4 +1,5 @@
 # Path to your oh-my-zsh installation.
+# sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 export ZSH=~/.oh-my-zsh
 
 export TERM=screen-256color

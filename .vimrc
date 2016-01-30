@@ -51,6 +51,8 @@ filetype plugin indent on    " required
 " Plugins: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+let g:session_autosave = 'no'
+
 " Valloric/YouCompleteMe
 let g:ycm_min_num_of_chars_for_completion = 3
 let g:ycm_complete_in_strings = 0
@@ -155,8 +157,6 @@ set completeopt-=preview
 unmap <space>
 unmap <c-space>
 
-" Move a line of text using ALT+[arrows]
-nmap <M-up> mz:m-2<cr>`z
-nmap <M-down> mz:m+<cr>`z
-vmap <M-up> :m'<-2<cr>`>my`<mzgv`yo`z
-vmap <M-down> :m'>+<cr>`<my`>mzgv`yo`z
+" Fast resizing
+map <c-w>> :vertical resize +10<cr>
+map <c-w>< :vertical resize -10<cr>
