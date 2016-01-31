@@ -140,6 +140,8 @@ set so=3
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
+let maplocalleader = ";"
+let g:maplocalleader = ";"
 
 " When searching try to be smart about cases
 set nosmartcase
