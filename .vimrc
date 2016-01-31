@@ -28,7 +28,7 @@ Plugin 'xolox/vim-misc'
 Plugin 'fatih/vim-go'
 
 " Clojure
-Plugin 'paredit.vim'
+Plugin 'guns/vim-sexp'
 Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-static'
 "Plugin 'guns/vim-clojure-highlight'
