@@ -41,8 +41,8 @@ Plugin 'einars/js-beautify'
 Plugin 'othree/javascript-libraries-syntax.vim'
 
 " Themes
-Plugin 'chriskempson/base16-vim'
 Plugin 'fatih/molokai'
+Plugin 'chriskempson/vim-tomorrow-theme'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -125,11 +125,9 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Color scheme
 set t_Co=256
 
-let base16colorspace=256  " Access colors present in 256 colorspace"
-
 set background=dark
 try
-    colorscheme base16-default
+    colorscheme molokai
 catch
 endtry
 
