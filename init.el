@@ -1,6 +1,6 @@
 (require 'package)
 
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
 (package-initialize)
 
@@ -12,7 +12,8 @@
                       aggressive-indent
                       rainbow-delimiters
                       auto-complete
-                      clj-refactor))
+                      clj-refactor
+                      evil))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
@@ -23,13 +24,29 @@
 (require 'smartparens-config)
 (require 'clj-refactor)
 (require 'auto-complete-config)
+(require 'evil)
 
-;;-----------------
+;;------------------
 ;; Custom config
-(load-theme 'monokai t)
 
-;; keyboard scroll one line at a time
-(setq scroll-step 1) 
+(load-theme 'monokai t) ;; Theme
+(linum-mode 1) ;; Line numbers
+
+;; Evil
+(evil-mode 1)
+
+;; Keyboard scroll one line at a time
+(setq scroll-step 1)
+
+;; Auto-Complete
+(setq ac-auto-start nil) ;; Not to complete automatically
+(setq ac-expand-on-auto-complete nil) ;; Do not auto expand completion
+(define-key ac-mode-map (kbd "TAB") 'auto-complete) ;; Completion hotkey
+(setq ac-ignore-case 'smart) ;; Ignore case if completion target string doesn't include upper characters
+
+
+;;------------------
+;; Hooks
 
 ;; Programming
 (defun my-prog-hook ()
@@ -46,8 +63,8 @@
   ;; This choice of keybinding leaves cider-macroexpand-1 unbound
   (cljr-add-keybindings-with-prefix "C-c C-m"))
 
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+(add-hook 'clojure-mode-hook #'subword-mode)
 (add-hook 'clojure-mode-hook #'my-clojure-hook)
-(put 'upcase-region 'disabled nil)
