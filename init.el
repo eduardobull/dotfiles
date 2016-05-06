@@ -13,7 +13,9 @@
                       rainbow-delimiters
                       auto-complete
                       clj-refactor
-                      evil))
+                      evil
+                      neotree
+                      magit))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
@@ -25,6 +27,11 @@
 (require 'clj-refactor)
 (require 'auto-complete-config)
 (require 'evil)
+(require 'neotree)
+
+;;------------------
+;; Keybindings
+;(global-set-key "M-LEFT" 'forward-word)
 
 ;;------------------
 ;; Custom config
@@ -40,13 +47,28 @@
 ;; Evil
 (evil-mode 1)
 
+;; NeoTree
+(neotree-show)
+(global-set-key [f8] 'neotree-toggle)
+(setq neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
+(setq projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+(add-hook 'neotree-mode-hook ;; Work with Evil mode
+          (lambda ()
+            (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+            (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
+
+;; Magit
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ;; Keyboard scroll one line at a time
 (setq scroll-step 1)
 
 ;; Auto-Complete
 (setq ac-auto-start nil) ;; Not to complete automatically
 (setq ac-expand-on-auto-complete nil) ;; Do not auto expand completion
-(define-key ac-mode-map (kbd "TAB") 'auto-complete) ;; Completion hotkey
+(define-key ac-mode-map (kbd "M-/") 'auto-complete) ;; Completion hotkey
 (setq ac-ignore-case 'smart) ;; Ignore case if completion target string doesn't include upper characters
 
 
