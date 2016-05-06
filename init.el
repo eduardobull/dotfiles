@@ -32,6 +32,11 @@
 (load-theme 'monokai t) ;; Theme
 (linum-mode 1) ;; Line numbers
 
+;; Disable parens highlight delay
+(show-paren-mode 0)
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+
 ;; Evil
 (evil-mode 1)
 
