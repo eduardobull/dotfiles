@@ -15,7 +15,8 @@
                       clj-refactor
                       evil
                       neotree
-                      magit))
+                      magit
+                      undo-tree))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
@@ -87,6 +88,17 @@
 (setq ac-expand-on-auto-complete nil) ;; Do not auto expand completion
 (define-key ac-mode-map (kbd "M-/") 'auto-complete) ;; Completion hotkey
 (setq ac-ignore-case 'smart) ;; Ignore case if completion target string doesn't include upper characters
+
+;; Undo-Tree
+(global-undo-tree-mode)
+(defun undo-tree-visualizer-update-linum (&rest args)
+  (linum-update undo-tree-visualizer-parent-buffer))
+(advice-add 'undo-tree-visualize-undo :after #'undo-tree-visualizer-update-linum)
+(advice-add 'undo-tree-visualize-redo :after #'undo-tree-visualizer-update-linum)
+(advice-add 'undo-tree-visualize-undo-to-x :after #'undo-tree-visualizer-update-linum)
+(advice-add 'undo-tree-visualize-redo-to-x :after #'undo-tree-visualizer-update-linum)
+(advice-add 'undo-tree-visualizer-mouse-set :after #'undo-tree-visualizer-update-linum)
+(advice-add 'undo-tree-visualizer-set :after #'undo-tree-visualizer-update-linum)
 
 
 ;;------------------
