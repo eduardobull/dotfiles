@@ -45,7 +45,7 @@
 (show-paren-mode 1)
 
 ;; Evil
-(evil-mode 1)
+;(evil-mode 1)
 
 ;; NeoTree
 (neotree-show)
