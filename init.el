@@ -40,7 +40,11 @@
 ;; Misc
 (load-theme 'monokai t) ;; Theme
 (linum-mode 1) ;; Line numbers
-(ido-ubiquitous-mode 1) ;; Enable ido in all contexts
+;(ido-ubiquitous-mode 1) ;; Enable ido in all contexts
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
 
 ;; Backups
 (defvar --backup-directory (concat user-emacs-directory "backups"))
