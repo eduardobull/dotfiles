@@ -40,6 +40,7 @@
 ;; Misc
 (load-theme 'monokai t) ;; Theme
 (linum-mode 1) ;; Line numbers
+(ido-ubiquitous-mode 1) ;; Enable ido in all contexts
 
 ;; Backups
 (defvar --backup-directory (concat user-emacs-directory "backups"))
@@ -124,3 +125,22 @@
 (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook #'subword-mode)
 (add-hook 'clojure-mode-hook #'my-clojure-hook)
+
+
+;; Cider
+;; provides minibuffer documentation for the code you're typing into the repl
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; go right to the REPL buffer when it's finished connecting
+(setq cider-repl-pop-to-buffer-on-connect t)
+;; When there's a cider error, show its buffer and switch to it
+(setq cider-show-error-buffer t)
+(setq cider-auto-select-error-buffer t)
+;; Wrap when navigating history.
+(setq cider-repl-wrap-history t)
+;; enable paredit in your REPL
+(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+;; Use clojure mode for other extensions
+(add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
