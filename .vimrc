@@ -1,3 +1,7 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins: install plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Load The Ultimate vimrc Basic - github.com/amix/vimrc
 so ~/.vim/amix-vimrc.vim
 
@@ -14,7 +18,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
 Plugin 'Valloric/YouCompleteMe' "cd ~/.vim/bundle/YouCompleteMe && sudo apt-get install build-essential cmake python-dev python3-dev && ./install.py --clang-completer
 Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
@@ -33,8 +37,9 @@ Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-static'
 "Plugin 'guns/vim-clojure-highlight'
 Plugin 'venantius/vim-cljfmt'
+Plugin 'venantius/vim-eastwood'
 
-" JavsScript
+" JavaScript
 Plugin 'pangloss/vim-javascript'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'einars/js-beautify'
@@ -47,8 +52,9 @@ Plugin 'chriskempson/vim-tomorrow-theme'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins: custom plugins configurations
+" Plugins Config: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:session_autosave = 'no'
@@ -120,7 +126,14 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Custom: custom vimrc settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd FileType * setlocal formatoptions-=cro
+
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
 
 " Color scheme
 set t_Co=256
@@ -147,11 +160,25 @@ set nosmartcase
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set writebackup
 
+" Height of the command bar
+set cmdheight=1
+
+" Add a bit extra margin to the left
+set foldcolumn=0
+
 " Turn on line numbers
 set number
 
 " Disable scratch window on complete preview
 set completeopt-=preview
+
+" :W sudo saves the file 
+" (useful for handling the permission-denied error)
+command! W w !sudo tee % > /dev/null
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings: custom mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " UnMap <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 unmap <space>
@@ -160,3 +187,6 @@ unmap <c-space>
 " Fast resizing
 map <c-w>> :vertical resize +8<cr>
 map <c-w>< :vertical resize -8<cr>
+
+" Map <C-space> to disable search highlight
+map <NUL> :noh<cr>
