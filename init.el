@@ -14,6 +14,7 @@
                       auto-complete
                       clj-refactor
                       evil
+                      evil-smartparens
                       neotree
                       magit
                       undo-tree))
@@ -32,7 +33,7 @@
 
 ;;------------------
 ;; Keybindings
-;(global-set-key "M-LEFT" 'forward-word)
+;;(global-set-key (kbd "C-a <right>") 'forward-word)
 
 ;;------------------
 ;; Custom config
@@ -40,7 +41,7 @@
 ;; Misc
 (load-theme 'monokai t) ;; Theme
 (linum-mode 1) ;; Line numbers
-;(ido-ubiquitous-mode 1) ;; Enable ido in all contexts
+;;(ido-ubiquitous-mode 1) ;; Enable ido in all contexts
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
@@ -68,12 +69,15 @@
 (show-paren-mode 1)
 
 ;; Evil
-;(evil-mode 1)
+(evil-mode 0)
+(setq evil-default-state 'emacs)
 
 ;; NeoTree
 (neotree-show)
 (global-set-key [f8] 'neotree-toggle)
-(setq neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
+(setq neo-dont-be-alone t)
+(setq neo-window-position 'left)
+(setq neo-smart-open nil) ;; Every time when the neotree window is opened, let it find current file and jump to node
 (setq projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
 (add-hook 'neotree-mode-hook ;; Work with Evil mode
           (lambda ()
@@ -81,7 +85,6 @@
             (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
             (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
             (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
-
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -109,6 +112,10 @@
 ;;------------------
 ;; Hooks
 
+;; Evil
+(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+(add-hook 'smartparens-strict-enabled-hook #'evil-smartparens-mode)
+
 ;; Programming
 (defun my-prog-hook ()
   ;; Auto-Complete
@@ -124,7 +131,7 @@
   ;; This choice of keybinding leaves cider-macroexpand-1 unbound
   (cljr-add-keybindings-with-prefix "C-c C-m"))
 
-;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook #'subword-mode)
