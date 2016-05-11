@@ -25,8 +25,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
-Plugin 'xolox/vim-session'
-Plugin 'xolox/vim-misc'
+Plugin 'mileszs/ack.vim' "curl http://beyondgrep.com/ack-2.14-single-file > ~/bin/ack && chmod 0755 ~/bin/ack
 
 " Go
 Plugin 'fatih/vim-go'
@@ -57,7 +56,10 @@ filetype plugin indent on    " required
 " Plugins Config: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:session_autosave = 'no'
+" mileszs/ack.vim
+let g:ack_qhandler = "botright copen 5"
+let g:ack_lhandler = "botright copen 5"
+nmap <c-f> :Ack<space>
 
 " Valloric/YouCompleteMe
 let g:ycm_min_num_of_chars_for_completion = 3
