@@ -70,9 +70,6 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_working_path_mode = 'ra'
 
-" xolox/vim-session
-set sessionoptions-=buffers
-
 " vim-go
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
@@ -174,6 +171,9 @@ set number
 " Disable scratch window on complete preview
 set completeopt-=preview
 
+" Disable switchbuf new tab
+set switchbuf-=newtab
+
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
 command! W w !sudo tee % > /dev/null
@@ -181,6 +181,9 @@ command! W w !sudo tee % > /dev/null
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings: custom mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Disable command history window
+nnoremap q: <NOP>
 
 " UnMap <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 unmap <space>
