@@ -16,7 +16,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
+"Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'Valloric/YouCompleteMe' "cd ~/.vim/bundle/YouCompleteMe && sudo apt-get install build-essential cmake python-dev python3-dev && ./install.py --clang-completer
@@ -37,7 +37,7 @@ Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-static'
 "Plugin 'guns/vim-clojure-highlight'
 Plugin 'venantius/vim-cljfmt'
-Plugin 'venantius/vim-eastwood'
+"Plugin 'venantius/vim-eastwood'
 
 " JavaScript
 Plugin 'pangloss/vim-javascript'
