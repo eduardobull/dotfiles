@@ -19,7 +19,7 @@ Plugin 'tpope/vim-fugitive'
 "Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
-Plugin 'Valloric/YouCompleteMe' "cd ~/.vim/bundle/YouCompleteMe && sudo apt-get install build-essential cmake python-dev python3-dev && ./install.py --clang-completer
+Plugin 'Valloric/YouCompleteMe' "cd ~/.vim/bundle/YouCompleteMe && sudo apt-get install build-essential cmake python-dev python3-dev && ./install.py
 Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
