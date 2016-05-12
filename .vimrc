@@ -21,7 +21,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'Valloric/YouCompleteMe' "cd ~/.vim/bundle/YouCompleteMe && sudo apt-get install build-essential cmake python-dev python3-dev && ./install.py
 Plugin 'scrooloose/syntastic'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
@@ -56,12 +56,14 @@ filetype plugin indent on    " required
 " Plugins Config: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " rking/ag.vim
+let g:ag_mapping_message=0
 let g:ag_qhandler = "botright copen 5"
 let g:ag_lhandler = "botright copen 5"
 nmap <c-f> :Ag<space>
 
 " Valloric/YouCompleteMe
 let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_strings = 0
 
 " kien/ctrlp.vim
@@ -194,3 +196,7 @@ map <c-w>< :vertical resize -8<cr>
 
 " Map <C-space> to disable search highlight
 map <NUL> :noh<cr>
+
+" Add new line from Normal mode
+nmap <S-Enter> O<Esc>
+nmap <CR> o<Esc>
