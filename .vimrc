@@ -192,8 +192,8 @@ command! W w !sudo tee % > /dev/null
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Buffers navigation
-nmap <c-b><right> :bn<cr>
-nmap <c-b><left> :bp<cr>
+nmap <C-b><right> :bn<cr>
+nmap <C-b><left> :bp<cr>
 
 " Close buffer
 nmap <C-x> :bp\|bd #<cr>
@@ -203,11 +203,11 @@ nnoremap q: <NOP>
 
 " UnMap <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 unmap <space>
-unmap <c-space>
+unmap <C-space>
 
 " Fast resizing
-nmap <c-w>> :vertical resize +8<cr>
-nmap <c-w>< :vertical resize -8<cr>
+nmap <C-w>> :vertical resize +8<cr>
+nmap <C-w>< :vertical resize -8<cr>
 
 " Map <C-space> to disable search highlight
 nnoremap <NUL> :noh<cr>
