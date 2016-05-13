@@ -62,14 +62,17 @@ export PATH="~/.nvm/versions/node/v5.0.0/bin:~/bin:/usr/local/sbin:/usr/local/bi
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
+
+# Disable terminal flow control keystrokes <Ctrl-S> and <Ctrl-Q>
+stty -ixon
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -85,4 +88,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
+if [[ -x `which aria2c` ]]; then
+    alias download="aria2c --continue --max-connection-per-server=5 "
+else
+    alias download="wget -c "
+fi
