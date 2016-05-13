@@ -2,7 +2,7 @@
 # sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 export ZSH=~/.oh-my-zsh
 
-export TERM=screen-256color
+export TERM=xterm-256color
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
