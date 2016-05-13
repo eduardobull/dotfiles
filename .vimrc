@@ -195,6 +195,9 @@ command! W w !sudo tee % > /dev/null
 nmap <c-b><right> :bn<cr>
 nmap <c-b><left> :bp<cr>
 
+" Close buffer
+nmap <C-x> :bp\|bd #<cr>
+
 " Disable command history window
 nnoremap q: <NOP>
 
@@ -203,11 +206,11 @@ unmap <space>
 unmap <c-space>
 
 " Fast resizing
-map <c-w>> :vertical resize +8<cr>
-map <c-w>< :vertical resize -8<cr>
+nmap <c-w>> :vertical resize +8<cr>
+nmap <c-w>< :vertical resize -8<cr>
 
 " Map <C-space> to disable search highlight
-map <NUL> :noh<cr>
+nnoremap <NUL> :noh<cr>
 
 " Add new line from Normal mode
 nmap <S-Enter> O<Esc>
