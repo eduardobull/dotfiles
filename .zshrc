@@ -74,6 +74,9 @@ fi
 # Disable terminal flow control keystrokes <Ctrl-S> and <Ctrl-Q>
 stty -ixon
 
+# Share history only after shell exits
+unsetopt incappendhistory
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
