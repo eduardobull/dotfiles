@@ -55,11 +55,15 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins Config: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " rking/ag.vim
 let g:ag_mapping_message=0
 let g:ag_qhandler = "botright copen 5"
 let g:ag_lhandler = "botright copen 5"
 nmap <c-f> :Ag<space>
+
+" vim-airline/vim-airline
+let g:airline#extensions#tabline#enabled = 1
 
 " Valloric/YouCompleteMe
 let g:ycm_min_num_of_chars_for_completion = 3
@@ -183,6 +187,10 @@ command! W w !sudo tee % > /dev/null
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings: custom mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Buffers navigation
+nmap <c-b><right> :bn<cr>
+nmap <c-b><left> :bp<cr>
 
 " Disable command history window
 nnoremap q: <NOP>
