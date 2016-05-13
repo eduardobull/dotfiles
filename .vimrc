@@ -56,6 +56,9 @@ filetype plugin indent on    " required
 " Plugins Config: custom plugins configurations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" venantius/vim-cljfmt
+let g:clj_fmt_autosave = 1
+
 " rking/ag.vim
 let g:ag_mapping_message=0
 let g:ag_qhandler = "botright copen 5"
