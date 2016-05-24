@@ -27,6 +27,9 @@ Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 Plugin 'rking/ag.vim' "sudo apt-get install silversearcher-ag
 
+" R
+Plugin 'jalvesaq/Nvim-R'
+
 " Go
 Plugin 'fatih/vim-go'
 
