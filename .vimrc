@@ -37,9 +37,7 @@ Plugin 'fatih/vim-go'
 Plugin 'guns/vim-sexp'
 Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-static'
-"Plugin 'guns/vim-clojure-highlight'
 Plugin 'venantius/vim-cljfmt'
-"Plugin 'venantius/vim-eastwood'
 
 " JavaScript
 Plugin 'pangloss/vim-javascript'
@@ -155,6 +153,15 @@ try
 catch
 endtry
 
+" Fix background
+if &term =~ '256color'
+  " disable Background Color Erase (BCE) so that color schemes
+  " render properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
+endif
+
+
 " Set 3 lines to the cursor - when moving vertically using j/k
 set so=3
 
@@ -218,3 +225,6 @@ nnoremap <NUL> :noh<cr>
 " Add new line from Normal mode
 nmap <S-Enter> O<Esc>
 nmap <CR> o<Esc>
+
+" Toggle paste mode
+set pastetoggle=<F2>
