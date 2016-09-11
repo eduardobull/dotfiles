@@ -27,6 +27,9 @@ Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 Plugin 'rking/ag.vim' "sudo apt-get install silversearcher-ag
 
+" Language packs
+Plugin 'sheerun/vim-polyglot'
+
 " R
 Plugin 'jalvesaq/Nvim-R'
 
@@ -44,7 +47,6 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'einars/js-beautify'
 Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'mustache/vim-mustache-handlebars'
 
 " Themes
 Plugin 'fatih/molokai'
