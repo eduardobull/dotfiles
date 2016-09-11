@@ -70,9 +70,10 @@ nmap <c-f> :Ag<space>
 let g:airline#extensions#tabline#enabled = 1
 
 " Valloric/YouCompleteMe
-let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_min_num_of_chars_for_completion = 99
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_strings = 0
+let g:ycm_extra_conf_globlist = ['~/*']
 
 " kien/ctrlp.vim
 let g:ctrlp_map = '<c-p>'
@@ -126,6 +127,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+" C options
+let g:syntastic_c_include_dirs = ['/usr/include', '/usr/include/glib-2.0', 'include']
+let g:syntastic_c_compiler = 'gcc'
+let g:syntastic_c_check_header = 0
+let g:syntastic_c_auto_refresh_includes = 1
 
 " scrooloose/nerdtree
 let g:NERDTreeShowBookmarks = 1
@@ -200,7 +206,7 @@ set switchbuf-=newtab
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
-command! W w !sudo tee % > /dev/null
+"command! W w !sudo tee % > /dev/null
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings: custom mappings

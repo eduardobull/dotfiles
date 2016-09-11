@@ -2,8 +2,6 @@
 # sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 export ZSH=$HOME/.oh-my-zsh
 
-export TERM=xterm-256color
-
 # Set name of the theme to load.
 # Look in $HOME/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -52,7 +50,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git lein)
+plugins=(lein)
 
 # User configuration
 
@@ -77,7 +75,7 @@ fi
 stty -ixon
 
 # Share history only after shell exits
-unsetopt incappendhistory
+unsetopt INC_APPEND_HISTORY
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -93,6 +91,8 @@ unsetopt incappendhistory
 # Example aliases
 # alias zshconfig="mate $HOME/.zshrc"
 # alias ohmyzsh="mate $HOME/.oh-my-zsh"
+alias tmux="tmux -2"
+
 if [[ -x `which aria2c` ]]; then
     alias download="aria2c --continue --max-connection-per-server=5 "
 else
