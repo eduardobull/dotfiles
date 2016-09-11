@@ -3,14 +3,14 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Load The Ultimate vimrc Basic - github.com/amix/vimrc
-so ~/.vim/amix-vimrc.vim
+so ~/.vim/amix-vimrc.vim "wget https://github.com/amix/vimrc/raw/master/vimrcs/basic.vim -O ~/.vim/amix-vimrc.vim
 
 " Load plugins before everything else
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/Vundle.vim " git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -44,6 +44,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'einars/js-beautify'
 Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'mustache/vim-mustache-handlebars'
 
 " Themes
 Plugin 'fatih/molokai'
