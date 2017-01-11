@@ -36,6 +36,9 @@ Plugin 'jalvesaq/Nvim-R'
 " Go
 Plugin 'fatih/vim-go'
 
+" Scala
+Plugin 'derekwyatt/vim-scala'
+
 " Clojure
 Plugin 'guns/vim-sexp'
 Plugin 'tpope/vim-fireplace'
