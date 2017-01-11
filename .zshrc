@@ -54,7 +54,7 @@ plugins=(lein)
 
 # User configuration
 
-export PATH="$HOME/.nvm/versions/node/v5.0.0/bin:$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/go/bin:$HOME/bin:$HOME/Development/Go/bin"
+export PATH="$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/go/bin:$HOME/bin:$HOME/Development/Go/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export GOPATH="$HOME/Development/Go"

@@ -207,6 +207,9 @@ set completeopt-=preview
 " Disable switchbuf new tab
 set switchbuf-=newtab
 
+" Disable mouse support
+autocmd BufEnter * set mouse=
+
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
 "command! W w !sudo tee % > /dev/null
