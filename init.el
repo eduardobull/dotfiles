@@ -1,6 +1,15 @@
 (require 'package)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(setq package-archives
+      '(("gnu-elpa"     . "http://elpa.gnu.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa"        . "https://melpa.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/"))
+      package-archive-priorities
+      '(("melpa-stable" . 10)
+        ("marmalade"    . 9)
+        ("gnu-elpa"     . 5)
+        ("melpa"        . 0)))
 
 (package-initialize)
 
@@ -13,11 +22,15 @@
                       rainbow-delimiters
                       auto-complete
                       clj-refactor
-                      evil
-                      evil-smartparens
                       neotree
                       magit
-                      undo-tree))
+                      undo-tree
+                      smex
+                      ace-window
+                      company
+                      ;; Themes
+                      ample-theme
+                      ))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
@@ -27,31 +40,31 @@
 ;; Load configs
 (require 'smartparens-config)
 (require 'clj-refactor)
-(require 'auto-complete-config)
-(require 'evil)
 (require 'neotree)
+(require 'smex)
+
 
 ;;------------------
-;; Keybindings
-;;(global-set-key (kbd "C-a <right>") 'forward-word)
+;; Themes
+
+(load-theme 'ample t t)
+(enable-theme 'ample)
+
+(setq-default cursor-type '(bar . 2))
+(set-cursor-color "#7AA3CC")
 
 ;;------------------
 ;; Custom config
 
-;; Misc
-(load-theme 'monokai t) ;; Theme
-(linum-mode 1) ;; Line numbers
-;;(ido-ubiquitous-mode 1) ;; Enable ido in all contexts
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
+;; Keyboard scroll one line at a time
+(setq scroll-step 1)
 
 ;; Backups
-(defvar --backup-directory (concat user-emacs-directory "backups"))
-(if (not (file-exists-p --backup-directory))
-    (make-directory --backup-directory t))
-(setq backup-directory-alist `(("." . ,--backup-directory)))
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
 (setq make-backup-files t               ; backup of a file the first time it is saved.
       backup-by-copying t               ; don't clobber symlinks
       version-control t                 ; version numbers for backup files
@@ -68,36 +81,71 @@
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
-;; Evil
-(evil-mode 0)
-(setq evil-default-state 'emacs)
 
+;;------------------
+;; Key bindings
+
+;; window navigation
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key "\M-z" 'zap-up-to-char)
+
+;; Window resizing
+;(global-set-key (kbd "S-<left>") 'shrink-window-horizontally)
+;(global-set-key (kbd "S-<right>") 'enlarge-window-horizontally)
+;(global-set-key (kbd "S-<up>") 'enlarge-window)
+;(global-set-key (kbd "S-<dow>") 'shrink-window)
+;(global-set-key (kbd "M-[ d") 'shrink-window-horizontally)  ;;KiTTY
+;(global-set-key (kbd "M-[ c") 'enlarge-window-horizontally) ;;KiTTY
+;(global-set-key (kbd "M-[ a") 'enlarge-window) ;;KiTTY
+;(global-set-key (kbd "M-[ b") 'shrink-window) ;;KiTTY
+
+;; Smartparens
+(define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
+(define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
+(define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
+(define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
+(define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
+
+
+;;------------------
+;; Ace-Window
+
+(global-set-key (kbd "C-x o") 'ace-window)
+
+
+;;------------------
+;; Smex
+
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+
+;;------------------
 ;; NeoTree
+
 (neotree-show)
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-dont-be-alone t)
 (setq neo-window-position 'left)
-(setq neo-smart-open nil) ;; Every time when the neotree window is opened, let it find current file and jump to node
+(setq neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
 (setq projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
-(add-hook 'neotree-mode-hook ;; Work with Evil mode
-          (lambda ()
-            (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-            (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
-            (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-            (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
+
+
+;;------------------
 ;; Magit
+
 (global-set-key (kbd "C-x g") 'magit-status)
 
-;; Keyboard scroll one line at a time
-(setq scroll-step 1)
 
-;; Auto-Complete
-(setq ac-auto-start nil) ;; Not to complete automatically
-(setq ac-expand-on-auto-complete nil) ;; Do not auto expand completion
-(define-key ac-mode-map (kbd "M-/") 'auto-complete) ;; Completion hotkey
-(setq ac-ignore-case 'smart) ;; Ignore case if completion target string doesn't include upper characters
-
+;;------------------
 ;; Undo-Tree
+
 (global-undo-tree-mode)
 (defun undo-tree-visualizer-update-linum (&rest args)
   (linum-update undo-tree-visualizer-parent-buffer))
@@ -110,26 +158,20 @@
 
 
 ;;------------------
-;; Hooks
-
-;; Evil
-(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-(add-hook 'smartparens-strict-enabled-hook #'evil-smartparens-mode)
-
-;; Programming
-(defun my-prog-hook ()
-  ;; Auto-Complete
-  (ac-config-default))
+;; General Programming
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
-(add-hook 'prog-mode-hook #'my-prog-hook)
+;(add-hook 'prog-mode-hook #'ac-config-default)))
 
+
+;;------------------
 ;; Clojure
+
 (defun my-clojure-hook ()
   (clj-refactor-mode 1)
   (yas-minor-mode 1) ; for adding require/use/import statements
   ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-  (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (cljr-add-keybindings-with-prefix "C-c C-r"))
 
 ;;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
@@ -137,21 +179,26 @@
 (add-hook 'clojure-mode-hook #'subword-mode)
 (add-hook 'clojure-mode-hook #'my-clojure-hook)
 
-
 ;; Cider
-;; provides minibuffer documentation for the code you're typing into the repl
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-;; go right to the REPL buffer when it's finished connecting
+(setq cider-prompt-for-symbol nil)
 (setq cider-repl-pop-to-buffer-on-connect t)
-;; When there's a cider error, show its buffer and switch to it
 (setq cider-show-error-buffer t)
 (setq cider-auto-select-error-buffer t)
-;; Wrap when navigating history.
 (setq cider-repl-wrap-history t)
-;; enable paredit in your REPL
+(setq cider-font-lock-dynamically '(macro core function var))
+
+(add-hook 'cider-mode-hook #'eldoc-mode)
 (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+
 ;; Use clojure mode for other extensions
 (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.cljs$" . clojurescript-mode))
+(add-to-list 'auto-mode-alist '("\\.cljc$" . clojurec-mode))
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
+
+;; Company-mode
+(global-company-mode)
+(add-hook 'cider-repl-mode-hook #'company-mode)
+(add-hook 'cider-mode-hook #'company-mode)
+(global-set-key (kbd "M-/") #'company-complete)
