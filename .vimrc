@@ -50,6 +50,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'einars/js-beautify'
 Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'posva/vim-vue'
 
 " Themes
 Plugin 'fatih/molokai'
@@ -64,7 +65,7 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " venantius/vim-cljfmt
-let g:clj_fmt_autosave = 1
+let g:clj_fmt_autosave = 0
 
 " rking/ag.vim
 let g:ag_mapping_message=0
