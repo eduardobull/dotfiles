@@ -106,6 +106,8 @@
 (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
 (define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
 (define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
 (define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
 (define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
 (define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
