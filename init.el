@@ -186,6 +186,7 @@
 (setq cider-auto-select-error-buffer t)
 (setq cider-repl-wrap-history t)
 (setq cider-font-lock-dynamically '(macro core function var))
+(setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
 (add-hook 'cider-mode-hook #'eldoc-mode)
 (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
