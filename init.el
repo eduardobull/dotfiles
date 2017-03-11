@@ -50,11 +50,16 @@
 (load-theme 'ample t t)
 (enable-theme 'ample)
 
+;; Cursor
 (setq-default cursor-type '(bar . 2))
 (set-cursor-color "#7AA3CC")
 
+
 ;;------------------
 ;; Custom config
+
+;; Follow symbolic links
+(setq vc-follow-symlinks t)
 
 ;; Keyboard scroll one line at a time
 (setq scroll-step 1)
@@ -113,6 +118,12 @@
 
 
 ;;------------------
+;; Flycheck
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+
+;;------------------
 ;; Ace-Window
 
 (global-set-key (kbd "C-x o") 'ace-window)
@@ -129,12 +140,13 @@
 ;;------------------
 ;; NeoTree
 
-(neotree-show)
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-dont-be-alone t)
 (setq neo-window-position 'left)
 (setq neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
 (setq projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+(setq neo-theme (if (display-graphic-p) 'arrow 'nerd))
+(neotree-show)
 
 
 ;;------------------

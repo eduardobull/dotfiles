@@ -7,5 +7,6 @@
                   [jonase/eastwood  "0.2.3"]
                   [venantius/ultra "0.4.1"]]
         :cljfmt {:indents {defrecord [[:block 1]]}}}
- :repl {:plugins [[cider/cider-nrepl "0.14.0"]]}}
+ :repl {:plugins [[refactor-nrepl "2.2.0"]
+                  [cider/cider-nrepl "0.14.0"]]}}
 
