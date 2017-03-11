@@ -15,19 +15,25 @@
 
 (defvar my-packages '(better-defaults
                       projectile
-                      clojure-mode
-                      cider
                       smartparens
                       aggressive-indent
                       rainbow-delimiters
-                      auto-complete
-                      clj-refactor
+                      ;auto-complete
                       neotree
                       magit
                       undo-tree
                       smex
                       ace-window
                       company
+                      ;; Languages
+                      clojure-mode
+                      cider
+                      clj-refactor
+                      go-mode
+                      flymake-go
+                      company-go
+                      go-eldoc
+                      elpy
                       ;; Themes
                       ample-theme
                       ))
@@ -35,13 +41,6 @@
 (dolist (p my-packages)
   (unless (package-installed-p p)
     (package-install p)))
-
-;;------------------
-;; Load configs
-(require 'smartparens-config)
-(require 'clj-refactor)
-(require 'neotree)
-(require 'smex)
 
 
 ;;------------------
@@ -111,6 +110,8 @@
 (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
 (define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
 (define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
 (define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
 (define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
 (define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
@@ -177,6 +178,18 @@
 
 
 ;;------------------
+;; Python
+
+(elpy-enable)
+
+
+;;------------------
+;; Golang
+
+(add-hook 'go-mode-hook 'go-eldoc-setup)
+(setq gofmt-command "goimports")
+
+;;------------------
 ;; Clojure
 
 (defun my-clojure-hook ()
@@ -212,6 +225,22 @@
 
 ;; Company-mode
 (global-company-mode)
-(add-hook 'cider-repl-mode-hook #'company-mode)
-(add-hook 'cider-mode-hook #'company-mode)
 (global-set-key (kbd "M-/") #'company-complete)
+(setq company-minimum-prefix-length 3)
+(setq company-tooltip-limit 15)
+(setq company-idle-delay .0)
+(setq company-echo-delay 0)
+
+;; Emacs automatic configuration
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(vc-follow-symlinks nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
