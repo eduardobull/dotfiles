@@ -50,7 +50,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(lein)
+plugins=(lein sbt scala git tmux)
 
 # User configuration
 
@@ -94,7 +94,7 @@ unsetopt INC_APPEND_HISTORY
 alias tmux="tmux -2"
 
 if [[ -x `which aria2c` ]]; then
-    alias download="aria2c --continue --max-connection-per-server=5 "
+    alias download="aria2c --continue -x5"
 else
     alias download="wget -c "
 fi
