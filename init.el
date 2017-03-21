@@ -24,12 +24,12 @@
                       smex
                       ace-window
                       company
+                      flycheck
                       ;; Languages
                       clojure-mode
                       cider
                       clj-refactor
                       go-mode
-                      flymake-go
                       company-go
                       go-eldoc
                       elpy
@@ -197,6 +197,7 @@
 (add-hook 'go-mode-hook 'go-eldoc-setup)
 (setq gofmt-command "goimports")
 
+
 ;;------------------
 ;; Clojure
 
@@ -238,3 +239,6 @@
 (setq company-tooltip-limit 15)
 (setq company-idle-delay .0)
 (setq company-echo-delay 0)
+
+(provide 'init)
+;;; init.el ends here
