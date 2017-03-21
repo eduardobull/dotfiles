@@ -18,7 +18,6 @@
                       smartparens
                       aggressive-indent
                       rainbow-delimiters
-                      ;auto-complete
                       neotree
                       magit
                       undo-tree
@@ -50,11 +49,20 @@
 (load-theme 'ample t t)
 (enable-theme 'ample)
 
+;; Cursor
 (setq-default cursor-type '(bar . 2))
 (set-cursor-color "#7AA3CC")
 
+
 ;;------------------
 ;; Custom config
+
+;; Enable menu-bar
+(global-set-key [f2] 'toggle-menu-bar-mode-from-frame)
+
+
+;; Follow symbolic links
+(setq vc-follow-symlinks t)
 
 ;; Keyboard scroll one line at a time
 (setq scroll-step 1)
@@ -115,6 +123,12 @@
 
 
 ;;------------------
+;; Flycheck
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+
+;;------------------
 ;; Ace-Window
 
 (global-set-key (kbd "C-x o") 'ace-window)
@@ -131,12 +145,13 @@
 ;;------------------
 ;; NeoTree
 
-(neotree-show)
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-dont-be-alone t)
 (setq neo-window-position 'left)
 (setq neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
 (setq projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+(setq neo-theme (if (display-graphic-p) 'arrow 'nerd))
+(neotree-show)
 
 
 ;;------------------
@@ -163,7 +178,6 @@
 ;; General Programming
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
-;(add-hook 'prog-mode-hook #'ac-config-default)))
 
 
 ;;------------------
@@ -224,17 +238,3 @@
 (setq company-tooltip-limit 15)
 (setq company-idle-delay .0)
 (setq company-echo-delay 0)
-
-;; Emacs automatic configuration
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(vc-follow-symlinks nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
