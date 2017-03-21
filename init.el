@@ -1,5 +1,6 @@
 (require 'package)
 
+;;;; Code:
 (setq package-archives
       '(("gnu-elpa"     . "http://elpa.gnu.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
@@ -129,6 +130,18 @@
 
 
 ;;------------------
+;; Company-mode
+
+(global-company-mode)
+(company-quickhelp-mode 1)
+(global-set-key (kbd "M-/") #'company-complete)
+(setq company-minimum-prefix-length 3)
+(setq company-tooltip-limit 15)
+(setq company-idle-delay .0)
+(setq company-echo-delay 0)
+
+
+;;------------------
 ;; Ace-Window
 
 (global-set-key (kbd "C-x o") 'ace-window)
@@ -232,13 +245,7 @@
 (add-to-list 'auto-mode-alist '("\\.cljc$" . clojurec-mode))
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
-;; Company-mode
-(global-company-mode)
-(global-set-key (kbd "M-/") #'company-complete)
-(setq company-minimum-prefix-length 3)
-(setq company-tooltip-limit 15)
-(setq company-idle-delay .0)
-(setq company-echo-delay 0)
 
+; ------------------------
 (provide 'init)
 ;;; init.el ends here
