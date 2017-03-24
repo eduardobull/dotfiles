@@ -127,7 +127,7 @@
 ;; Flycheck
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
-
+(setq flycheck-display-errors-delay 0.0)
 
 ;;------------------
 ;; Company-mode
