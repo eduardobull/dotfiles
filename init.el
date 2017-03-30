@@ -61,7 +61,6 @@
 ;; Enable menu-bar
 (global-set-key [f2] 'toggle-menu-bar-mode-from-frame)
 
-
 ;; Follow symbolic links
 (setq vc-follow-symlinks t)
 
@@ -220,7 +219,7 @@
   ;; This choice of keybinding leaves cider-macroexpand-1 unbound
   (cljr-add-keybindings-with-prefix "C-c C-r"))
 
-;;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook #'subword-mode)
