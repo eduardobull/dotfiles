@@ -98,3 +98,7 @@ if [[ -x `which aria2c` ]]; then
 else
     alias download="wget -c "
 fi
+
+alias ungzip="tar -xvzf"
+alias untar="tar -zxvf"
+alias emacs="emacs -nw"
