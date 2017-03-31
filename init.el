@@ -17,7 +17,7 @@
 (defvar my-packages '(better-defaults
                       projectile
                       smartparens
-                      aggressive-indent
+                      ;aggressive-indent
                       rainbow-delimiters
                       neotree
                       magit
@@ -25,14 +25,17 @@
                       smex
                       ace-window
                       company
+                      company-quickhelp
                       flycheck
-                      ;; Languages
+                      ;; Clojure
                       clojure-mode
                       cider
                       clj-refactor
+                      ;; Go
                       go-mode
                       company-go
                       go-eldoc
+                      ;; Python
                       elpy
                       company-jedi
                       ;; Themes
@@ -57,6 +60,9 @@
 
 ;;------------------
 ;; Custom config
+
+;; Disable startup screen
+(setq inhibit-startup-screen t)
 
 ;; Enable menu-bar
 (global-set-key [f2] 'toggle-menu-bar-mode-from-frame)
@@ -92,6 +98,10 @@
 
 ;;------------------
 ;; Key bindings
+
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region)
 
 ;; window navigation
 (global-set-key (kbd "C-x <up>") 'windmove-up)
