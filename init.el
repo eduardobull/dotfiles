@@ -64,6 +64,9 @@
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
 
+;; Kill scrath buffer
+(kill-buffer "*scratch*")
+
 ;; Enable menu-bar
 (global-set-key [f2] 'toggle-menu-bar-mode-from-frame)
 
@@ -136,7 +139,8 @@
 ;; Flycheck
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(setq flycheck-display-errors-delay 0.0)
+(setq-default flycheck-display-errors-delay 0.0)
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 
 ;;------------------
 ;; Company-mode
@@ -144,10 +148,10 @@
 (global-company-mode)
 (company-quickhelp-mode 1)
 (global-set-key (kbd "M-/") #'company-complete)
-(setq company-minimum-prefix-length 3)
+(setq-default company-minimum-prefix-length 3)
 (setq company-tooltip-limit 15)
-(setq company-idle-delay .0)
-(setq company-echo-delay 0)
+(setq-default company-idle-delay .0)
+(setq-default company-echo-delay 0)
 
 
 ;;------------------
@@ -168,11 +172,11 @@
 ;; NeoTree
 
 (global-set-key [f8] 'neotree-toggle)
-(setq neo-dont-be-alone t)
-(setq neo-window-position 'left)
-(setq neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
-(setq projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
-(setq neo-theme (if (display-graphic-p) 'arrow 'nerd))
+(setq-default neo-dont-be-alone t)
+(setq-default neo-window-position 'left)
+(setq-default neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
+(setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+(setq-default neo-theme (if (display-graphic-p) 'arrow 'nerd))
 (neotree-show)
 
 
@@ -217,7 +221,7 @@
 ;; Golang
 
 (add-hook 'go-mode-hook 'go-eldoc-setup)
-(setq gofmt-command "goimports")
+(setq-default gofmt-command "goimports")
 
 
 ;;------------------
@@ -236,13 +240,13 @@
 (add-hook 'clojure-mode-hook #'my-clojure-hook)
 
 ;; Cider
-(setq cider-prompt-for-symbol nil)
-(setq cider-repl-pop-to-buffer-on-connect t)
-(setq cider-show-error-buffer t)
-(setq cider-auto-select-error-buffer t)
-(setq cider-repl-wrap-history t)
-(setq cider-font-lock-dynamically '(macro core function var))
-(setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+(setq-default cider-prompt-for-symbol nil)
+(setq-default cider-repl-pop-to-buffer-on-connect t)
+(setq-default cider-show-error-buffer t)
+(setq-default cider-auto-select-error-buffer t)
+(setq-default cider-repl-wrap-history t)
+(setq-default cider-font-lock-dynamically '(macro core function var))
+(setq-default cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
 (add-hook 'cider-mode-hook #'eldoc-mode)
 (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
