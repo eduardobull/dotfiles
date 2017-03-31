@@ -17,7 +17,7 @@
 (defvar my-packages '(better-defaults
                       projectile
                       smartparens
-                      ;aggressive-indent
+                      aggressive-indent
                       rainbow-delimiters
                       neotree
                       magit
@@ -149,7 +149,7 @@
 (company-quickhelp-mode 1)
 (global-set-key (kbd "M-/") #'company-complete)
 (setq-default company-minimum-prefix-length 3)
-(setq company-tooltip-limit 15)
+(setq-default company-tooltip-limit 15)
 (setq-default company-idle-delay .0)
 (setq-default company-echo-delay 0)
 
@@ -170,13 +170,12 @@
 
 ;;------------------
 ;; NeoTree
-
 (global-set-key [f8] 'neotree-toggle)
 (setq-default neo-dont-be-alone t)
 (setq-default neo-window-position 'left)
 (setq-default neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
 (setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
-(setq-default neo-theme (if (display-graphic-p) 'arrow 'nerd))
+(setq-default neo-theme (if (display-graphic-p) 'arrow 'ascii))
 (neotree-show)
 
 
@@ -190,14 +189,6 @@
 ;; Undo-Tree
 
 (global-undo-tree-mode)
-(defun undo-tree-visualizer-update-linum (&rest args)
-  (linum-update undo-tree-visualizer-parent-buffer))
-(advice-add 'undo-tree-visualize-undo :after #'undo-tree-visualizer-update-linum)
-(advice-add 'undo-tree-visualize-redo :after #'undo-tree-visualizer-update-linum)
-(advice-add 'undo-tree-visualize-undo-to-x :after #'undo-tree-visualizer-update-linum)
-(advice-add 'undo-tree-visualize-redo-to-x :after #'undo-tree-visualizer-update-linum)
-(advice-add 'undo-tree-visualizer-mouse-set :after #'undo-tree-visualizer-update-linum)
-(advice-add 'undo-tree-visualizer-set :after #'undo-tree-visualizer-update-linum)
 
 
 ;;------------------
@@ -229,15 +220,29 @@
 
 (defun my-clojure-hook ()
   (clj-refactor-mode 1)
+  (smartparens-mode -1)
   (yas-minor-mode 1) ; for adding require/use/import statements
   ;; This choice of keybinding leaves cider-macroexpand-1 unbound
   (cljr-add-keybindings-with-prefix "C-c C-r"))
 
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+(add-hook 'clojure-mode-hook #'paredit-mode)
 (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook #'subword-mode)
 (add-hook 'clojure-mode-hook #'my-clojure-hook)
+
+;; Indentation
+(require 'clojure-mode)
+
+(define-clojure-indent
+  (defroutes 'defun)
+  (GET 2)
+  (POST 2)
+  (PUT 2)
+  (DELETE 2)
+  (HEAD 2)
+  (ANY 2)
+  (context 2))
 
 ;; Cider
 (setq-default cider-prompt-for-symbol nil)
@@ -261,4 +266,3 @@
 
 ; ------------------------
 (provide 'init)
-;;; init.el ends here
