@@ -100,42 +100,6 @@
 
 
 ;;------------------
-;; Key bindings
-
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
-
-;; window navigation
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key "\M-z" 'zap-up-to-char)
-
-;; Window resizing
-;(global-set-key (kbd "S-<left>") 'shrink-window-horizontally)
-;(global-set-key (kbd "S-<right>") 'enlarge-window-horizontally)
-;(global-set-key (kbd "S-<up>") 'enlarge-window)
-;(global-set-key (kbd "S-<dow>") 'shrink-window)
-;(global-set-key (kbd "M-[ d") 'shrink-window-horizontally)  ;;KiTTY
-;(global-set-key (kbd "M-[ c") 'enlarge-window-horizontally) ;;KiTTY
-;(global-set-key (kbd "M-[ a") 'enlarge-window) ;;KiTTY
-;(global-set-key (kbd "M-[ b") 'shrink-window) ;;KiTTY
-
-;; Smartparens
-(define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
-(define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
-(define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
-(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
-(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
-(define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
-(define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
-(define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
-(define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
-
-
-;;------------------
 ;; Flycheck
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -264,5 +228,49 @@
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
 
-; ------------------------
+;;------------------
+;; Key bindings
+
+;; Editing
+(global-set-key (kbd "C-w") 'backward-kill-word)
+(global-set-key (kbd "C-x C-k") 'kill-region)
+(global-set-key (kbd "C-c C-k") 'kill-region)
+
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(global-set-key (kbd "C-c C-u") 'upcase-region)
+(global-set-key (kbd "C-c C-l") 'downcase-region)
+(global-set-key (kbd "C-c C-c") 'capitalize-region)
+
+;; window navigation
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key "\M-z" 'zap-up-to-char)
+
+;; Window resizing
+;(global-set-key (kbd "S-<left>") 'shrink-window-horizontally)
+;(global-set-key (kbd "S-<right>") 'enlarge-window-horizontally)
+;(global-set-key (kbd "S-<up>") 'enlarge-window)
+;(global-set-key (kbd "S-<dow>") 'shrink-window)
+;(global-set-key (kbd "M-[ d") 'shrink-window-horizontally)  ;;KiTTY
+;(global-set-key (kbd "M-[ c") 'enlarge-window-horizontally) ;;KiTTY
+;(global-set-key (kbd "M-[ a") 'enlarge-window) ;;KiTTY
+;(global-set-key (kbd "M-[ b") 'shrink-window) ;;KiTTY
+
+;; Smartparens
+(define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
+(define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
+(define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
+(define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
+(define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
+
+
+;; ------------------------
 (provide 'init)
+
