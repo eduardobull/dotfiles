@@ -1,6 +1,5 @@
 (require 'package)
 
-;;;; Code:
 (setq package-archives
       '(("gnu-elpa"     . "http://elpa.gnu.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
@@ -31,6 +30,8 @@
                       clojure-mode
                       cider
                       clj-refactor
+                      ;; Scheme
+                      geiser
                       ;; Go
                       go-mode
                       company-go
@@ -60,6 +61,9 @@
 
 ;;------------------
 ;; Custom config
+
+;; Enable mouse mode
+(xterm-mouse-mode)
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
@@ -231,16 +235,29 @@
 ;;------------------
 ;; Key bindings
 
+;; Buffers, Windows and Frames
+(defun switch-to-previous-buffer ()
+  "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+(global-set-key (kbd "C-^") 'switch-to-prev-buffer)
+(global-set-key (kbd "M-^") 'previous-multiframe-window)
+(global-set-key (kbd "C-x C-k") 'kill-this-buffer)
+
+
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-c C-k") 'kill-region)
+(global-set-key (kbd "C-c C-w") 'kill-region)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(global-set-key (kbd "C-c C-u") 'upcase-region)
-(global-set-key (kbd "C-c C-l") 'downcase-region)
-(global-set-key (kbd "C-c C-c") 'capitalize-region)
+(global-set-key (kbd "C-e C-u") 'upcase-region)
+(global-set-key (kbd "C-e C-l") 'downcase-region)
+(global-set-key (kbd "C-e C-t") 'capitalize-region)
+
+(global-set-key (kbd "C-c C-c c") 'insert-char)
 
 ;; window navigation
 (global-set-key (kbd "C-x <up>") 'windmove-up)
