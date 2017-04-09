@@ -26,6 +26,7 @@
                       company
                       company-quickhelp
                       flycheck
+                      lacarte
                       ;; Clojure
                       clojure-mode
                       cider
@@ -39,6 +40,8 @@
                       ;; Python
                       elpy
                       company-jedi
+                      ;; R
+                      ess
                       ;; Themes
                       ample-theme
                       ))
@@ -291,4 +294,3 @@
 
 ;; ------------------------
 (provide 'init)
-
