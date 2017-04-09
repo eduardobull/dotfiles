@@ -245,19 +245,20 @@
 (global-set-key (kbd "M-^") 'previous-multiframe-window)
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
 
-
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-c C-k") 'kill-region)
 (global-set-key (kbd "C-c C-w") 'kill-region)
+(global-set-key (kbd "C-c C-c c") 'insert-char)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(global-set-key (kbd "C-e C-u") 'upcase-region)
-(global-set-key (kbd "C-e C-l") 'downcase-region)
-(global-set-key (kbd "C-e C-t") 'capitalize-region)
+(global-set-key (kbd "C-c C-u") 'upcase-region)
+(global-set-key (kbd "C-c C-l") 'downcase-region)
+(global-set-key (kbd "C-c C-t") 'capitalize-region)
 
-(global-set-key (kbd "C-c C-c c") 'insert-char)
+(global-set-key (kbd "C-S-E") 'end-of-buffer)
+(global-set-key (kbd "C-S-A") 'beginning-of-buffer)
 
 ;; window navigation
 (global-set-key (kbd "C-x <up>") 'windmove-up)
