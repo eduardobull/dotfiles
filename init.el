@@ -40,6 +40,8 @@
                       ;; Python
                       elpy
                       company-jedi
+                      ;; Haskell
+                      haskell-mode
                       ;; R
                       ess
                       ;; Themes
@@ -70,6 +72,9 @@
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
+
+;; Remove other window on startup
+(add-hook 'emacs-startup-hook 'delete-other-windows)
 
 ;; Kill scrath buffer
 (kill-buffer "*scratch*")
