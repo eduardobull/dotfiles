@@ -251,7 +251,7 @@
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(global-set-key (kbd "C-^") 'switch-to-prev-buffer)
+(global-set-key (kbd "C-^") 'switch-to-previous-buffer)
 (global-set-key (kbd "M-^") 'previous-multiframe-window)
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
 
