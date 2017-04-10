@@ -71,8 +71,14 @@
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
 
+;; Trim whitespace on save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; Kill scrath buffer
 (kill-buffer "*scratch*")
+
+;; Kill whole lines
+(setq kill-whole-line t)
 
 ;; Enable menu-bar
 (global-set-key [f2] 'toggle-menu-bar-mode-from-frame)
@@ -113,6 +119,7 @@
 (setq-default flycheck-display-errors-delay 0.0)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 
+
 ;;------------------
 ;; Company-mode
 
@@ -141,6 +148,7 @@
 
 ;;------------------
 ;; NeoTree
+
 (global-set-key [f8] 'neotree-toggle)
 (setq-default neo-dont-be-alone t)
 (setq-default neo-window-position 'left)
@@ -193,14 +201,16 @@
   (clj-refactor-mode 1)
   (smartparens-mode -1)
   (yas-minor-mode 1) ; for adding require/use/import statements
-  ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-  (cljr-add-keybindings-with-prefix "C-c C-r"))
+  (cljr-add-keybindings-with-prefix "C-c C-r") ; clj-refactor.el
+  )
 
+(add-hook 'clojure-mode-hook #'my-clojure-hook)
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook #'paredit-mode)
 (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook #'subword-mode)
-(add-hook 'clojure-mode-hook #'my-clojure-hook)
+(add-hook 'cider-mode-hook #'eldoc-mode)
+(add-hook 'cider-repl-mode-hook #'paredit-mode)
 
 ;; Indentation
 (require 'clojure-mode)
@@ -223,9 +233,6 @@
 (setq-default cider-repl-wrap-history t)
 (setq-default cider-font-lock-dynamically '(macro core function var))
 (setq-default cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
-
-(add-hook 'cider-mode-hook #'eldoc-mode)
-(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
 
 ;; Use clojure mode for other extensions
 (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
@@ -253,6 +260,7 @@
 (global-set-key (kbd "C-c C-k") 'kill-region)
 (global-set-key (kbd "C-c C-w") 'kill-region)
 (global-set-key (kbd "C-c C-c c") 'insert-char)
+(global-set-key (kbd "C-x r i") 'string-insert-rectangle)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -268,7 +276,7 @@
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key "\M-z" 'zap-up-to-char)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
 
 ;; Window resizing
 ;(global-set-key (kbd "S-<left>") 'shrink-window-horizontally)
