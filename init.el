@@ -28,6 +28,7 @@
                       company-quickhelp
                       flycheck
                       lacarte
+                      which-key
                       ;; Clojure
                       clojure-mode
                       cider
@@ -181,6 +182,12 @@
 ;; Undo-Tree
 
 (global-undo-tree-mode)
+
+
+;;------------------
+;; Which-Key
+
+(which-key-mode)
 
 
 ;;------------------
