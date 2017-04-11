@@ -119,6 +119,13 @@
 
 
 ;;------------------
+;; Lacarte
+
+(require 'lacarte)
+(global-set-key (kbd "ESC M-x") 'lacarte-execute-menu-command)
+
+
+;;------------------
 ;; Flycheck
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
