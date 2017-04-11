@@ -262,7 +262,6 @@
 
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-c C-k") 'kill-region)
 (global-set-key (kbd "C-c C-w") 'kill-region)
 (global-set-key (kbd "C-c C-c c") 'insert-char)
 (global-set-key (kbd "C-x r i") 'string-insert-rectangle)
@@ -273,9 +272,6 @@
 (global-set-key (kbd "C-c C-l") 'downcase-region)
 (global-set-key (kbd "C-c C-t") 'capitalize-region)
 
-(global-set-key (kbd "C-S-E") 'end-of-buffer)
-(global-set-key (kbd "C-S-A") 'beginning-of-buffer)
-
 ;; window navigation
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
@@ -284,14 +280,14 @@
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
 ;; Window resizing
-;(global-set-key (kbd "S-<left>") 'shrink-window-horizontally)
-;(global-set-key (kbd "S-<right>") 'enlarge-window-horizontally)
-;(global-set-key (kbd "S-<up>") 'enlarge-window)
-;(global-set-key (kbd "S-<dow>") 'shrink-window)
-;(global-set-key (kbd "M-[ d") 'shrink-window-horizontally)  ;;KiTTY
-;(global-set-key (kbd "M-[ c") 'enlarge-window-horizontally) ;;KiTTY
-;(global-set-key (kbd "M-[ a") 'enlarge-window) ;;KiTTY
-;(global-set-key (kbd "M-[ b") 'shrink-window) ;;KiTTY
+(global-set-key (kbd "M-<left>") (lambda () (interactive) (shrink-window-horizontally 3)))
+(global-set-key (kbd "M-<right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
+(global-set-key (kbd "M-<up>") (lambda () (interactive) (enlarge-window 3)))
+(global-set-key (kbd "M-<down>") (lambda () (interactive) (shrink-window 3)))
+(global-set-key (kbd "M-[ d") 'shrink-window-horizontally)  ;;KiTTY
+(global-set-key (kbd "M-[ c") 'enlarge-window-horizontally) ;;KiTTY
+(global-set-key (kbd "M-[ a") 'enlarge-window) ;;KiTTY
+(global-set-key (kbd "M-[ b") 'shrink-window) ;;KiTTY
 
 ;; Smartparens
 (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
