@@ -44,6 +44,9 @@
                       company-jedi
                       ;; Haskell
                       haskell-mode
+                      flycheck-haskell
+                      ghc
+                      company-ghc
                       ;; R
                       ess
                       ;; Themes
@@ -131,7 +134,7 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-display-errors-delay 0.0)
-(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc haskell-stack-ghc))
 
 
 ;;------------------
@@ -194,6 +197,21 @@
 ;; General Programming
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
+
+
+;;------------------
+;; Haskell
+
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+(defun my/haskell-mode-hook ()
+  (add-to-list 'company-backends 'company-ghc))
+(add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
 ;;------------------
@@ -318,3 +336,17 @@
 
 ;; ------------------------
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (company-ghc which-key undo-tree smex smartparens rainbow-delimiters pythonic projectile popup parinfer neotree magit lacarte goto-chg go-eldoc ghc geiser flycheck-haskell ess elpy company-quickhelp company-jedi company-go color-theme clojure-mode-extra-font-locking clj-refactor better-defaults ample-zen-theme ample-theme aggressive-indent ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
