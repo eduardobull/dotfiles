@@ -74,6 +74,9 @@
 
 ;; Enable mouse mode
 (xterm-mouse-mode)
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
