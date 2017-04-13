@@ -74,7 +74,7 @@
 
 ;; Enable mouse mode
 (xterm-mouse-mode)
-(setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
@@ -339,17 +339,3 @@
 
 ;; ------------------------
 (provide 'init)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (company-ghc which-key undo-tree smex smartparens rainbow-delimiters pythonic projectile popup parinfer neotree magit lacarte goto-chg go-eldoc ghc geiser flycheck-haskell ess elpy company-quickhelp company-jedi company-go color-theme clojure-mode-extra-font-locking clj-refactor better-defaults ample-zen-theme ample-theme aggressive-indent ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
