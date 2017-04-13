@@ -15,6 +15,7 @@
 
 (defvar my-packages '(better-defaults
                       projectile
+                      paredit
                       smartparens
                       aggressive-indent
                       rainbow-delimiters
@@ -27,6 +28,7 @@
                       company-quickhelp
                       flycheck
                       lacarte
+                      which-key
                       ;; Clojure
                       clojure-mode
                       cider
@@ -121,6 +123,13 @@
 
 
 ;;------------------
+;; Lacarte
+
+(require 'lacarte)
+(global-set-key (kbd "ESC M-x") 'lacarte-execute-menu-command)
+
+
+;;------------------
 ;; Flycheck
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -176,6 +185,12 @@
 ;; Undo-Tree
 
 (global-undo-tree-mode)
+
+
+;;------------------
+;; Which-Key
+
+(which-key-mode)
 
 
 ;;------------------
@@ -287,10 +302,10 @@
 (global-set-key (kbd "M-<right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
 (global-set-key (kbd "M-<up>") (lambda () (interactive) (enlarge-window 3)))
 (global-set-key (kbd "M-<down>") (lambda () (interactive) (shrink-window 3)))
-(global-set-key (kbd "M-[ d") 'shrink-window-horizontally)  ;;KiTTY
-(global-set-key (kbd "M-[ c") 'enlarge-window-horizontally) ;;KiTTY
-(global-set-key (kbd "M-[ a") 'enlarge-window) ;;KiTTY
-(global-set-key (kbd "M-[ b") 'shrink-window) ;;KiTTY
+(global-set-key (kbd "M-[ <left>") (lambda () (interactive) (shrink-window-horizontally 3)))
+(global-set-key (kbd "M-[ <right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
+(global-set-key (kbd "M-[ <up>") (lambda () (interactive) (enlarge-window 3)))
+(global-set-key (kbd "M-[ <down>") (lambda () (interactive) (shrink-window 3)))
 
 ;; Smartparens
 (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
