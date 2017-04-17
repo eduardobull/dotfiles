@@ -26,6 +26,7 @@
                       ace-window
                       company
                       company-quickhelp
+                      eldoc
                       flycheck
                       lacarte
                       which-key
@@ -44,9 +45,8 @@
                       company-jedi
                       ;; Haskell
                       haskell-mode
+                      intero
                       flycheck-haskell
-                      ghc
-                      company-ghc
                       ;; R
                       ess
                       ;; Themes
@@ -72,6 +72,14 @@
 ;;------------------
 ;; Custom config
 
+;; Customize bell notification
+(defun my/terminal-visible-bell ()
+  "A friendlier visual bell effect."
+  (invert-face 'mode-line)
+  (run-with-timer 0.1 nil 'invert-face 'mode-line))
+
+(setq visible-bell nil ring-bell-function #'my/terminal-visible-bell)
+
 ;; Enable mouse mode
 (xterm-mouse-mode)
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
@@ -80,6 +88,9 @@
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
+
+;; Set maximum heigth of mini-windows
+(setq max-mini-window-height 0.75)
 
 ;; Remove other window on startup
 (add-hook 'emacs-startup-hook 'delete-other-windows)
@@ -135,9 +146,18 @@
 ;;------------------
 ;; Flycheck
 
+(require 'flycheck)
+
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(setq-default flycheck-display-errors-delay 0.0)
-(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc haskell-stack-ghc))
+(setq-default flycheck-display-errors-delay 0.5)
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+(setq-default flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+
+
+;;------------------
+;; Eldoc
+
+(setq-default eldoc-idle-delay 0.2)
 
 
 ;;------------------
@@ -205,13 +225,8 @@
 ;;------------------
 ;; Haskell
 
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-
-(defun my/haskell-mode-hook ()
-  (add-to-list 'company-backends 'company-ghc))
-(add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
+(add-hook 'haskell-mode-hook 'intero-mode)
+(add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
