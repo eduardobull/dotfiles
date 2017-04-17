@@ -315,6 +315,10 @@
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
 (global-set-key (kbd "C-x C-a") 'ido-write-file)
 
+;; Navigation
+(global-set-key (kbd "C-f") 'forward-word)
+(global-set-key (kbd "C-b") 'backward-word)
+
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-c C-w") 'kill-region)
@@ -327,7 +331,7 @@
 (global-set-key (kbd "C-c C-l") 'downcase-region)
 (global-set-key (kbd "C-c C-t") 'capitalize-region)
 
-;; window navigation
+;; Window Navigation
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
