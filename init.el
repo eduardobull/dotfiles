@@ -192,7 +192,7 @@
 ;; NeoTree
 
 (global-set-key [f8] 'neotree-toggle)
-(setq-default neo-smart-open t)
+;;(setq-default neo-smart-open t)
 (setq-default neo-dont-be-alone t)
 (setq-default neo-window-position 'left)
 (setq-default neo-toggle-window-keep-p t)
@@ -313,6 +313,7 @@
 (global-set-key (kbd "C-^") 'switch-to-previous-buffer)
 (global-set-key (kbd "M-^") 'previous-multiframe-window)
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
+(global-set-key (kbd "C-x C-a") 'ido-write-file)
 
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
@@ -334,14 +335,11 @@
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
 ;; Window resizing
-(global-set-key (kbd "M-<left>") (lambda () (interactive) (shrink-window-horizontally 3)))
-(global-set-key (kbd "M-<right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
-(global-set-key (kbd "M-<up>") (lambda () (interactive) (enlarge-window 3)))
-(global-set-key (kbd "M-<down>") (lambda () (interactive) (shrink-window 3)))
-(global-set-key (kbd "M-[ <left>") (lambda () (interactive) (shrink-window-horizontally 3)))
-(global-set-key (kbd "M-[ <right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
-(global-set-key (kbd "M-[ <up>") (lambda () (interactive) (enlarge-window 3)))
-(global-set-key (kbd "M-[ <down>") (lambda () (interactive) (shrink-window 3)))
+(global-unset-key (kbd "C-x C-w"))
+(global-set-key (kbd "C-x C-w <left>") (lambda () (interactive) (shrink-window-horizontally 3)))
+(global-set-key (kbd "C-x C-w <right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
+(global-set-key (kbd "C-x C-w <up>") (lambda () (interactive) (enlarge-window 3)))
+(global-set-key (kbd "C-x C-w <down>") (lambda () (interactive) (shrink-window 3)))
 
 ;; Smartparens
 (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
