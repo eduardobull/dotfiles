@@ -30,6 +30,8 @@
                       flycheck
                       lacarte
                       which-key
+                      ;; Yaml
+                      yaml-mode
                       ;; Clojure
                       clojure-mode
                       cider
