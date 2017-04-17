@@ -192,11 +192,12 @@
 ;; NeoTree
 
 (global-set-key [f8] 'neotree-toggle)
+(setq-default neo-smart-open t)
 (setq-default neo-dont-be-alone t)
 (setq-default neo-window-position 'left)
-(setq-default neo-smart-open t) ;; Every time when the neotree window is opened, let it find current file and jump to node
-(setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+(setq-default neo-toggle-window-keep-p t)
 (setq-default neo-theme (if (display-graphic-p) 'arrow 'ascii))
+(setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
 (neotree-show)
 
 
