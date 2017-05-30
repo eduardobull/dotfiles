@@ -53,6 +53,7 @@
                       ess
                       ;; Themes
                       ample-theme
+                      tangotango-theme
                       ))
 
 (dolist (p my-packages)
@@ -63,8 +64,8 @@
 ;;------------------
 ;; Themes
 
-(load-theme 'ample t t)
-(enable-theme 'ample)
+(load-theme 'tangotango t t)
+(enable-theme 'tangotango)
 
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
@@ -84,9 +85,9 @@
 
 ;; Enable mouse mode
 (xterm-mouse-mode)
-(setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq-default mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
+(setq-default mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq-default mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
@@ -210,6 +211,7 @@
 ;;------------------
 ;; Undo-Tree
 
+(require 'undo-tree)
 (global-undo-tree-mode)
 
 
