@@ -92,6 +92,13 @@
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
 
+;; Disable bold fonts
+(set-face-bold 'bold nil)
+(mapc
+ (lambda (face)
+   (set-face-attribute face nil :weight 'normal :underline nil))
+ (face-list))
+
 ;; Set maximum heigth of mini-windows
 (setq max-mini-window-height 0.75)
 
