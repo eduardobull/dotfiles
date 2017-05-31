@@ -339,6 +339,7 @@
 (global-set-key (kbd "C-c C-w") 'kill-region)
 (global-set-key (kbd "C-c C-c c") 'insert-char)
 (global-set-key (kbd "C-x r i") 'string-insert-rectangle)
+(global-set-key (kbd "C-c /") 'comment-line)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
