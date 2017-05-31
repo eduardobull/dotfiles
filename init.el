@@ -64,8 +64,8 @@
 ;;------------------
 ;; Themes
 
-(load-theme 'tangotango t t)
-(enable-theme 'tangotango)
+(load-theme 'tangotango t)
+;(enable-theme 'tangotango)
 
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
@@ -232,6 +232,12 @@
 ;; General Programming
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
+
+
+;;------------------
+;; ESS (R)
+
+(add-hook 'ess-mode-hook #'smartparens-mode)
 
 
 ;;------------------
