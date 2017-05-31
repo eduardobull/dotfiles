@@ -77,6 +77,11 @@ stty -ixon
 # Share history only after shell exits
 unsetopt INC_APPEND_HISTORY
 
+# Source local definitions
+if [ -f .localrc ]; then
+	. $HOME/.localrc
+fi
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -91,14 +96,13 @@ unsetopt INC_APPEND_HISTORY
 # Example aliases
 # alias zshconfig="mate $HOME/.zshrc"
 # alias ohmyzsh="mate $HOME/.oh-my-zsh"
-alias tmux="tmux -2"
-
 if [[ -x `which aria2c` ]]; then
     alias download="aria2c --continue -x5"
 else
     alias download="wget -c "
 fi
 
+alias tmux="tmux -2"
 alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
 alias emacs="emacs -nw"
