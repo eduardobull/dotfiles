@@ -218,8 +218,8 @@
 ;;------------------
 ;; Undo-Tree
 
-(require 'undo-tree)
-(global-undo-tree-mode)
+;(require 'undo-tree)
+;(global-undo-tree-mode)
 
 
 ;;------------------
@@ -238,6 +238,8 @@
 ;; ESS (R)
 
 (add-hook 'ess-mode-hook #'smartparens-mode)
+(add-hook 'inferior-ess-mode-hook #'smartparens-mode)
+(setq-default ess-set-style 'RStudio-)
 
 
 ;;------------------
