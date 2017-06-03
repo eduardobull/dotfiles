@@ -95,7 +95,7 @@
 (setq max-mini-window-height 0.75)
 
 ;; Remove other window on startup
-(add-hook 'emacs-startup-hook 'delete-other-windows)
+;;(add-hook 'emacs-startup-hook 'delete-other-windows)
 
 ;; Trim whitespace on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -231,8 +231,8 @@
 (add-hook 'haskell-mode-hook 'intero-mode)
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+;(eval-after-load 'flycheck
+;  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 
 ;;------------------

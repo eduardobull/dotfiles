@@ -54,8 +54,7 @@ plugins=(lein sbt scala git tmux)
 
 # User configuration
 
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/go/bin:$HOME/Development/Go/bin:$HOME/.cabal/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/go/bin:$HOME/Development/Go/bin:$HOME/.cabal/bin:$HOME/.npm-global/bin:$PATH"
 
 export GOPATH="$HOME/Development/Go"
 
