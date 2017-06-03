@@ -53,6 +53,7 @@
                       ess
                       ;; Themes
                       ample-theme
+                      tangotango-theme
                       ))
 
 (dolist (p my-packages)
@@ -63,8 +64,8 @@
 ;;------------------
 ;; Themes
 
-(load-theme 'ample t t)
-(enable-theme 'ample)
+(load-theme 'tangotango t)
+;(enable-theme 'tangotango)
 
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
@@ -84,12 +85,19 @@
 
 ;; Enable mouse mode
 (xterm-mouse-mode)
-(setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq-default mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
+(setq-default mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq-default mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
+
+;; Disable bold fonts
+(set-face-bold 'bold nil)
+(mapc
+ (lambda (face)
+   (set-face-attribute face nil :weight 'normal :underline nil))
+ (face-list))
 
 ;; Set maximum heigth of mini-windows
 (setq max-mini-window-height 0.75)
@@ -210,7 +218,8 @@
 ;;------------------
 ;; Undo-Tree
 
-(global-undo-tree-mode)
+;(require 'undo-tree)
+;(global-undo-tree-mode)
 
 
 ;;------------------
@@ -223,6 +232,14 @@
 ;; General Programming
 
 (add-hook 'prog-mode-hook #'smartparens-mode)
+
+
+;;------------------
+;; ESS (R)
+
+(add-hook 'ess-mode-hook #'smartparens-mode)
+(add-hook 'inferior-ess-mode-hook #'smartparens-mode)
+(setq-default ess-set-style 'RStudio-)
 
 
 ;;------------------
@@ -324,6 +341,7 @@
 (global-set-key (kbd "C-c C-w") 'kill-region)
 (global-set-key (kbd "C-c C-c c") 'insert-char)
 (global-set-key (kbd "C-x r i") 'string-insert-rectangle)
+(global-set-key (kbd "C-c /") 'comment-line)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
