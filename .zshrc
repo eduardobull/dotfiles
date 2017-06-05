@@ -36,7 +36,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -50,14 +50,11 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(lein sbt scala git tmux)
+plugins=(git tmux)
 
 # User configuration
 
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/go/bin:$HOME/Development/Go/bin:$HOME/.cabal/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-export GOPATH="$HOME/Development/Go"
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -65,10 +62,12 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
+if [[ -x `which vim` ]]; then
+    export EDITOR='vim'
+elif [[ -x `which emacs` ]]; then
+    export EDITOR='emacs'
+elif [[ -x `which nano` ]]; then
+    export EDITOR='nano'
 fi
 
 # Disable terminal flow control keystrokes <Ctrl-S> and <Ctrl-Q>
@@ -98,11 +97,15 @@ fi
 # alias ohmyzsh="mate $HOME/.oh-my-zsh"
 if [[ -x `which aria2c` ]]; then
     alias download="aria2c --continue -x5"
-else
-    alias download="wget -c "
+elif [[ -x `which wget` ]]; then
+    alias download="wget -c"
+elif [[ -x `which curl` ]]; then
+    alias download="curl -O"
 fi
 
 alias tmux="tmux -2"
 alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
 alias emacs="emacs -nw"
+alias ll="ls -lh"
+alias la="ls -lhA"
