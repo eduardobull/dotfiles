@@ -362,10 +362,10 @@
   (end-of-line)
   (exchange-point-and-mark))
 
-(global-set-key (kbd "C-c C-s a") 'mark-whole-buffer)
-(global-set-key (kbd "C-c C-s l") 'mark-line)
-(global-set-key (kbd "C-c C-s b") 'mark-to-beginning-of-buffer)
-(global-set-key (kbd "C-c C-s e") 'mark-to-end-of-buffer)
+(global-set-key (kbd "C-c m a") 'mark-whole-buffer)
+(global-set-key (kbd "C-c m l") 'mark-line)
+(global-set-key (kbd "C-c m b") 'mark-to-beginning-of-buffer)
+(global-set-key (kbd "C-c m e") 'mark-to-end-of-buffer)
 
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
