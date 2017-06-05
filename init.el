@@ -336,6 +336,37 @@
 (global-set-key (kbd "C-f") 'forward-word)
 (global-set-key (kbd "C-b") 'backward-word)
 
+;; Mouse scrolling on terminal
+(defun scroll-up-slightly () (interactive) (scroll-up 3))
+(defun scroll-down-slightly () (interactive) (scroll-down 3))
+(global-set-key (kbd "<mouse-4>") 'scroll-down-slightly)
+(global-set-key (kbd "<mouse-5>") 'scroll-up-slightly)
+
+;; Marks
+(defun mark-to-beginning-of-buffer ()
+  (interactive)
+  (push-mark-command nil)
+  (beginning-of-buffer)
+  (exchange-point-and-mark))
+
+(defun mark-to-end-of-buffer ()
+  (interactive)
+  (push-mark-command nil)
+  (end-of-buffer)
+  (exchange-point-and-mark))
+
+(defun mark-line ()
+  (interactive)
+  (beginning-of-line)
+  (push-mark-command nil)
+  (end-of-line)
+  (exchange-point-and-mark))
+
+(global-set-key (kbd "C-c C-s a") 'mark-whole-buffer)
+(global-set-key (kbd "C-c C-s l") 'mark-line)
+(global-set-key (kbd "C-c C-s b") 'mark-to-beginning-of-buffer)
+(global-set-key (kbd "C-c C-s e") 'mark-to-end-of-buffer)
+
 ;; Editing
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-c C-w") 'kill-region)
