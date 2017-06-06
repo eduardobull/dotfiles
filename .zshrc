@@ -106,6 +106,7 @@ fi
 alias tmux="tmux -2"
 alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
+alias un7z="7za e"
 alias emacs="emacs -nw"
 alias ll="ls -lh"
 alias la="ls -lhA"
