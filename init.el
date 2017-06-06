@@ -240,7 +240,7 @@
 (add-hook 'ess-mode-hook #'smartparens-mode)
 (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
 (setq-default ess-set-style 'RStudio-)
-
+(setq-default ess-indent-with-fancy-comments nil)
 
 ;;------------------
 ;; Haskell
