@@ -49,6 +49,8 @@
                       haskell-mode
                       intero
                       flycheck-haskell
+                      ;; Purescript
+                      psc-ide
                       ;; R
                       ess
                       ;; Themes
@@ -250,6 +252,18 @@
 
 ;(eval-after-load 'flycheck
 ;  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+;;------------------
+;; Purescript
+
+(require 'psc-ide)
+
+(add-hook 'purescript-mode-hook
+  (lambda ()
+    (psc-ide-mode)
+    (company-mode)
+    (flycheck-mode)
+    (turn-on-purescript-indentation)))
 
 
 ;;------------------
