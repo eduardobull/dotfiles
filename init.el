@@ -242,8 +242,7 @@
 (defun auto-build-tags-hook ()
   (add-hook 'after-save-hook
             (lambda ()
-              (setq-local tags-file-name ".TAGS")
-              (ess-build-tags-for-directory "./" ".TAGS"))
+              (ess-build-tags-for-directory "." "TAGS"))
             nil t))
 
 (add-hook 'ess-mode-hook #'smartparens-mode)
