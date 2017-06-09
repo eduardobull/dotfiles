@@ -239,10 +239,21 @@
 ;;------------------
 ;; ESS (R)
 
+(defun auto-build-tags-hook ()
+  (add-hook 'after-save-hook
+            (lambda ()
+              (setq-local 'tags-file-name ".TAGS")
+              (ess-build-tags-for-directory "." ".TAGS"))
+            nil t))
+
 (add-hook 'ess-mode-hook #'smartparens-mode)
+(add-hook 'ess-mode-hook #'auto-build-tags-hook)
 (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
+
 (setq-default ess-set-style 'RStudio-)
 (setq-default ess-indent-with-fancy-comments nil)
+(setq-default ess-ask-for-ess-directory nil)
+
 
 ;;------------------
 ;; Haskell
