@@ -256,7 +256,7 @@
 ;;------------------
 ;; Purescript
 
-(require 'psc-ide)
+;;(require 'psc-ide)
 
 (add-hook 'purescript-mode-hook
   (lambda ()
