@@ -54,7 +54,7 @@ plugins=(git tmux)
 
 # User configuration
 
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -77,7 +77,7 @@ stty -ixon
 unsetopt INC_APPEND_HISTORY
 
 # Source local definitions
-if [ -f .localrc ]; then
+if [ -f $HOME/.localrc ]; then
 	. $HOME/.localrc
 fi
 
