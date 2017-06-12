@@ -110,6 +110,9 @@
 ;; Trim whitespace on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; Overwrite selected text
+(delete-selection-mode t)
+
 ;; Kill scrath buffer
 (kill-buffer "*scratch*")
 
