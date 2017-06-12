@@ -441,4 +441,11 @@
 
 
 ;; ------------------------
+
+;; Load local file
+(load "~/emacs.d/local" t)
+
+
+;; ------------------------
+
 (provide 'init)
