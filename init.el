@@ -272,17 +272,18 @@
 ;; mkdir -p ~/.emacs.d/lib/ && cd ~/.emacs.d/lib/
 ;; git clone https://github.com/dysinger/purescript-mode.git
 ;; cd purescript-mode && make purescript-mode-autoloads.el
-(add-to-list 'load-path "~/.emacs.d/lib/purescript-mode")
-(require 'purescript-mode-autoloads)
-(add-to-list 'Info-default-directory-list "~/.emacs.d/lib/purescript-mode")
 
-(require 'psc-ide)
-(add-hook 'purescript-mode-hook
-  (lambda ()
-    (psc-ide-mode)
-    (company-mode)
-    (flycheck-mode)
-    (turn-on-purescript-indentation)))
+;;(add-to-list 'load-path "~/.emacs.d/lib/purescript-mode")
+;;(require 'purescript-mode-autoloads)
+;;(add-to-list 'Info-default-directory-list "~/.emacs.d/lib/purescript-mode")
+
+;;(require 'psc-ide)
+;;(add-hook 'purescript-mode-hook
+;;  (lambda ()
+;;    (psc-ide-mode)
+;;    (company-mode)
+;;    (flycheck-mode)
+;;    (turn-on-purescript-indentation)))
 
 
 ;;------------------
