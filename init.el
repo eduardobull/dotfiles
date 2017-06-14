@@ -128,6 +128,9 @@
 ;; Keyboard scroll one line at a time
 (setq scroll-step 1)
 
+;; Reread a TAGS table without querying
+(setq-default tags-revert-without-query t)
+
 ;; Backups
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
