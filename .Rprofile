@@ -1,1 +1,1 @@
-options(scipen = 999, error = recover, digits = 4)
+options(scipen = 999, error = utils::recover, digits = 4)
