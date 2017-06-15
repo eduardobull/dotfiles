@@ -30,6 +30,7 @@
                       flycheck
                       lacarte
                       which-key
+                      bind-key
                       ;; Yaml
                       yaml-mode
                       ;; Clojure
@@ -359,26 +360,26 @@
 ;;------------------
 ;; Key bindings
 
+;; Smartparens
+(define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
+(define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
+(define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
+(define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
+(define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
+
 ;; Buffers, Windows and Frames
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(global-set-key (kbd "C-^") 'switch-to-previous-buffer)
-(global-set-key (kbd "M-^") 'previous-multiframe-window)
-(global-set-key (kbd "C-x C-k") 'kill-this-buffer)
-(global-set-key (kbd "C-x C-a") 'ido-write-file)
-
-;; Navigation
-(global-set-key (kbd "C-f") 'forward-word)
-(global-set-key (kbd "C-b") 'backward-word)
-
 ;; Mouse scrolling on terminal
 (defun scroll-up-slightly () (interactive) (scroll-up 3))
 (defun scroll-down-slightly () (interactive) (scroll-down 3))
-(global-set-key (kbd "<mouse-4>") 'scroll-down-slightly)
-(global-set-key (kbd "<mouse-5>") 'scroll-up-slightly)
 
 ;; Marks
 (defun mark-to-beginning-of-buffer ()
@@ -400,48 +401,55 @@
   (end-of-line)
   (exchange-point-and-mark))
 
-(global-set-key (kbd "C-c m a") 'mark-whole-buffer)
-(global-set-key (kbd "C-c m l") 'mark-line)
-(global-set-key (kbd "C-c m b") 'mark-to-beginning-of-buffer)
-(global-set-key (kbd "C-c m e") 'mark-to-end-of-buffer)
-
-;; Editing
-(global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-c C-w") 'kill-region)
-(global-set-key (kbd "C-c C-c c") 'insert-char)
-(global-set-key (kbd "C-x r i") 'string-insert-rectangle)
-(global-set-key (kbd "C-c /") 'comment-line)
-
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(global-set-key (kbd "C-c C-u") 'upcase-region)
-(global-set-key (kbd "C-c C-l") 'downcase-region)
-(global-set-key (kbd "C-c C-t") 'capitalize-region)
 
-;; Window Navigation
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
+(bind-keys*
+ ;; Mouse scrolling on terminal
+ ("<mouse-4>" . scroll-down-slightly)
+ ("<mouse-5>" . scroll-up-slightly)
 
-;; Window resizing
-(global-unset-key (kbd "C-x C-w"))
-(global-set-key (kbd "C-x C-w <left>") (lambda () (interactive) (shrink-window-horizontally 3)))
-(global-set-key (kbd "C-x C-w <right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
-(global-set-key (kbd "C-x C-w <up>") (lambda () (interactive) (enlarge-window 3)))
-(global-set-key (kbd "C-x C-w <down>") (lambda () (interactive) (shrink-window 3)))
+ ;; Buffers, Windows and Frames
+ ("C-^" . switch-to-previous-buffer)
+ ("M-^" . previous-multiframe-window)
+ ("C-x C-k" . kill-this-buffer)
+ ("C-x C-a" . ido-write-file)
 
-;; Smartparens
-(define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
-(define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
-(define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
-(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
-(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
-(define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
-(define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
-(define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
-(define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
+ ;; Navigation
+ ("C-<right>" . right-word)
+ ("C-<left>" . left-word)
+ ("C-f" . forward-word)
+ ("C-b" . backward-word)
+
+ ;; Marks
+ ("C-c m a" . mark-whole-buffer)
+ ("C-c m l" . mark-line)
+ ("C-c m b" . mark-to-beginning-of-buffer)
+ ("C-c m e" . mark-to-end-of-buffer)
+
+ ;; Editing
+ ("C-w" . backward-kill-word)
+ ("C-c C-w" . kill-region)
+ ("C-c C-c c" . insert-char)
+ ("C-x r i" . string-insert-rectangle)
+ ("C-c /" . comment-line)
+
+ ("C-c C-u" . upcase-region)
+ ("C-c C-l" . downcase-region)
+ ("C-c C-t" . capitalize-region)
+
+ ;; Window Navigation
+ ("C-x <up>" . windmove-up)
+ ("C-x <down>" . windmove-down)
+ ("C-x <right>" . windmove-right)
+ ("C-x <left>" . windmove-left)
+ ("M-z" . zap-up-to-char)
+
+ ;; Window resizing
+ ("C-x C-w <left>" . (lambda () (interactive) (shrink-window-horizontally 3)))
+ ("C-x C-w <right>" . (lambda () (interactive) (enlarge-window-horizontally 3)))
+ ("C-x C-w <up>" . (lambda () (interactive) (enlarge-window 3)))
+ ("C-x C-w <down>" . (lambda () (interactive) (shrink-window 3))))
 
 
 ;; ------------------------
