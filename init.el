@@ -117,6 +117,11 @@
 ;; Kill scrath buffer
 (kill-buffer "*scratch*")
 
+;; Prevents automatic change of default-directory
+(add-hook 'find-file-hook
+          (lambda ()
+            (setq default-directory command-line-default-directory)))
+
 ;; Kill whole lines
 (setq kill-whole-line t)
 
