@@ -52,6 +52,8 @@
                       flycheck-haskell
                       ;; Purescript
                       psc-ide
+                      ;; Elm
+                      elm-mode
                       ;; R
                       ess
                       ;; Themes
@@ -277,6 +279,17 @@
 
 
 ;;------------------
+;; Elm
+;; npm install -g elm-test elm-format elm-oracle
+
+(setq-default elm-tags-on-save t)
+;(setq-default elm-tags-exclude-elm-stuff nil)
+(setq-default elm-sort-imports-on-save t)
+(setq-default elm-format-on-save t) ;; elm-format
+(add-to-list 'company-backends 'company-elm) ;; elm-oracle
+
+
+;;------------------
 ;; Purescript
 
 ;; mkdir -p ~/.emacs.d/lib/ && cd ~/.emacs.d/lib/
@@ -474,3 +487,17 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (elm-mode yaml-mode which-key undo-tree tangotango-theme smex smartparens rainbow-delimiters psc-ide projectile neotree magit lacarte intero go-eldoc geiser flycheck-haskell ess elpy company-quickhelp company-jedi company-go clj-refactor bind-key better-defaults ample-zen-theme ample-theme aggressive-indent ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
