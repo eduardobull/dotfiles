@@ -192,7 +192,7 @@
 (global-company-mode)
 (company-quickhelp-mode 1)
 (global-set-key (kbd "M-/") #'company-complete)
-(setq-default company-minimum-prefix-length 3)
+(setq-default company-minimum-prefix-length 10)
 (setq-default company-tooltip-limit 15)
 (setq-default company-idle-delay .0)
 (setq-default company-echo-delay 0)
@@ -456,13 +456,15 @@
  ;; Editing
  ("C-w" . backward-kill-word)
  ("C-c C-w" . kill-region)
- ("C-c C-c c" . insert-char)
- ("C-x r i" . string-insert-rectangle)
+ ("C-c i c" . insert-char)
  ("C-c /" . comment-line)
 
- ("C-c C-u" . upcase-region)
- ("C-c C-l" . downcase-region)
- ("C-c C-t" . capitalize-region)
+ ("C-c C-<SPC>" . rectangle-mark-mode)
+ ("C-x r i" . string-insert-rectangle)
+
+ ("C-c e u" . upcase-region)
+ ("C-c e l" . downcase-region)
+ ("C-c e c" . capitalize-region)
 
  ;; Window Navigation
  ("C-x <up>" . windmove-up)
