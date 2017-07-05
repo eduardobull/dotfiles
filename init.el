@@ -52,6 +52,8 @@
                       flycheck-haskell
                       ;; Purescript
                       psc-ide
+                      ;; Elm
+                      elm-mode
                       ;; R
                       ess
                       ;; Themes
@@ -69,6 +71,9 @@
 
 (load-theme 'tangotango t)
 ;(enable-theme 'tangotango)
+
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#282828")
 
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
@@ -117,6 +122,11 @@
 ;; Kill scrath buffer
 (kill-buffer "*scratch*")
 
+;; Prevents automatic change of default-directory
+(add-hook 'find-file-hook
+          (lambda ()
+            (setq default-directory command-line-default-directory)))
+
 ;; Kill whole lines
 (setq kill-whole-line t)
 
@@ -128,6 +138,10 @@
 
 ;; Keyboard scroll one line at a time
 (setq scroll-step 1)
+
+;; Set tab width
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
 
 ;; Reread a TAGS table without querying
 (setq-default tags-revert-without-query t)
@@ -185,7 +199,7 @@
 (global-company-mode)
 (company-quickhelp-mode 1)
 (global-set-key (kbd "M-/") #'company-complete)
-(setq-default company-minimum-prefix-length 3)
+(setq-default company-minimum-prefix-length 10)
 (setq-default company-tooltip-limit 15)
 (setq-default company-idle-delay .0)
 (setq-default company-echo-delay 0)
@@ -269,6 +283,17 @@
 
 ;(eval-after-load 'flycheck
 ;  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+
+;;------------------
+;; Elm
+;; npm install -g elm-test elm-format elm-oracle
+
+(setq-default elm-tags-on-save t)
+;(setq-default elm-tags-exclude-elm-stuff nil)
+(setq-default elm-sort-imports-on-save t)
+(setq-default elm-format-on-save t) ;; elm-format
+(add-to-list 'company-backends 'company-elm) ;; elm-oracle
 
 
 ;;------------------
@@ -438,13 +463,21 @@
  ;; Editing
  ("C-w" . backward-kill-word)
  ("C-c C-w" . kill-region)
- ("C-c C-c c" . insert-char)
- ("C-x r i" . string-insert-rectangle)
+ ("C-c i c" . insert-char)
  ("C-c /" . comment-line)
 
- ("C-c C-u" . upcase-region)
- ("C-c C-l" . downcase-region)
- ("C-c C-t" . capitalize-region)
+ ("C-c C-<SPC>" . rectangle-mark-mode)
+ ("C-c r i" . string-insert-rectangle)
+ ("C-c r C-w" . kill-rectangle)
+ ("C-c r M-w" . copy-rectangle-as-kill)
+ ("C-c r C-y" . yank-rectangle)
+ ("C-c r DEL" . delete-rectangle)
+ ("C-c r d" . delete-rectangle)
+ ("C-c r c" . clear-rectangle)
+
+ ("C-c e u" . upcase-region)
+ ("C-c e l" . downcase-region)
+ ("C-c e c" . capitalize-region)
 
  ;; Window Navigation
  ("C-x <up>" . windmove-up)
@@ -469,3 +502,17 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (elm-mode yaml-mode which-key undo-tree tangotango-theme smex smartparens rainbow-delimiters psc-ide projectile neotree magit lacarte intero go-eldoc geiser flycheck-haskell ess elpy company-quickhelp company-jedi company-go clj-refactor bind-key better-defaults ample-zen-theme ample-theme aggressive-indent ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
