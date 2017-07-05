@@ -72,6 +72,9 @@
 (load-theme 'tangotango t)
 ;(enable-theme 'tangotango)
 
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#282828")
+
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
 (set-cursor-color "#7AA3CC")
@@ -135,6 +138,10 @@
 
 ;; Keyboard scroll one line at a time
 (setq scroll-step 1)
+
+;; Set tab width
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
 
 ;; Reread a TAGS table without querying
 (setq-default tags-revert-without-query t)
@@ -460,7 +467,13 @@
  ("C-c /" . comment-line)
 
  ("C-c C-<SPC>" . rectangle-mark-mode)
- ("C-x r i" . string-insert-rectangle)
+ ("C-c r i" . string-insert-rectangle)
+ ("C-c r C-w" . kill-rectangle)
+ ("C-c r M-w" . copy-rectangle-as-kill)
+ ("C-c r C-y" . yank-rectangle)
+ ("C-c r DEL" . delete-rectangle)
+ ("C-c r d" . delete-rectangle)
+ ("C-c r c" . clear-rectangle)
 
  ("C-c e u" . upcase-region)
  ("C-c e l" . downcase-region)
