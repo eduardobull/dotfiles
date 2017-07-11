@@ -122,6 +122,9 @@
 ;; Kill scrath buffer
 (kill-buffer "*scratch*")
 
+;; Auto revert buffer on file change
+(global-auto-revert-mode t)
+
 ;; Prevents automatic change of default-directory
 (add-hook 'find-file-hook
           (lambda ()
@@ -453,6 +456,7 @@
  ("C-<left>" . left-word)
  ("C-f" . forward-word)
  ("C-b" . backward-word)
+ ("M-g l" . goto-line)
 
  ;; Marks
  ("C-c m a" . mark-whole-buffer)
