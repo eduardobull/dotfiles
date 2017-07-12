@@ -447,6 +447,7 @@
 
  ;; Buffers, Windows and Frames
  ("C-^" . switch-to-previous-buffer)
+ ("M-RET" . switch-to-previous-buffer)
  ("M-^" . previous-multiframe-window)
  ("C-x C-k" . kill-this-buffer)
  ("C-x C-a" . ido-write-file)
