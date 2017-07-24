@@ -1,77 +1,43 @@
 (require 'package)
 
 (setq package-archives
-      '(("gnu-elpa"     . "http://elpa.gnu.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
+      '(("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("gnu-elpa"     . "http://elpa.gnu.org/packages/")
         ("melpa"        . "https://melpa.org/packages/")
         ("marmalade" . "http://marmalade-repo.org/packages/"))
       package-archive-priorities
       '(("melpa-stable" . 10)
         ("marmalade"    . 9)
         ("gnu-elpa"     . 5)
-        ("melpa"        . 0)))
+         ("melpa"        . 0)))
 
 (package-initialize)
 
-(defvar my-packages '(better-defaults
-                      projectile
-                      paredit
-                      smartparens
-                      aggressive-indent
-                      rainbow-delimiters
-                      neotree
-                      magit
-                      undo-tree
-                      smex
-                      ace-window
-                      company
-                      company-quickhelp
-                      eldoc
-                      flycheck
-                      lacarte
-                      which-key
-                      bind-key
-                      ;; Yaml
-                      yaml-mode
-                      ;; Clojure
-                      clojure-mode
-                      cider
-                      clj-refactor
-                      ;; Scheme
-                      geiser
-                      ;; Go
-                      go-mode
-                      company-go
-                      go-eldoc
-                      ;; Python
-                      elpy
-                      company-jedi
-                      ;; Haskell
-                      haskell-mode
-                      intero
-                      flycheck-haskell
-                      ;; Purescript
-                      psc-ide
-                      ;; Elm
-                      elm-mode
-                      ;; R
-                      ess
-                      ;; Themes
-                      ample-theme
-                      tangotango-theme
-                      ))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(dolist (p my-packages)
-  (unless (package-installed-p p)
-    (package-install p)))
+(eval-when-compile
+  (require 'use-package))
+
+(setq-default use-package-always-ensure t)
 
 
 ;;------------------
 ;; Themes
 
-(load-theme 'tangotango t)
-;(enable-theme 'tangotango)
+(use-package ample-theme
+  :disabled)
 
+(use-package tangotango-theme
+  :config
+  (load-theme 'tangotango t))
+
+
+;;------------------
+;; Custom config
+
+;; Theme
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#282828")
 
@@ -79,13 +45,8 @@
 (setq-default cursor-type '(bar . 2))
 (set-cursor-color "#7AA3CC")
 
-
-;;------------------
-;; Custom config
-
 ;; Customize bell notification
 (defun my/terminal-visible-bell ()
-  "A friendlier visual bell effect."
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil 'invert-face 'mode-line))
 
@@ -100,11 +61,13 @@
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
 
+;; Column number
+(setq column-number-mode t)
+
 ;; Disable bold fonts
 (set-face-bold 'bold nil)
-(mapc
- (lambda (face)
-   (set-face-attribute face nil :weight 'normal :underline nil))
+(mapc (lambda (face)
+        (set-face-attribute face nil :weight 'normal :underline nil))
  (face-list))
 
 ;; Set maximum heigth of mini-windows
@@ -133,6 +96,9 @@
 ;; Kill whole lines
 (setq kill-whole-line t)
 
+;; Scroll to top or bottom before signaling scroll error
+(setq scroll-error-top-bottom t)
+
 ;; Enable menu-bar
 (global-set-key [f2] 'toggle-menu-bar-mode-from-frame)
 
@@ -143,19 +109,30 @@
 (setq scroll-step 1)
 
 ;; Set tab width
-(setq-default tab-width 4)
-(setq-default indent-tabs-mode nil)
+(setq-default
+ tab-width 4
+ indent-tabs-mode nil
+ c-basic-offset 4)
 
 ;; Reread a TAGS table without querying
 (setq-default tags-revert-without-query t)
 
-;; Backups
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+;; Misc
+(setq-default sentence-end-double-space nil)
 
-(setq make-backup-files t               ; backup of a file the first time it is saved.
+;; Enable upcase and downcase
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+;; Unset C-z
+(global-unset-key (kbd "C-z"))
+
+;; Backups
+(setq create-lockfiles nil
+      backup-directory-alist `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+(setq make-backup-files nil             ; backup of a file the first time it is saved.
       backup-by-copying t               ; don't clobber symlinks
       version-control t                 ; version numbers for backup files
       delete-old-versions t             ; delete excess backup files silently
@@ -172,263 +149,11 @@
 (show-paren-mode 1)
 
 
-;;------------------
-;; Lacarte
-
-(require 'lacarte)
-(global-set-key (kbd "ESC M-x") 'lacarte-execute-menu-command)
-
-
-;;------------------
-;; Flycheck
-
-(require 'flycheck)
-
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(setq-default flycheck-display-errors-delay 0.5)
-(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-(setq-default flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
-
-
-;;------------------
-;; Eldoc
-
-(setq-default eldoc-idle-delay 0.2)
-
-
-;;------------------
-;; Company-mode
-
-(global-company-mode)
-(company-quickhelp-mode 1)
-(global-set-key (kbd "M-/") #'company-complete)
-(setq-default company-minimum-prefix-length 10)
-(setq-default company-tooltip-limit 15)
-(setq-default company-idle-delay .0)
-(setq-default company-echo-delay 0)
-
-
-;;------------------
-;; Ace-Window
-
-(global-set-key (kbd "C-x o") 'ace-window)
-
-
-;;------------------
-;; Smex
-
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-
-
-;;------------------
-;; NeoTree
-
-(global-set-key [f8] 'neotree-toggle)
-;;(setq-default neo-smart-open t)
-(setq-default neo-dont-be-alone t)
-(setq-default neo-window-position 'left)
-(setq-default neo-toggle-window-keep-p t)
-(setq-default neo-theme (if (display-graphic-p) 'arrow 'ascii))
-(setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
-(neotree-show)
-
-
-;;------------------
-;; Magit
-
-(global-set-key (kbd "C-x g") 'magit-status)
-
-
-;;------------------
-;; Undo-Tree
-
-;(require 'undo-tree)
-;(global-undo-tree-mode)
-
-
-;;------------------
-;; Which-Key
-
-(which-key-mode)
-
-
-;;------------------
-;; General Programming
-
-(add-hook 'prog-mode-hook #'smartparens-mode)
-
-
-;;------------------
-;; ESS (R)
-
-(defun auto-build-tags-hook ()
-  (add-hook 'after-save-hook
-            (lambda ()
-              (ess-build-tags-for-directory "." "TAGS"))
-            nil t))
-
-(add-hook 'ess-mode-hook #'smartparens-mode)
-(add-hook 'ess-mode-hook #'auto-build-tags-hook)
-(add-hook 'inferior-ess-mode-hook #'smartparens-mode)
-
-(setq-default ess-set-style 'RStudio-)
-(setq-default ess-indent-with-fancy-comments nil)
-(setq-default ess-ask-for-ess-directory nil)
-
-
-;;------------------
-;; Haskell
-
-(add-hook 'haskell-mode-hook 'intero-mode)
-(add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
-
-;(eval-after-load 'flycheck
-;  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
-
-;;------------------
-;; Elm
-;; npm install -g elm-test elm-format elm-oracle
-
-(setq-default elm-tags-on-save t)
-;(setq-default elm-tags-exclude-elm-stuff nil)
-(setq-default elm-sort-imports-on-save t)
-(setq-default elm-format-on-save t) ;; elm-format
-(add-to-list 'company-backends 'company-elm) ;; elm-oracle
-
-
-;;------------------
-;; Purescript
-
-;; mkdir -p ~/.emacs.d/lib/ && cd ~/.emacs.d/lib/
-;; git clone https://github.com/dysinger/purescript-mode.git
-;; cd purescript-mode && make purescript-mode-autoloads.el
-
-;; (add-to-list 'load-path "~/.emacs.d/lib/purescript-mode")
-;; (require 'purescript-mode-autoloads)
-;; (add-to-list 'Info-default-directory-list "~/.emacs.d/lib/purescript-mode")
-
-;; (require 'psc-ide)
-;; (add-hook 'purescript-mode-hook
-;;   (lambda ()
-;;     (psc-ide-mode)
-;;     (company-mode)
-;;     (flycheck-mode)
-;;     (turn-on-purescript-indentation)))
-
-
-;;------------------
-;; HTML
-
-(add-hook 'html-mode-hook
-          (lambda ()
-            ;; Default indentation is usually 2 spaces, changing to 4.
-            (set (make-local-variable 'sgml-basic-offset) 4)))
-
-;;------------------
-;; Python
-
-(elpy-enable)
-
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-
-(add-hook 'python-mode-hook 'my/python-mode-hook)
-
-
-;;------------------
-;; Golang
-
-(add-hook 'go-mode-hook 'go-eldoc-setup)
-(setq-default gofmt-command "goimports")
-
-
-;;------------------
-;; Clojure
-
-(defun my-clojure-hook ()
-  (clj-refactor-mode 1)
-  (smartparens-mode -1)
-  (yas-minor-mode 1) ; for adding require/use/import statements
-  (cljr-add-keybindings-with-prefix "C-c C-r") ; clj-refactor.el
-  )
-
-(add-hook 'clojure-mode-hook #'my-clojure-hook)
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook #'paredit-mode)
-(add-hook 'clojure-mode-hook #'aggressive-indent-mode)
-(add-hook 'clojure-mode-hook #'subword-mode)
-(add-hook 'cider-mode-hook #'eldoc-mode)
-(add-hook 'cider-repl-mode-hook #'smartparens-mode)
-
-;; Indentation
-(require 'clojure-mode)
-
-(define-clojure-indent
-  (defroutes 'defun)
-  (GET 2)
-  (POST 2)
-  (PUT 2)
-  (DELETE 2)
-  (HEAD 2)
-  (ANY 2)
-  (context 2))
-
-;; Cider
-(setq-default cider-prompt-for-symbol nil)
-(setq-default cider-repl-pop-to-buffer-on-connect t)
-(setq-default cider-show-error-buffer t)
-(setq-default cider-auto-select-error-buffer t)
-(setq-default cider-repl-wrap-history t)
-(setq-default cider-font-lock-dynamically '(macro core function var))
-(setq-default cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
-
-;; Use clojure mode for other extensions
-(add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\\.cljs$" . clojurescript-mode))
-(add-to-list 'auto-mode-alist '("\\.cljc$" . clojurec-mode))
-(add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
-
-
-;;------------------
-;; Key bindings
-
-;; Smartparens
-(define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
-(define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
-(define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
-(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
-(define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
-(define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
-(define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
-(define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
-(define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
-
-;; Buffers, Windows and Frames
+;; Functions
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-;; Mouse scrolling on terminal
-(defun scroll-up-slightly () (interactive) (scroll-up 3))
-(defun scroll-down-slightly () (interactive) (scroll-down 3))
-
-;; Marks
-(defun mark-to-beginning-of-buffer ()
-  (interactive)
-  (push-mark-command nil)
-  (beginning-of-buffer)
-  (exchange-point-and-mark))
-
-(defun mark-to-end-of-buffer ()
-  (interactive)
-  (push-mark-command nil)
-  (end-of-buffer)
-  (exchange-point-and-mark))
 
 (defun mark-line ()
   (interactive)
@@ -437,65 +162,292 @@
   (end-of-line)
   (exchange-point-and-mark))
 
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
 
-(bind-keys*
- ;; Mouse scrolling on terminal
- ("<mouse-4>" . scroll-down-slightly)
- ("<mouse-5>" . scroll-up-slightly)
+;;------------------
+;; Packages
 
- ;; Buffers, Windows and Frames
- ("C-^" . switch-to-previous-buffer)
- ("M-RET" . switch-to-previous-buffer)
- ("M-^" . previous-multiframe-window)
- ("C-x C-k" . kill-this-buffer)
- ("C-x C-a" . ido-write-file)
+(use-package better-defaults)
 
- ;; Navigation
- ("C-<right>" . right-word)
- ("C-<left>" . left-word)
- ("C-f" . forward-word)
- ("C-b" . backward-word)
- ("M-g l" . goto-line)
+(use-package bind-key
+  :config
+  (bind-keys*
+   ;; Mouse scrolling on terminal
+   ("<mouse-4>" . (lambda () (interactive) (scroll-down 3)))
+   ("<mouse-5>" . (lambda () (interactive) (scroll-up 3)))
 
- ;; Marks
- ("C-c m a" . mark-whole-buffer)
- ("C-c m l" . mark-line)
- ("C-c m b" . mark-to-beginning-of-buffer)
- ("C-c m e" . mark-to-end-of-buffer)
+   ;; Buffers, Windows and Frames
+   ("C-^" . switch-to-previous-buffer)
+   ("M-RET" . switch-to-previous-buffer)
+   ("M-^" . previous-multiframe-window)
+   ("C-x C-k" . kill-this-buffer)
+   ("C-x C-a" . ido-write-file)
 
- ;; Editing
- ("C-w" . backward-kill-word)
- ("C-c C-w" . kill-region)
- ("C-c i c" . insert-char)
- ("C-c /" . comment-line)
+   ;; Navigation
+   ("C-<right>" . right-word)
+   ("C-<left>" . left-word)
+   ("C-f" . forward-word)
+   ("C-b" . backward-word)
+   ("M-g l" . goto-line)
 
- ("C-c C-<SPC>" . rectangle-mark-mode)
- ("C-c r i" . string-insert-rectangle)
- ("C-c r C-w" . kill-rectangle)
- ("C-c r M-w" . copy-rectangle-as-kill)
- ("C-c r C-y" . yank-rectangle)
- ("C-c r DEL" . delete-rectangle)
- ("C-c r d" . delete-rectangle)
- ("C-c r c" . clear-rectangle)
+   ;; Marks
+   ("C-c m a" . mark-whole-buffer)
+   ("C-c m l" . mark-line)
 
- ("C-c e u" . upcase-region)
- ("C-c e l" . downcase-region)
- ("C-c e c" . capitalize-region)
+   ;; Editing
+   ("C-w" . backward-kill-word)
+   ("C-c C-w" . kill-region)
+   ("C-c i c" . insert-char)
+   ("C-c /" . comment-line)
 
- ;; Window Navigation
- ("C-x <up>" . windmove-up)
- ("C-x <down>" . windmove-down)
- ("C-x <right>" . windmove-right)
- ("C-x <left>" . windmove-left)
- ("M-z" . zap-up-to-char)
+   ("C-c C-<SPC>" . rectangle-mark-mode)
+   ("C-c r i" . string-insert-rectangle)
+   ("C-c r C-w" . kill-rectangle)
+   ("C-c r M-w" . copy-rectangle-as-kill)
+   ("C-c r C-y" . yank-rectangle)
+   ("C-c r DEL" . delete-rectangle)
+   ("C-c r d" . delete-rectangle)
+   ("C-c r c" . clear-rectangle)
 
- ;; Window resizing
- ("C-x C-w <left>" . (lambda () (interactive) (shrink-window-horizontally 3)))
- ("C-x C-w <right>" . (lambda () (interactive) (enlarge-window-horizontally 3)))
- ("C-x C-w <up>" . (lambda () (interactive) (enlarge-window 3)))
- ("C-x C-w <down>" . (lambda () (interactive) (shrink-window 3))))
+   ("C-c e u" . upcase-region)
+   ("C-c e l" . downcase-region)
+   ("C-c e c" . capitalize-region)
+
+   ;; Window Navigation
+   ("C-x <up>" . windmove-up)
+   ("C-x <down>" . windmove-down)
+   ("C-x <right>" . windmove-right)
+   ("C-x <left>" . windmove-left)
+   ("M-z" . zap-up-to-char)
+
+   ;; Window resizing
+   ("C-x C-w <left>" . (lambda () (interactive) (shrink-window-horizontally 3)))
+   ("C-x C-w <right>" . (lambda () (interactive) (enlarge-window-horizontally 3)))
+   ("C-x C-w <up>" . (lambda () (interactive) (enlarge-window 3)))
+   ("C-x C-w <down>" . (lambda () (interactive) (shrink-window 3)))))
+
+(use-package projectile
+  :bind ("C-x p" . project-find-file)
+  :config (projectile-mode))
+
+(use-package package-utils
+  :defer t)
+
+(use-package lacarte
+  :bind ("ESC M-x" . lacarte-execute-menu-command))
+
+(use-package flycheck
+  :init
+  (setq-default flycheck-display-errors-delay 0.5)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  (setq-default flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+  :config (global-flycheck-mode))
+
+(use-package eldoc
+  :config
+  (setq-default eldoc-idle-delay 0.2))
+
+(use-package company
+  :bind ("M-/" . company-complete)
+  :init
+  (setq-default company-minimum-prefix-length 10)
+  (setq-default company-tooltip-limit 15)
+  (setq-default company-idle-delay .0)
+  (setq-default company-echo-delay 0)
+  :config
+  (global-company-mode)
+  (use-package company-quickhelp
+    :config (company-quickhelp-mode 1)))
+
+(use-package ace-window
+  :bind ("M-p" . ace-window))
+
+(use-package neotree
+  :init
+  (setq-default neo-dont-be-alone t)
+  (setq-default neo-window-position 'left)
+  (setq-default neo-toggle-window-keep-p t)
+  (setq-default neo-theme (if (display-graphic-p) 'arrow 'ascii))
+  (setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+  (global-set-key [f8] 'neotree-toggle)
+  :config
+  (neotree-show))
+
+(use-package magit
+  :bind ("C-x g" . magit-status))
+
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :bind ("C-x u" . undo-tree-visualize)
+  :config (global-undo-tree-mode))
+
+(use-package which-key
+  :config (which-key-mode))
+
+(use-package helm
+  :demand
+  :bind (("C-x b" . helm-buffers-list)
+         ("C-x C-f" . helm-find-files)
+         ("C-h a" . helm-apropos)
+         ("C-x C-l" . helm-locate))
+  :init
+  (setq-default helm-M-x-fuzzy-match t)
+  :config
+  (use-package helm-ls-git)
+  (helm-mode 1))
+
+(use-package helm-smex
+  :bind ("M-X" . helm-smex-major-mode-commands)
+  :init
+  (setq helm-display-header-line nil)
+  (global-set-key [remap execute-extended-command] #'helm-smex))
+
+(use-package smartparens
+  :init
+  (add-hook 'prog-mode-hook #'smartparens-mode)
+  :config
+  (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
+  (define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
+  (define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
+  (define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+  (define-key smartparens-mode-map (kbd "C-c k") 'sp-kill-sexp)
+  (define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
+  (define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
+  (define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
+  (define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp))
+
+
+;;------------------
+;; Yaml
+
+(use-package yaml-mode
+  :mode ("\\.yaml$" . yaml-mode))
+
+
+;;------------------
+;; Ensime (Scala)
+
+(use-package ensime)
+
+
+;;------------------
+;; ESS (R)
+
+(use-package ess
+  :mode ("\\.r$" . ess-mode)
+  :init
+  (defun auto-build-tags-hook ()
+    (add-hook 'after-save-hook
+              (lambda ()
+                (ess-build-tags-for-directory "." "TAGS"))
+              nil t))
+
+  (add-hook 'ess-mode-hook #'smartparens-mode)
+  (add-hook 'ess-mode-hook #'auto-build-tags-hook)
+  (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
+  (setq-default ess-set-style 'RStudio-)
+  (setq-default ess-indent-with-fancy-comments nil)
+  (setq-default ess-ask-for-ess-directory nil))
+
+
+;;------------------
+;; Haskell
+
+(use-package haskell-mode
+  :mode "\\.hs$"
+  :init
+  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+  (add-hook 'haskell-mode-hook 'intero-mode)
+  :config
+  (use-package intero)
+  (use-package flycheck-haskell))
+
+;(eval-after-load 'flycheck
+;  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+
+;;------------------
+;; HTML
+
+(use-package sgml-mode
+  :mode ("\\.html$" . html-mode)
+  :init
+  (add-hook 'html-mode-hook
+            (lambda ()
+              ;; Default indentation is usually 2 spaces, changing to 4.
+              (set (make-local-variable 'sgml-basic-offset) 4))))
+
+
+;;------------------
+;; Python
+
+(use-package elpy
+  :mode ("\\.py$" . python-mode)
+  :init
+  (elpy-enable)
+  :config
+  (use-package company-jedi)
+  (add-to-list 'company-backends 'company-jedi))
+
+
+;;------------------
+;; Golang
+
+(use-package go-mode
+  :mode ("\\.go$" . go-mode)
+  :config
+  (use-package company-go)
+  (use-package go-eldoc)
+  (add-hook 'go-mode-hook 'go-eldoc-setup)
+  (setq gofmt-command "goimports"))
+
+
+;;------------------
+;; Clojure
+
+
+(use-package clojure-mode
+  :mode (("\\.clj$" . clojure-mode)
+         ("\\.cljs$" . clojurescript-mode)
+         ("\\.cljc$" . clojurec-mode)
+         ("\\.edn$" . clojure-mode)
+         ("\\.boot$" . clojure-mode)
+         ("lein-env" . enh-ruby-mode))
+  :init
+  (use-package paredit
+    :config (add-hook 'clojure-mode-hook #'paredit-mode))
+  (use-package aggressive-indent
+    :config (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
+  (use-package rainbow-delimiters
+    :config (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
+  (add-hook 'clojure-mode-hook #'subword-mode)
+  :config
+  (use-package cider
+    :init
+    (setq-default cider-prompt-for-symbol nil)
+    (setq-default cider-repl-pop-to-buffer-on-connect t)
+    (setq-default cider-show-error-buffer t)
+    (setq-default cider-auto-select-error-buffer t)
+    (setq-default cider-repl-wrap-history t)
+    (setq-default cider-font-lock-dynamically '(macro core function var))
+    (setq-default cider-repl-use-clojure-font-lock t)
+    (setq-default cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+    (add-hook 'cider-mode-hook #'eldoc-mode)
+    (add-hook 'cider-repl-mode-hook #'smartparens-mode))
+  (use-package clj-refactor
+    :config
+    (clj-refactor-mode 1)
+    (smartparens-mode -1)
+    (yas-minor-mode 1) ; for adding require/use/import statements
+    (cljr-add-keybindings-with-prefix "C-c C-r"))
+  (define-clojure-indent
+    (defroutes 'defun)
+    (GET 2)
+    (POST 2)
+    (PUT 2)
+    (DELETE 2)
+    (HEAD 2)
+    (ANY 2)
+    (context 2)))
 
 
 ;; ------------------------
@@ -507,17 +459,3 @@
 ;; ------------------------
 
 (provide 'init)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (elm-mode yaml-mode which-key undo-tree tangotango-theme smex smartparens rainbow-delimiters psc-ide projectile neotree magit lacarte intero go-eldoc geiser flycheck-haskell ess elpy company-quickhelp company-jedi company-go clj-refactor bind-key better-defaults ample-zen-theme ample-theme aggressive-indent ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
