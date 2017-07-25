@@ -7,7 +7,7 @@
                   [com.palletops/lein-shorthand "0.4.0"]]
         :dependencies [[org.clojure/tools.nrepl "0.2.13"]
                        [alembic "0.3.2"]]
-        :shorthand {. {pp clojure.pprint/pprint
+        :shorthand {. {pprint clojure.pprint/pprint
                        doc clojure.repl/doc
                        source clojure.repl/source
                        load-project alembic.still/load-project
