@@ -236,17 +236,22 @@
   :config (projectile-mode))
 
 (use-package package-utils
-  :defer t)
+  :commands (package-utils-upgrade-all
+             package-utils-upgrade-all-no-fetch
+             package-utils-upgrade-by-name
+             package-utils-upgrade-by-name-no-fetch
+             package-utils-remove-by-name
+             package-utils-list-upgrades))
 
 (use-package lacarte
   :bind ("ESC M-x" . lacarte-execute-menu-command))
 
 (use-package flycheck
-  :init
+  :config
   (setq-default flycheck-display-errors-delay 0.5)
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   (setq-default flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
-  :config (global-flycheck-mode))
+  (global-flycheck-mode))
 
 (use-package eldoc
   :config
@@ -254,12 +259,11 @@
 
 (use-package company
   :bind ("M-/" . company-complete)
-  :init
+  :config
   (setq-default company-minimum-prefix-length 10)
   (setq-default company-tooltip-limit 15)
   (setq-default company-idle-delay .0)
   (setq-default company-echo-delay 0)
-  :config
   (global-company-mode)
   (use-package company-quickhelp
     :config (company-quickhelp-mode 1)))
@@ -268,14 +272,13 @@
   :bind ("M-p" . ace-window))
 
 (use-package neotree
-  :init
+  :config
   (setq-default neo-dont-be-alone t)
   (setq-default neo-window-position 'left)
   (setq-default neo-toggle-window-keep-p t)
   (setq-default neo-theme (if (display-graphic-p) 'arrow 'ascii))
   (setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
   (global-set-key [f8] 'neotree-toggle)
-  :config
   (neotree-show))
 
 (use-package magit
@@ -299,15 +302,15 @@
          ("C-x C-f" . helm-find-files)
          ("C-h a" . helm-apropos)
          ("C-x C-l" . helm-locate))
-  :init
-  (setq-default helm-M-x-fuzzy-match t)
   :config
   (use-package helm-ls-git)
+  (setq-default helm-M-x-fuzzy-match t)
   (helm-mode 1))
 
 (use-package helm-smex
+  :demand
   :bind ("M-X" . helm-smex-major-mode-commands)
-  :init
+  :config
   (setq helm-display-header-line nil)
   (global-set-key [remap execute-extended-command] #'helm-smex))
 
@@ -337,13 +340,16 @@
 ;; Ensime (Scala)
 
 (use-package ensime
-  :pin melpa)
+  :pin melpa
+  :commands ensime)
 
 (use-package sbt-mode
-  :pin melpa)
+  :pin melpa
+  :commands sbt-start sbt-command)
 
 (use-package scala-mode
-  :pin melpa)
+  :pin melpa
+  :interpreter ("scala" . scala-mode))
 
 ;;------------------
 ;; ESS (R)
@@ -356,10 +362,10 @@
               (lambda ()
                 (ess-build-tags-for-directory "." "TAGS"))
               nil t))
-
-  (add-hook 'ess-mode-hook #'smartparens-mode)
   (add-hook 'ess-mode-hook #'auto-build-tags-hook)
+  (add-hook 'ess-mode-hook #'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
+  :config
   (setq-default ess-set-style 'RStudio-)
   (setq-default ess-indent-with-fancy-comments nil)
   (setq-default ess-ask-for-ess-directory nil))
