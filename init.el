@@ -279,9 +279,13 @@
   :bind ("C-x g" . magit-status))
 
 (use-package undo-tree
+  :pin melpa
   :diminish undo-tree-mode
   :bind ("C-x u" . undo-tree-visualize)
-  :config (global-undo-tree-mode))
+  :config
+  (setq undo-tree-visualizer-diff t
+        undo-tree-visualizer-timestamps t)
+  (global-undo-tree-mode))
 
 (use-package which-key
   :config (which-key-mode))
