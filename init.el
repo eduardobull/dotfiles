@@ -2,14 +2,14 @@
 
 (setq package-archives
       '(("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("gnu-elpa"     . "http://elpa.gnu.org/packages/")
         ("melpa"        . "https://melpa.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/"))
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("gnu-elpa"     . "http://elpa.gnu.org/packages/"))
       package-archive-priorities
       '(("melpa-stable" . 10)
-        ("marmalade"    . 9)
-        ("gnu-elpa"     . 5)
-         ("melpa"        . 0)))
+        ("melpa"        . 9)
+        ("marmalade"    . 5)
+        ("gnu-elpa"     . 1)))
 
 (package-initialize)
 
