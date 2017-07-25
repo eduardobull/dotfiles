@@ -326,8 +326,14 @@
 ;;------------------
 ;; Ensime (Scala)
 
-(use-package ensime)
+(use-package ensime
+  :pin melpa)
 
+(use-package sbt-mode
+  :pin melpa)
+
+(use-package scala-mode
+  :pin melpa)
 
 ;;------------------
 ;; ESS (R)
@@ -459,3 +465,17 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (yaml-mode which-key use-package undo-tree tangotango-theme smartparens rainbow-delimiters projectile paredit package-utils neotree magit lacarte intero helm-smex helm-ls-git go-mode git-gutter flycheck-haskell ess ensime elpy company-quickhelp company-jedi clojure-mode better-defaults ample-theme aggressive-indent ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
