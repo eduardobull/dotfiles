@@ -61,6 +61,9 @@
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
 
+;; Disable line wrap in program-mode
+(add-hook 'prog-mode-hook #'toggle-truncate-lines)
+
 ;; Column number
 (setq column-number-mode t)
 
