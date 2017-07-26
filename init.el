@@ -304,7 +304,9 @@
          ("C-x C-l" . helm-locate))
   :config
   (use-package helm-ls-git)
-  (setq-default helm-M-x-fuzzy-match t)
+  (setq helm-M-x-fuzzy-match t)
+  (setq helm-mode-fuzzy-match t)
+  (setq helm-candidate-number-limit 100)
   (helm-mode 1))
 
 (use-package helm-smex
@@ -351,6 +353,7 @@
   :pin melpa
   :interpreter ("scala" . scala-mode))
 
+
 ;;------------------
 ;; ESS (R)
 
@@ -366,9 +369,11 @@
   (add-hook 'ess-mode-hook #'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
   :config
-  (setq-default ess-set-style 'RStudio-)
-  (setq-default ess-indent-with-fancy-comments nil)
-  (setq-default ess-ask-for-ess-directory nil))
+  (setq split-width-threshold 160)
+  (setq ess-watch-width-threshold 160)
+  (setq ess-set-style 'RStudio-)
+  (setq ess-indent-with-fancy-comments nil)
+  (setq ess-ask-for-ess-directory nil))
 
 
 ;;------------------
