@@ -343,15 +343,19 @@
 
 (use-package ensime
   :pin melpa
-  :commands ensime)
+  :commands ensime
+  :config
+  (setq-default ensime-startup-notification nil
+                ensime-startup-snapshot-notification nil))
 
 (use-package sbt-mode
   :pin melpa
+  :mode ("\\.sbt$" . sbt-mode)
   :commands sbt-start sbt-command)
 
 (use-package scala-mode
   :pin melpa
-  :interpreter ("scala" . scala-mode))
+  :mode ("\\.scala$" . scala-mode))
 
 
 ;;------------------
