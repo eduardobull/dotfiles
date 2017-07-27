@@ -50,13 +50,14 @@
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil 'invert-face 'mode-line))
 
-(setq visible-bell nil ring-bell-function #'my/terminal-visible-bell)
+(setq-default visible-bell nil
+              ring-bell-function #'my/terminal-visible-bell)
 
 ;; Enable mouse mode
 (xterm-mouse-mode)
-(setq-default mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three lines at a time
-(setq-default mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq-default mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq-default mouse-wheel-scroll-amount '(3 ((shift) . 1)) ;; three lines at a time
+              mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
+              mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
@@ -289,8 +290,8 @@
   :diminish undo-tree-mode
   :bind ("C-x u" . undo-tree-visualize)
   :config
-  (setq undo-tree-visualizer-diff t
-        undo-tree-visualizer-timestamps t)
+  (setq-default undo-tree-visualizer-diff t
+                undo-tree-visualizer-timestamps t)
   (global-undo-tree-mode))
 
 (use-package which-key
@@ -369,8 +370,10 @@
   (add-hook 'ess-mode-hook #'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
   :config
-  (setq split-width-threshold 160)
-  (setq ess-watch-width-threshold 160)
+  (setq split-width-threshold 180)
+  (setq split-height-threshold 180)
+  (setq ess-watch-width-threshold 60)
+  (setq ess-watch-height-threshold 60)
   (setq ess-set-style 'RStudio-)
   (setq ess-indent-with-fancy-comments nil)
   (setq ess-ask-for-ess-directory nil))
