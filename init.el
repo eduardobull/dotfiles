@@ -1,5 +1,9 @@
 (require 'package)
 
+;; Optimize GC while starting emacs
+(set 'default-gc-cons-threshold gc-cons-threshold)
+(setq gc-cons-threshold 10000000)
+
 (setq package-archives
       '(("melpa-stable" . "https://stable.melpa.org/packages/")
         ("melpa"        . "https://melpa.org/packages/")
@@ -21,6 +25,11 @@
   (require 'use-package))
 
 (setq-default use-package-always-ensure t)
+
+
+;; benchmark emacs initialization
+(use-package benchmark-init
+  :disabled :pin melpa :init (benchmark-init/activate))
 
 
 ;;------------------
@@ -304,11 +313,14 @@
          ("C-h a" . helm-apropos)
          ("C-x C-l" . helm-locate))
   :config
-  (use-package helm-ls-git)
   (setq helm-M-x-fuzzy-match t)
   (setq helm-mode-fuzzy-match t)
   (setq helm-candidate-number-limit 100)
   (helm-mode 1))
+
+(use-package helm-ls-git
+  :commands (helm-ls-git-ls
+             helm-browse-project))
 
 (use-package helm-smex
   :demand
@@ -489,6 +501,8 @@
 ;; Load local file
 (load "~/emacs.d/local" t)
 
+;; Set GC back to it's original value
+(setq gc-cons-threshold default-gc-cons-threshold)
 
 ;; ------------------------
 
