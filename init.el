@@ -165,7 +165,9 @@
 (show-paren-mode 1)
 
 
+;;------------------
 ;; Functions
+
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
   (interactive)
@@ -177,6 +179,16 @@
   (push-mark-command nil)
   (end-of-line)
   (exchange-point-and-mark))
+
+(defun delete-word (arg)
+  "Delete characters forward until encountering the end of a word."
+  (interactive "p")
+  (delete-region (point) (progn (forward-word arg) (point))))
+
+(defun backward-delete-word (arg)
+  "Delete characters backward until encountering the end of a word."
+  (interactive "p")
+  (delete-word (- arg)))
 
 
 ;;------------------
@@ -210,7 +222,8 @@
    ("C-c m l" . mark-line)
 
    ;; Editing
-   ("C-w" . backward-kill-word)
+   ("C-w" . backward-delete-word)
+   ("M-d" . delete-word)
    ("C-c C-w" . kill-region)
    ("C-c i c" . insert-char)
    ("C-c /" . comment-line)
@@ -258,9 +271,9 @@
 
 (use-package flycheck
   :config
-  (setq-default flycheck-display-errors-delay 0.5)
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-  (setq-default flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+  (setq-default flycheck-display-errors-delay 0.5
+                flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+                flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
   (global-flycheck-mode))
 
 (use-package eldoc
@@ -270,10 +283,10 @@
 (use-package company
   :bind ("M-/" . company-complete)
   :config
-  (setq-default company-minimum-prefix-length 10)
-  (setq-default company-tooltip-limit 15)
-  (setq-default company-idle-delay .0)
-  (setq-default company-echo-delay 0)
+  (setq-default company-minimum-prefix-length 10
+                company-tooltip-limit 15
+                company-idle-delay .0
+                company-echo-delay 0)
   (global-company-mode)
   (use-package company-quickhelp
     :config (company-quickhelp-mode 1)))
@@ -283,11 +296,11 @@
 
 (use-package neotree
   :config
-  (setq-default neo-dont-be-alone t)
-  (setq-default neo-window-position 'left)
-  (setq-default neo-toggle-window-keep-p t)
-  (setq-default neo-theme (if (display-graphic-p) 'arrow 'ascii))
-  (setq-default projectile-switch-project-action 'neotree-projectile-action) ;; ‘projectile-switch-project’
+  (setq-default neo-dont-be-alone t
+                neo-window-position 'left
+                neo-toggle-window-keep-p t
+                neo-theme (if (display-graphic-p) 'arrow 'ascii)
+                projectile-switch-project-action 'neotree-projectile-action)
   (global-set-key [f8] 'neotree-toggle)
   (neotree-show))
 
@@ -313,21 +326,21 @@
          ("C-h a" . helm-apropos)
          ("C-x C-l" . helm-locate))
   :config
-  (setq helm-M-x-fuzzy-match t)
-  (setq helm-mode-fuzzy-match t)
-  (setq helm-candidate-number-limit 100)
+  (setq-default helm-M-x-fuzzy-match t
+                helm-mode-fuzzy-match t
+                helm-candidate-number-limit 100)
   (helm-mode 1))
-
-(use-package helm-ls-git
-  :commands (helm-ls-git-ls
-             helm-browse-project))
 
 (use-package helm-smex
   :demand
   :bind ("M-X" . helm-smex-major-mode-commands)
   :config
-  (setq helm-display-header-line nil)
+  (setq-default helm-display-header-line nil)
   (global-set-key [remap execute-extended-command] #'helm-smex))
+
+(use-package helm-ls-git
+  :commands (helm-ls-git-ls
+             helm-browse-project))
 
 (use-package smartparens
   :init
@@ -386,13 +399,13 @@
   (add-hook 'ess-mode-hook #'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
   :config
-  (setq split-width-threshold 180)
-  (setq split-height-threshold 180)
-  (setq ess-watch-width-threshold 60)
-  (setq ess-watch-height-threshold 60)
-  (setq ess-set-style 'RStudio-)
-  (setq ess-indent-with-fancy-comments nil)
-  (setq ess-ask-for-ess-directory nil))
+  (setq split-width-threshold 180
+        split-height-threshold 60)
+  (setq-default ess-watch-width-threshold 180
+                ess-watch-height-threshold 60
+                ess-set-style 'RStudio-
+                ess-indent-with-fancy-comments nil
+                ess-ask-for-ess-directory nil))
 
 
 ;;------------------
