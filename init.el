@@ -104,11 +104,6 @@
 ;; Auto revert buffer on file change
 (global-auto-revert-mode t)
 
-;; Prevents automatic change of default-directory
-(add-hook 'find-file-hook
-          (lambda ()
-            (setq default-directory command-line-default-directory)))
-
 ;; Kill whole lines
 (setq kill-whole-line t)
 
@@ -297,14 +292,16 @@
   :bind ("M-p" . ace-window))
 
 (use-package neotree
+  :bind ("<f8>" . neotree-toggle)
   :config
   (setq-default neo-dont-be-alone t
                 neo-window-position 'left
                 neo-toggle-window-keep-p t
                 neo-theme (if (display-graphic-p) 'arrow 'ascii)
                 projectile-switch-project-action 'neotree-projectile-action)
-  (global-set-key [f8] 'neotree-toggle)
-  (neotree-show))
+  (add-hook 'find-file-hook ;; Prevents automatic change of default-directory
+            (lambda ()
+              (setq default-directory command-line-default-directory))))
 
 (use-package magit
   :bind ("C-x g" . magit-status))
@@ -416,14 +413,21 @@
 (use-package haskell-mode
   :mode "\\.hs$"
   :init
-  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
-  (add-hook 'haskell-mode-hook 'intero-mode)
   :config
-  (use-package intero)
-  (use-package flycheck-haskell))
-
-;(eval-after-load 'flycheck
-;  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+  ;; (use-package ghc
+  ;;   :config
+  ;;   (autoload 'ghc-init "ghc" nil t)
+  ;;   (autoload 'ghc-debug "ghc" nil t)
+  ;;   (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+  ;;   (ghc-core-mode))
+  (use-package intero
+    :config (add-hook 'haskell-mode-hook 'intero-mode))
+  (use-package flycheck-haskell
+    :init
+    (use-package flycheck)
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 
 ;;------------------
@@ -464,7 +468,6 @@
 
 ;;------------------
 ;; Clojure
-
 
 (use-package clojure-mode
   :mode (("\\.clj$" . clojure-mode)
