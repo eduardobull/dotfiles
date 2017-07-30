@@ -211,6 +211,8 @@
    ("C-x C-a" . ido-write-file)
 
    ;; Navigation
+   ("M-<up>" . (lambda () (interactive) (scroll-down 3)))
+   ("M-<down>" . (lambda () (interactive) (scroll-up 3)))
    ("C-<right>" . right-word)
    ("C-<left>" . left-word)
    ("C-f" . forward-word)
