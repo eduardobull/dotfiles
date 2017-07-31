@@ -29,17 +29,21 @@
 
 ;; benchmark emacs initialization
 (use-package benchmark-init
-  :disabled :pin melpa :init (benchmark-init/activate))
+  :disabled
+  :pin melpa :init (benchmark-init/activate))
 
 
 ;;------------------
 ;; Themes
 
 (use-package ample-theme
-  :disabled)
+  :disabled
+  :init
+  (load-theme 'ample t t)
+  (enable-theme 'ample))
 
 (use-package tangotango-theme
-  :config
+  :init
   (load-theme 'tangotango t))
 
 
@@ -412,9 +416,8 @@
 
 (use-package haskell-mode
   :mode "\\.hs$"
-  :init
   :config
-  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+  ;; (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
   ;; (use-package ghc
   ;;   :config
   ;;   (autoload 'ghc-init "ghc" nil t)
