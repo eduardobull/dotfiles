@@ -377,7 +377,7 @@
 (use-package ensime
   :pin melpa
   :commands ensime
-  :config
+  :init
   (setq-default ensime-startup-notification nil
                 ensime-startup-snapshot-notification nil))
 
@@ -405,11 +405,10 @@
   (add-hook 'ess-mode-hook #'auto-build-tags-hook)
   (add-hook 'ess-mode-hook #'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
-  :config
   (setq split-width-threshold 180
-        split-height-threshold 60)
+        split-height-threshold 80)
   (setq-default ess-watch-width-threshold 180
-                ess-watch-height-threshold 60
+                ess-watch-height-threshold 80
                 ess-set-style 'RStudio-
                 ess-indent-with-fancy-comments nil
                 ess-ask-for-ess-directory nil))
@@ -466,11 +465,12 @@
 
 (use-package go-mode
   :mode ("\\.go$" . go-mode)
+  :init
+  (setq gofmt-command "goimports")
   :config
   (use-package company-go)
   (use-package go-eldoc)
-  (add-hook 'go-mode-hook 'go-eldoc-setup)
-  (setq gofmt-command "goimports"))
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 
 ;;------------------
@@ -494,14 +494,14 @@
   :config
   (use-package cider
     :init
-    (setq-default cider-prompt-for-symbol nil)
-    (setq-default cider-repl-pop-to-buffer-on-connect t)
-    (setq-default cider-show-error-buffer t)
-    (setq-default cider-auto-select-error-buffer t)
-    (setq-default cider-repl-wrap-history t)
-    (setq-default cider-font-lock-dynamically '(macro core function var))
-    (setq-default cider-repl-use-clojure-font-lock t)
-    (setq-default cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+    (setq-default cider-prompt-for-symbol nil
+                  cider-repl-pop-to-buffer-on-connect t
+                  cider-show-error-buffer t
+                  cider-auto-select-error-buffer t
+                  cider-repl-wrap-history t
+                  cider-font-lock-dynamically '(macro core function var)
+                  cider-repl-use-clojure-font-lock t
+                  cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
     (add-hook 'cider-mode-hook #'eldoc-mode)
     (add-hook 'cider-repl-mode-hook #'smartparens-mode))
   (use-package clj-refactor
