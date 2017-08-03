@@ -161,8 +161,8 @@
       kept-new-versions 9               ; newest versions to keep when a new numbered backup is made (default: 2)
       auto-save-default t               ; auto-save every buffer that visits a file
       auto-save-timeout 20              ; number of seconds idle time before auto-save (default: 30)
-      auto-save-interval 100            ; number of keystrokes between auto-saves (default: 300)
-      )
+      auto-save-interval 100)            ; number of keystrokes between auto-saves (default: 300)
+
 
 ;; Disable parens highlight delay
 (show-paren-mode 0)
@@ -365,6 +365,28 @@
   (define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
   (define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp))
 
+(use-package parinfer
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (use-package lispy)
+  (progn
+    (setq parinfer--mode 'indent)
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+            pretty-parens  ; different paren styles for different modes.
+            lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+            paredit        ; Introduce some paredit commands.
+            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+            smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'clojure-mode-hook #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook #'parinfer-mode)
+    (add-hook 'lisp-mode-hook #'parinfer-mode))
+  :config
+  (smartparens-mode -1))
+
 
 ;;------------------
 ;; Yaml
@@ -475,27 +497,6 @@
 ;;------------------
 ;; Clojure
 
-(use-package parinfer
-  :bind
-  (("C-," . parinfer-toggle-mode))
-  :init
-  (use-package lispy)
-  (progn
-    (setq parinfer-extensions
-          '(defaults       ; should be included.
-             pretty-parens  ; different paren styles for different modes.
-             lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-             paredit        ; Introduce some paredit commands.
-             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-             smart-yank))   ; Yank behavior depend on mode.
-    (add-hook 'clojure-mode-hook #'parinfer-mode)
-    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode))
-  :config
-  (smartparens-mode -1))
-
 (use-package clojure-mode
   :mode (("\\.clj$" . clojure-mode)
          ("\\.cljs$" . clojurescript-mode)
@@ -527,8 +528,8 @@
   (use-package clj-refactor
     :config
     (clj-refactor-mode 1)
-    (cljr-add-keybindings-with-prefix "C-c C-r"))
-    (yas-minor-mode 1) ; for adding require/use/import statements
+    (cljr-add-keybindings-with-prefix "C-c C-r")
+    (yas-minor-mode 1)) ; for adding require/use/import statements
   (define-clojure-indent
     (defroutes 'defun)
     (GET 2)
@@ -551,19 +552,3 @@
 ;; ------------------------
 
 (provide 'init)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (parinfer yaml-mode which-key use-package undo-tree tangotango-theme smartparens rainbow-delimiters projectile package-utils neotree magit lacarte intero helm-smex helm-ls-git go-mode flycheck-haskell ess ensime elpy doom-themes company-quickhelp company-jedi clj-refactor better-defaults aggressive-indent ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(helm-ff-directory ((t (:foreground "color-27" :weight bold))))
- '(helm-ff-dotted-directory ((t (:foreground "color-27" :weight bold))))
- '(helm-selection ((t (:foreground "brightwhite" :background "ForestGreen" :distant-foreground "black")))))
