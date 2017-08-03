@@ -5,13 +5,13 @@
 (setq gc-cons-threshold 10000000)
 
 (setq package-archives
-      '(("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("melpa"        . "https://melpa.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
+      '(("melpa"        . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("marmalade"    . "http://marmalade-repo.org/packages/")
         ("gnu-elpa"     . "http://elpa.gnu.org/packages/"))
       package-archive-priorities
-      '(("melpa-stable" . 10)
-        ("melpa"        . 9)
+      '(("melpa"        . 10)
+        ("melpa-stable" . 8)
         ("marmalade"    . 5)
         ("gnu-elpa"     . 1)))
 
@@ -30,7 +30,7 @@
 ;; benchmark emacs initialization
 (use-package benchmark-init
   :disabled
-  :pin melpa :init (benchmark-init/activate))
+  :init (benchmark-init/activate))
 
 
 ;;------------------
@@ -43,9 +43,15 @@
   (enable-theme 'ample))
 
 (use-package tangotango-theme
-  :init
+  :if (not window-system)
+  :config
   (load-theme 'tangotango t))
 
+(use-package doom-themes
+  :if window-system
+  :config
+  (load-theme 'doom-one t) ;; M-x all-the-icons-install-fonts
+  (doom-themes-neotree-config))
 
 ;;------------------
 ;; Custom config
@@ -302,16 +308,12 @@
                 neo-window-position 'left
                 neo-toggle-window-keep-p t
                 neo-theme (if (display-graphic-p) 'arrow 'ascii)
-                projectile-switch-project-action 'neotree-projectile-action)
-  (add-hook 'find-file-hook ;; Prevents automatic change of default-directory
-            (lambda ()
-              (setq default-directory command-line-default-directory))))
+                projectile-switch-project-action 'neotree-projectile-action))
 
 (use-package magit
   :bind ("C-x g" . magit-status))
 
 (use-package undo-tree
-  :pin melpa
   :diminish undo-tree-mode
   :bind ("C-x u" . undo-tree-visualize)
   :config
@@ -375,19 +377,16 @@
 ;; Ensime (Scala)
 
 (use-package ensime
-  :pin melpa
   :commands ensime
   :init
   (setq-default ensime-startup-notification nil
                 ensime-startup-snapshot-notification nil))
 
 (use-package sbt-mode
-  :pin melpa
   :mode ("\\.sbt$" . sbt-mode)
   :commands sbt-start sbt-command)
 
 (use-package scala-mode
-  :pin melpa
   :mode ("\\.scala$" . scala-mode))
 
 
@@ -476,6 +475,27 @@
 ;;------------------
 ;; Clojure
 
+(use-package parinfer
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (use-package lispy)
+  (progn
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+             pretty-parens  ; different paren styles for different modes.
+             lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+             paredit        ; Introduce some paredit commands.
+             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+             smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'clojure-mode-hook #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook #'parinfer-mode)
+    (add-hook 'lisp-mode-hook #'parinfer-mode))
+  :config
+  (smartparens-mode -1))
+
 (use-package clojure-mode
   :mode (("\\.clj$" . clojure-mode)
          ("\\.cljs$" . clojurescript-mode)
@@ -484,12 +504,12 @@
          ("\\.boot$" . clojure-mode)
          ("lein-env" . enh-ruby-mode))
   :init
-  (use-package paredit
-    :config (add-hook 'clojure-mode-hook #'paredit-mode))
-  (use-package aggressive-indent
-    :config (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
-  (use-package rainbow-delimiters
-    :config (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
+  ;; (use-package paredit
+  ;;   :config (add-hook 'clojure-mode-hook #'paredit-mode))
+  ;; (use-package aggressive-indent
+  ;;   :config (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
+  ;; (use-package rainbow-delimiters
+  ;;   :config (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
   (add-hook 'clojure-mode-hook #'subword-mode)
   :config
   (use-package cider
@@ -507,9 +527,8 @@
   (use-package clj-refactor
     :config
     (clj-refactor-mode 1)
-    (smartparens-mode -1)
-    (yas-minor-mode 1) ; for adding require/use/import statements
     (cljr-add-keybindings-with-prefix "C-c C-r"))
+    (yas-minor-mode 1) ; for adding require/use/import statements
   (define-clojure-indent
     (defroutes 'defun)
     (GET 2)
@@ -532,3 +551,19 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (parinfer yaml-mode which-key use-package undo-tree tangotango-theme smartparens rainbow-delimiters projectile package-utils neotree magit lacarte intero helm-smex helm-ls-git go-mode flycheck-haskell ess ensime elpy doom-themes company-quickhelp company-jedi clj-refactor better-defaults aggressive-indent ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(helm-ff-directory ((t (:foreground "color-27" :weight bold))))
+ '(helm-ff-dotted-directory ((t (:foreground "color-27" :weight bold))))
+ '(helm-selection ((t (:foreground "brightwhite" :background "ForestGreen" :distant-foreground "black")))))
