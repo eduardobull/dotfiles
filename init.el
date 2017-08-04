@@ -53,6 +53,7 @@
   (load-theme 'doom-one t) ;; M-x all-the-icons-install-fonts
   (doom-themes-neotree-config))
 
+
 ;;------------------
 ;; Custom config
 
