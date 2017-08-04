@@ -515,6 +515,7 @@
   (add-hook 'clojure-mode-hook #'subword-mode)
   :config
   (use-package cider
+    :pin melpa-stable
     :init
     (setq-default cider-prompt-for-symbol nil
                   cider-repl-pop-to-buffer-on-connect t
@@ -527,6 +528,7 @@
     (add-hook 'cider-mode-hook #'eldoc-mode)
     (add-hook 'cider-repl-mode-hook #'smartparens-mode))
   (use-package clj-refactor
+    :pin melpa-stable
     :config
     (clj-refactor-mode 1)
     (cljr-add-keybindings-with-prefix "C-c C-r")
