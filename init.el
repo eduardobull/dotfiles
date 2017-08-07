@@ -131,10 +131,9 @@
 (setq scroll-step 1)
 
 ;; Set tab width
-(setq-default
- tab-width 4
- indent-tabs-mode nil
- c-basic-offset 4)
+(setq-default tab-width 4
+              indent-tabs-mode nil
+              c-basic-offset 4)
 
 ;; Reread a TAGS table without querying
 (setq-default tags-revert-without-query t)
