@@ -296,6 +296,7 @@
                 company-idle-delay .0
                 company-echo-delay 0)
   (global-company-mode)
+  (load "company-sql.el")
   (use-package company-quickhelp
     :config (company-quickhelp-mode 1)))
 
