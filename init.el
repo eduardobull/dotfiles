@@ -367,8 +367,7 @@
   (define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp))
 
 (use-package parinfer
-  :bind
-  (("C-," . parinfer-toggle-mode))
+  :bind ("C-," . parinfer-toggle-mode)
   :init
   (use-package lispy)
   (progn
@@ -377,7 +376,7 @@
           '(defaults       ; should be included.
             pretty-parens  ; different paren styles for different modes.
             lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-            paredit        ; Introduce some paredit commands.
+            ;; paredit        ; Introduce some paredit commands.
             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
             smart-yank))   ; Yank behavior depend on mode.
     (add-hook 'clojure-mode-hook #'parinfer-mode)
@@ -386,8 +385,15 @@
     (add-hook 'scheme-mode-hook #'parinfer-mode)
     (add-hook 'lisp-mode-hook #'parinfer-mode))
   :config
-  (smartparens-mode -1))
+  (setq smartparens-mode nil))
 
+(use-package aggressive-indent
+  :config
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+  (add-hook 'common-lisp-mode-hook #'aggressive-indent-mode)
+  (add-hook 'scheme-mode-hook #'aggressive-indent-mode)
+  (add-hook 'lisp-mode-hook #'aggressive-indent-mode))
 
 ;;------------------
 ;; Yaml
@@ -508,8 +514,6 @@
   :init
   ;; (use-package paredit
   ;;   :config (add-hook 'clojure-mode-hook #'paredit-mode))
-  ;; (use-package aggressive-indent
-  ;;   :config (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
   ;; (use-package rainbow-delimiters
   ;;   :config (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
   (add-hook 'clojure-mode-hook #'subword-mode)
@@ -525,8 +529,7 @@
                   cider-font-lock-dynamically '(macro core function var)
                   cider-repl-use-clojure-font-lock t
                   cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
-    (add-hook 'cider-mode-hook #'eldoc-mode)
-    (add-hook 'cider-repl-mode-hook #'smartparens-mode))
+    (add-hook 'cider-mode-hook #'eldoc-mode))
   (use-package clj-refactor
     :pin melpa-stable
     :config
