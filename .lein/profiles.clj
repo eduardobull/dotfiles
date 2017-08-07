@@ -9,6 +9,7 @@
         :dependencies [[org.clojure/tools.nrepl "0.2.13"]
                        [org.clojure/tools.trace "0.7.9"]
                        [org.clojure/tools.namespace "0.2.11"]
+                       [criterium "0.4.4"]
                        [pjstadig/humane-test-output "0.8.2"]
                        [alembic "0.3.2"]]
 
@@ -28,7 +29,9 @@
                        clojure.tools.trace/untrace-vars
                        alembic.still/load-project
                        alembic.still/distill
-                       alembic.still/lein]}}
+                       alembic.still/lein
+                       criterium.core/bench
+                       criterium.core/quick-bench]}}
 
  :repl {:plugins [[refactor-nrepl "2.3.1"]
                   [cider/cider-nrepl "0.15.0"]]}}
