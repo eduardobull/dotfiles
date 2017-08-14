@@ -261,6 +261,12 @@
    ("C-x C-w <up>" . (lambda () (interactive) (enlarge-window 3)))
    ("C-x C-w <down>" . (lambda () (interactive) (shrink-window 3)))))
 
+(use-package org
+  :bind (("C-c C-o l" . org-store-link)
+         ("C-c C-o a" . org-agenda)
+         ("C-c C-o c" . org-capture)
+         ("C-c C-o b" . org-iswitchb)))
+
 (use-package projectile
   :bind ("C-x p" . project-find-file)
   :config (projectile-mode))
@@ -459,15 +465,15 @@
     :config (add-hook 'haskell-mode-hook 'intero-mode))
   (use-package hasky-extensions
     :bind ("C-c h e" . hasky-extensions))
-  (use-package hasky-stack
-    :bind (("C-c h s" . hasky-stack-execute)
-           ("C-c h i" . hasky-stack-new)))
   (use-package flycheck-haskell
     :init
     (use-package flycheck)
     :config
     (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
+(use-package hasky-stack
+  :bind (("C-c h s" . hasky-stack-execute)
+         ("C-c h i" . hasky-stack-new)))
 
 ;;------------------
 ;; HTML
