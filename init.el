@@ -354,7 +354,7 @@
 
 (use-package smartparens
   :init
-  (add-hook 'prog-mode-hook #'smartparens-mode)
+  ;; (add-hook 'prog-mode-hook #'smartparens-mode)
   :config
   (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
   (define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
@@ -373,12 +373,12 @@
   (progn
     (setq parinfer--mode 'indent)
     (setq parinfer-extensions
-          '(defaults       ; should be included.
-            pretty-parens  ; different paren styles for different modes.
-            lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-            ;; paredit        ; Introduce some paredit commands.
-            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-            smart-yank))   ; Yank behavior depend on mode.
+          '(defaults        ; should be included.
+             pretty-parens  ; different paren styles for different modes.
+             lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+             ;; paredit     ; Introduce some paredit commands.
+             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+             smart-yank))   ; Yank behavior depend on mode.
     (add-hook 'clojure-mode-hook #'parinfer-mode)
     (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
@@ -457,6 +457,11 @@
   ;;   (ghc-core-mode))
   (use-package intero
     :config (add-hook 'haskell-mode-hook 'intero-mode))
+  (use-package hasky-extensions
+    :bind ("C-c h e" . hasky-extensions))
+  (use-package hasky-stack
+    :bind (("C-c h s" . hasky-stack-execute)
+           ("C-c h i" . hasky-stack-new)))
   (use-package flycheck-haskell
     :init
     (use-package flycheck)
@@ -529,7 +534,8 @@
                   cider-font-lock-dynamically '(macro core function var)
                   cider-repl-use-clojure-font-lock t
                   cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
-    (add-hook 'cider-mode-hook #'eldoc-mode))
+    (add-hook 'cider-mode-hook #'eldoc-mode)
+    (add-hook 'cider-repl-mode-hook #'smartparens-mode))
   (use-package clj-refactor
     :pin melpa-stable
     :config
