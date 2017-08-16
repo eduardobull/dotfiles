@@ -415,7 +415,13 @@
   :commands ensime
   :init
   (setq-default ensime-startup-notification nil
-                ensime-startup-snapshot-notification nil))
+                ensime-startup-snapshot-notification nil
+                ensime-auto-connect 'always
+                ensime-sbt-perform-on-save 'compile
+                ensime-graphical-tooltips nil
+                ensime-implicit-gutter-icons nil
+                ensime-eldoc-hints 'all
+                eldoc-idle-delay 0.8))
 
 (use-package sbt-mode
   :mode ("\\.sbt$" . sbt-mode)
