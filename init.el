@@ -360,7 +360,7 @@
 
 (use-package smartparens
   :init
-  ;; (add-hook 'prog-mode-hook #'smartparens-mode)
+  (add-hook 'prog-mode-hook #'smartparens-mode)
   :config
   (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
   (define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
@@ -391,7 +391,12 @@
     (add-hook 'scheme-mode-hook #'parinfer-mode)
     (add-hook 'lisp-mode-hook #'parinfer-mode))
   :config
-  (setq smartparens-mode nil))
+  ;; (setq smartparens-mode nil)
+  (sp-with-modes sp--lisp-modes
+    (sp-local-pair "(" nil :actions nil)
+    (sp-local-pair "[" nil :actions nil)
+    (sp-local-pair "{" nil :actions nil)))
+
 
 (use-package aggressive-indent
   :config
