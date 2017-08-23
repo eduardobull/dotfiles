@@ -360,8 +360,12 @@
 
 (use-package smartparens
   :init
-  (add-hook 'prog-mode-hook #'smartparens-mode)
+  ;; (add-hook 'prog-mode-hook #'smartparens-mode)
   :config
+  (sp-with-modes '(clojure-mode clojurescript-mode emacs-lisp-mode lisp-mode racket-mode scheme-mode)
+    (sp-local-pair "(" nil :actions nil)
+    (sp-local-pair "[" nil :actions nil)
+    (sp-local-pair "{" nil :actions nil))
   (define-key smartparens-mode-map (kbd "C-c t") 'sp-transpose-sexp)
   (define-key smartparens-mode-map (kbd "C-c o") 'sp-splice-sexp-killing-around)
   (define-key smartparens-mode-map (kbd "C-c s") 'sp-splice-sexp)
@@ -370,7 +374,8 @@
   (define-key smartparens-mode-map (kbd "M-[ a") 'sp-up-sexp)
   (define-key smartparens-mode-map (kbd "M-[ b") 'sp-down-sexp)
   (define-key smartparens-mode-map (kbd "M-[ c") 'sp-forward-sexp)
-  (define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp))
+  (define-key smartparens-mode-map (kbd "M-[ d") 'sp-backward-sexp)
+  (smartparens-global-mode t))
 
 (use-package parinfer
   :bind ("C-," . parinfer-toggle-mode)
@@ -378,6 +383,8 @@
   (use-package lispy)
   (progn
     (setq parinfer--mode 'indent)
+    ;; (setq parinfer-delay-invoke-threshold 0)
+    ;; (setq parinfer-delay-invoke-idle 0.5)
     (setq parinfer-extensions
           '(defaults        ; should be included.
              pretty-parens  ; different paren styles for different modes.
@@ -389,22 +396,18 @@
     (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
     (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode))
-  :config
-  ;; (setq smartparens-mode nil)
-  (sp-with-modes sp--lisp-modes
-    (sp-local-pair "(" nil :actions nil)
-    (sp-local-pair "[" nil :actions nil)
-    (sp-local-pair "{" nil :actions nil)))
-
+    (add-hook 'lisp-mode-hook #'parinfer-mode)))
 
 (use-package aggressive-indent
   :config
+  (add-to-list 'aggressive-indent-dont-indent-if
+               '(string-match "^[[:space:]]+$" (thing-at-point 'line)))
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
   (add-hook 'common-lisp-mode-hook #'aggressive-indent-mode)
   (add-hook 'scheme-mode-hook #'aggressive-indent-mode)
   (add-hook 'lisp-mode-hook #'aggressive-indent-mode))
+
 
 ;;------------------
 ;; Yaml
@@ -448,8 +451,6 @@
                 (ess-build-tags-for-directory "." "TAGS"))
               nil t))
   (add-hook 'ess-mode-hook #'auto-build-tags-hook)
-  (add-hook 'ess-mode-hook #'smartparens-mode)
-  (add-hook 'inferior-ess-mode-hook #'smartparens-mode)
   (setq split-width-threshold 180
         split-height-threshold 80)
   (setq-default ess-watch-width-threshold 180
@@ -534,12 +535,17 @@
          ("\\.boot$" . clojure-mode)
          ("lein-env" . enh-ruby-mode))
   :init
-  ;; (use-package paredit
-  ;;   :config (add-hook 'clojure-mode-hook #'paredit-mode))
-  ;; (use-package rainbow-delimiters
-  ;;   :config (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
   (add-hook 'clojure-mode-hook #'subword-mode)
   :config
+  (define-clojure-indent
+    (defroutes 'defun)
+    (GET 2)
+    (POST 2)
+    (PUT 2)
+    (DELETE 2)
+    (HEAD 2)
+    (ANY 2)
+    (context 2))
   (use-package cider
     :pin melpa-stable
     :init
@@ -551,24 +557,15 @@
                   cider-font-lock-dynamically '(macro core function var)
                   cider-repl-use-clojure-font-lock t
                   cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
-    (add-hook 'cider-mode-hook #'eldoc-mode)
-    (add-hook 'cider-repl-mode-hook #'smartparens-mode))
+    (add-hook 'cider-mode-hook #'eldoc-mode))
   (use-package clj-refactor
     :pin melpa-stable
-    :config
-    (clj-refactor-mode 1)
-    (cljr-add-keybindings-with-prefix "C-c C-r")
-    (yas-minor-mode 1)) ; for adding require/use/import statements
-  (define-clojure-indent
-    (defroutes 'defun)
-    (GET 2)
-    (POST 2)
-    (PUT 2)
-    (DELETE 2)
-    (HEAD 2)
-    (ANY 2)
-    (context 2)))
-
+    :init
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                (yas-minor-mode 1) ; for adding require/use/import statements
+                (cljr-add-keybindings-with-prefix "C-c C-r")))))
 
 ;; ------------------------
 
