@@ -561,6 +561,7 @@
   (use-package clj-refactor
     :pin melpa-stable
     :init
+    (setq cljr-warn-on-eval nil)
     (add-hook 'clojure-mode-hook
               (lambda ()
                 (clj-refactor-mode 1)
