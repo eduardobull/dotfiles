@@ -383,8 +383,8 @@
   (use-package lispy)
   (progn
     (setq parinfer--mode 'indent)
-    ;; (setq parinfer-delay-invoke-threshold 0)
-    ;; (setq parinfer-delay-invoke-idle 0.5)
+    (setq parinfer-delay-invoke-threshold 0)
+    (setq parinfer-delay-invoke-idle 0.5)
     (setq parinfer-extensions
           '(defaults        ; should be included.
              pretty-parens  ; different paren styles for different modes.
