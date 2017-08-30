@@ -358,6 +358,11 @@
   :commands (helm-ls-git-ls
              helm-browse-project))
 
+(use-package helm-ag
+  :commands (helm-ag helm-do-ag helm-ag-project-root helm-do-ag-project-root)
+  :init
+  (setq helm-follow-mode-persistent t))
+
 (use-package smartparens
   :init
   ;; (add-hook 'prog-mode-hook #'smartparens-mode)
@@ -383,8 +388,8 @@
   (use-package lispy)
   (progn
     (setq parinfer--mode 'indent)
-    (setq parinfer-delay-invoke-threshold 0)
-    (setq parinfer-delay-invoke-idle 0.5)
+    ;; (setq parinfer-delay-invoke-threshold 0
+    ;;       parinfer-delay-invoke-idle 0.5)
     (setq parinfer-extensions
           '(defaults        ; should be included.
              pretty-parens  ; different paren styles for different modes.
