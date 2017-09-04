@@ -59,6 +59,8 @@
 
 ;; Theme
 (global-hl-line-mode 1)
+(add-hook 'term-mode-hook
+          (lambda () (global-hl-line-mode 0)))
 (set-face-background 'hl-line "#282828")
 
 ;; Cursor
