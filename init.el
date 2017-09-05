@@ -60,6 +60,11 @@
 ;; Theme
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#282828")
+(global-prettify-symbols-mode +1)
+(setq prettify-symbols-unprettify-at-point 'right-edge)
+
+;; Maximize window on start-up
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
@@ -163,10 +168,9 @@
       auto-save-timeout 20              ; number of seconds idle time before auto-save (default: 30)
       auto-save-interval 100)            ; number of keystrokes between auto-saves (default: 300)
 
-
 ;; Disable parens highlight delay
 (show-paren-mode 0)
-(setq show-paren-delay 0)
+(setq-default show-paren-delay 0)
 (show-paren-mode 1)
 
 
@@ -267,6 +271,12 @@
          ("C-c C-o c" . org-capture)
          ("C-c C-o b" . org-iswitchb)))
 
+(use-package visual-regexp
+  :commands (vr/replace
+             vr/query-replace
+             vr/mc-mark)
+  :bind ("C-M-%" . vr/query-replace))
+
 (use-package projectile
   :bind ("C-x p" . project-find-file)
   :config (projectile-mode))
@@ -330,6 +340,12 @@
 
 (use-package which-key
   :config (which-key-mode))
+
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
+
+(use-package avy
+  :bind (("C-c C-s" . avy-goto-char-timer)))
 
 (use-package helm
   :demand
