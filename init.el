@@ -273,11 +273,14 @@
          ("C-c C-o c" . org-capture)
          ("C-c C-o b" . org-iswitchb)))
 
-(use-package visual-regexp
+(use-package visual-regexp-steroids
+  :demand
   :commands (vr/replace
              vr/query-replace
              vr/mc-mark)
-  :bind ("C-M-%" . vr/query-replace))
+  :bind ("C-M-%" . vr/query-replace)
+  :init
+  (setq-default vr/engine 'python))
 
 (use-package projectile
   :bind ("C-x p" . project-find-file)
