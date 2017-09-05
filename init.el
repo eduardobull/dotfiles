@@ -360,10 +360,9 @@
                 helm-mode-fuzzy-match t
                 helm-candidate-number-limit 100)
   (helm-mode 1)
-  (custom-set-faces
-   '(helm-ff-directory ((t (:foreground "color-27" :weight bold))))
-   '(helm-ff-dotted-directory ((t (:foreground "color-27" :weight bold))))
-   '(helm-selection ((t (:foreground "brightwhite" :background "ForestGreen" :distant-foreground "black"))))))
+  (set-face-attribute 'helm-ff-directory nil :foreground "color-27" :weight 'bold :background (face-background 'default))
+  (set-face-attribute 'helm-ff-dotted-directory nil :foreground "color-27" :weight 'bold :background (face-background 'default))
+  (set-face-attribute 'helm-selection nil :foreground "brightwhite" :background "ForestGreen" :distant-foreground "black"))
 
 (use-package helm-smex
   :demand
