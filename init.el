@@ -316,7 +316,7 @@
                 company-idle-delay .0
                 company-echo-delay 0)
   (global-company-mode)
-  (load "~/.emacs.d/company-sql.el")
+  ;; (load "~/.emacs.d/company-sql.el")
   (use-package company-quickhelp
     :config (company-quickhelp-mode 1)))
 
@@ -604,3 +604,17 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (visual-regexp-steroids yaml-mode which-key visual-regexp use-package undo-tree tangotango-theme smartparens rainbow-delimiters projectile parinfer package-utils neotree magit lispy lacarte intero helm-smex helm-ls-git helm-ag hasky-stack go-mode flycheck-haskell expand-region ess ensime elpy dracula-theme doom-themes company-quickhelp company-jedi clj-refactor better-defaults aggressive-indent))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
