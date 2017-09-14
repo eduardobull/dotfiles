@@ -207,8 +207,6 @@
 
 (use-package better-defaults)
 
-(use-package systemd)
-
 (use-package bind-key
   :config
   (bind-keys*
