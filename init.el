@@ -442,6 +442,12 @@
 
 
 ;;------------------
+;; Vue
+
+(use-package vue-mode)
+
+
+;;------------------
 ;; Ensime (Scala)
 
 (use-package ensime
