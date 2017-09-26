@@ -441,10 +441,41 @@
   :mode ("\\.yaml$" . yaml-mode))
 
 
+;;--------------------
+;; JavaScript
+
+(setq-default js-indent-level 2)
+
+
+;;--------------------
+;; TypeScript
+
+(use-package tide
+  :mode ("\\.ts$" . typescript-mode)
+  :init
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  :config
+  (tide-hl-identifier-mode 1)
+  (tide-setup)
+  (setq company-tooltip-align-annotations t))
+
+
 ;;------------------
 ;; Vue
 
 (use-package vue-mode)
+
+
+;;--------------------
+;; Elm
+
+(use-package elm-mode
+  :mode ("\\.elm$" . elm-mode)
+  :config
+  (add-to-list 'company-backends 'company-elm)
+  (setq-default elm-tags-on-save t
+                elm-sort-imports-on-save t
+                elm-format-on-save t))
 
 
 ;;------------------
