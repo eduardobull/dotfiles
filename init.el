@@ -328,8 +328,12 @@
   :config
   (setq-default neo-dont-be-alone t
                 neo-window-position 'left
+                neo-window-fixed-size nil
+                neo-window-width 30
                 neo-toggle-window-keep-p t
                 neo-theme (if (display-graphic-p) 'arrow 'ascii)
+                neo-autorefresh t
+                neo-create-file-auto-open t
                 projectile-switch-project-action 'neotree-projectile-action))
 
 (use-package magit
@@ -646,6 +650,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(neo-autorefresh t)
+ '(neo-create-file-auto-open t)
+ '(neo-window-fixed-size nil)
+ '(neo-window-width 30)
  '(package-selected-packages
    (quote
     (visual-regexp-steroids yaml-mode which-key visual-regexp use-package undo-tree tangotango-theme smartparens rainbow-delimiters projectile parinfer package-utils neotree magit lispy lacarte intero helm-smex helm-ls-git helm-ag hasky-stack go-mode flycheck-haskell expand-region ess ensime elpy dracula-theme doom-themes company-quickhelp company-jedi clj-refactor better-defaults aggressive-indent))))
