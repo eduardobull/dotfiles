@@ -456,18 +456,18 @@
 
 (use-package tide
   :mode ("\\.ts$" . typescript-mode)
-  :init
-  (add-hook 'before-save-hook 'tide-format-before-save)
   :config
-  (tide-hl-identifier-mode 1)
   (tide-setup)
+  (tide-hl-identifier-mode 1)
+  (add-hook 'before-save-hook 'tide-format-before-save)
   (setq company-tooltip-align-annotations t))
 
 
 ;;------------------
 ;; Vue
 
-(use-package vue-mode)
+(use-package vue-mode
+  :mode ("\\.vue$" . vue-mode))
 
 
 ;;--------------------
