@@ -57,6 +57,10 @@
 ;;------------------
 ;; Custom config
 
+;; Correct keys
+(define-key input-decode-map [?\C-m] [C-m])
+(define-key input-decode-map [?\C-i] [C-i])
+
 ;; Theme
 (global-hl-line-mode 1)
 (add-hook 'term-mode-hook
@@ -301,8 +305,16 @@
   :config
   (setq-default flycheck-display-errors-delay 0.5
                 flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+                flycheck-check-syntax-automatically '(mode-enabled save idle-change)
+                flycheck-idle-change-delay 1
                 flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
   (global-flycheck-mode))
+
+(use-package flycheck-popup-tip
+  ;; :if (not window-system)
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-popup-tip-mode)
+  (setq-default flycheck-popup-tip-error-prefix "* "))
 
 (use-package eldoc
   :config
@@ -313,6 +325,7 @@
   :config
   (setq-default company-minimum-prefix-length 10
                 company-tooltip-limit 15
+                company-tooltip-align-annotations t
                 company-idle-delay .0
                 company-echo-delay 0)
   (global-company-mode)
@@ -446,21 +459,69 @@
 
 
 ;;--------------------
+;; HTML
+
+(use-package web-mode
+  :mode ("\\.html$" . web-mode)
+  :init
+  (setq web-mode-markup-indent-offset 4
+        web-mode-code-indent-offset 4
+        web-mode-auto-close-style 2
+        web-mode-enable-auto-expanding t))
+
+
+;;--------------------
 ;; JavaScript
 
-(setq-default js-indent-level 2)
+(use-package js2-mode
+  :mode ("\\.js$" . js2-mode)
+  :init
+  (use-package js2-refactor
+    :config
+    (setq js2-skip-preprocessor-directives t)
+    (js2r-add-keybindings-with-prefix "C-c C-r")
+    (add-hook 'js2-mode-hook #'js2-refactor-mode))
+  (setq js-indent-level 4
+        js2-basic-offset 4
+        js2-bounce-indent-p t
+        js2-strict-missing-semi-warning t
+        js2-strict-inconsistent-return-warning t
+        js2-concat-multiline-strings nil
+        js2-include-node-externs t
+        js2-skip-preprocessor-directives t
+        js2-strict-inconsistent-return-warning nil))
+
+(use-package web-beautify ;; npm -g install js-beautify
+  :config
+  (defun beautify-js-hook ()
+    (add-hook 'before-save-hook 'web-beautify-js-buffer t t))
+  (add-hook 'js-mode-hook 'beautify-js-hook)
+  (add-hook 'js2-mode-hook 'beautify-js-hook)
+  (add-hook 'json-mode-hook 'beautify-js-hook)
+  (defun beautify-html-hook ()
+    (add-hook 'before-save-hook 'web-beautify-html-buffer t t))
+  (add-hook 'web-mode-hook 'beautify-html-hook)
+  (add-hook 'html-mode-hook 'beautify-html-hook)
+  (defun beautify-css-hook ()
+    (add-hook 'before-save-hook 'web-beautify-css-buffer t t))
+  (add-hook 'css-mode-hook 'beautify-css-hook))
 
 
 ;;--------------------
 ;; TypeScript
 
-(use-package tide
+(use-package typescript-mode
   :mode ("\\.ts$" . typescript-mode)
   :config
-  (tide-setup)
-  (tide-hl-identifier-mode 1)
-  (add-hook 'before-save-hook 'tide-format-before-save)
-  (setq company-tooltip-align-annotations t))
+  (use-package tide
+    :init
+    (add-hook 'typescript-mode-hook
+              (lambda ()
+                (tide-setup)
+                (tide-hl-identifier-mode +1)
+                ;; (setq tide-format-options
+                ;;       '(:indentSize 2 :tabSize 2))
+                (add-hook 'before-save-hook 'tide-format-before-save)))))
 
 
 ;;------------------
@@ -544,25 +605,12 @@
   (use-package hasky-extensions
     :bind ("C-c h e" . hasky-extensions))
   (use-package flycheck-haskell
-    :init
-    (use-package flycheck)
     :config
     (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 (use-package hasky-stack
   :bind (("C-c h s" . hasky-stack-execute)
          ("C-c h i" . hasky-stack-new)))
-
-;;------------------
-;; HTML
-
-(use-package sgml-mode
-  :mode ("\\.html$" . html-mode)
-  :init
-  (add-hook 'html-mode-hook
-            (lambda ()
-              ;; Default indentation is usually 2 spaces, changing to 4.
-              (set (make-local-variable 'sgml-basic-offset) 4))))
 
 
 ;;------------------
@@ -650,16 +698,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(neo-autorefresh t)
- '(neo-create-file-auto-open t)
- '(neo-window-fixed-size nil)
- '(neo-window-width 30)
  '(package-selected-packages
    (quote
-    (visual-regexp-steroids yaml-mode which-key visual-regexp use-package undo-tree tangotango-theme smartparens rainbow-delimiters projectile parinfer package-utils neotree magit lispy lacarte intero helm-smex helm-ls-git helm-ag hasky-stack go-mode flycheck-haskell expand-region ess ensime elpy dracula-theme doom-themes company-quickhelp company-jedi clj-refactor better-defaults aggressive-indent))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+    (js2-refactor yaml-mode which-key web-mode web-beautify vue-mode visual-regexp-steroids use-package undo-tree tide tangotango-theme smartparens projectile parinfer package-utils neotree magit lispy lacarte js2-mode intero helm-smex helm-ls-git helm-ag hasky-stack hasky-extensions go-mode flycheck-popup-tip flycheck-haskell expand-region ess ensime elpy elm-mode doom-themes company-quickhelp company-jedi clojure-mode better-defaults aggressive-indent))))
+(custom-set-faces)
+;; custom-set-faces was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
