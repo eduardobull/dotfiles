@@ -476,8 +476,8 @@
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
   :init
-  (setq web-mode-markup-indent-offset 4
-        web-mode-code-indent-offset 4
+  (setq web-mode-markup-indent-offset 2
+        web-mode-code-indent-offset 2
         web-mode-auto-close-style 2
         web-mode-enable-auto-expanding t))
 
@@ -522,32 +522,19 @@
 ;;--------------------
 ;; TypeScript
 
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (tide-hl-identifier-mode +1)
-  (setq-default tide-format-options
-                '(:indentSize 2 :tabSize 2))
-  (add-hook 'before-save-hook 'tide-format-before-save))
-
 (use-package typescript-mode
-  :mode ("\\.ts$" . typescript-mode))
+  :mode ("\\.tsx$" . typescript-mode))
 
 (use-package tide
-  :mode ("\\.ts$" . typescript-mode)
-  :config
-  (add-hook 'typescript-mode-hook #'setup-tide-mode))
-
-(use-package web-mode
-  :mode ("\\.tsx$" . web-mode)
-  :config
-  (remove-hook 'web-mode-hook 'beautify-html-hook)
-  (flycheck-add-mode 'typescript-tslint 'web-mode))
-
-(use-package tide
-  :mode ("\\.tsx$" . web-mode)
-  :config
-  (add-hook 'web-mode-hook #'setup-tide-mode))
+  :mode ("\\.tsx$" . typescript-mode)
+  :init
+  (add-hook 'typescript-mode-hook
+            (lambda ()
+              (tide-setup)
+              (tide-hl-identifier-mode +1)
+              (setq-default tide-format-options
+                            '(:indentSize 2 :tabSize 2))
+              (add-hook 'before-save-hook 'tide-format-before-save))))
 
 
 ;;------------------
