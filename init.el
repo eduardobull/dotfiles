@@ -522,19 +522,23 @@
 ;;--------------------
 ;; TypeScript
 
-(use-package typescript-mode
-  :mode ("\\.tsx$" . typescript-mode))
+(use-package web-mode
+  :mode ("\\.tsx$" . web-mode)
+  :config
+  (remove-hook 'web-mode-hook 'beautify-html-hook)
+  ;; (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (setq-default flycheck-checker 'typescript-tslint))
 
 (use-package tide
-  :mode ("\\.tsx$" . typescript-mode)
   :init
-  (add-hook 'typescript-mode-hook
+  (add-hook 'web-mode-hook
             (lambda ()
-              (tide-setup)
-              (tide-hl-identifier-mode +1)
-              (setq-default tide-format-options
-                            '(:indentSize 2 :tabSize 2))
-              (add-hook 'before-save-hook 'tide-format-before-save))))
+              (when (string-equqal "tsx" (file-name-extension buffer-file-name))
+                (tide-setup)
+                (tide-hl-identifier-mode +1)
+                (setq-default tide-format-options
+                              '(:indentSize 2 :tabSize 2))
+                (add-hook 'before-save-hook 'tide-format-before-save)))))
 
 
 ;;------------------
