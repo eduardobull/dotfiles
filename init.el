@@ -459,6 +459,18 @@
 
 
 ;;--------------------
+;; Markdown
+
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md$" . gfm-mode)
+         ("\\.md$" . markdown-mode)
+         ("\\.markdown$" . markdown-mode))
+  :init
+  (setq-default markdown-command "multimarkdown"))
+
+
+;;--------------------
 ;; HTML
 
 (use-package web-mode
@@ -468,28 +480,6 @@
         web-mode-code-indent-offset 4
         web-mode-auto-close-style 2
         web-mode-enable-auto-expanding t))
-
-
-;;--------------------
-;; JavaScript
-
-(use-package js2-mode
-  :mode ("\\.js$" . js2-mode)
-  :init
-  (use-package js2-refactor
-    :config
-    (setq js2-skip-preprocessor-directives t)
-    (js2r-add-keybindings-with-prefix "C-c C-r")
-    (add-hook 'js2-mode-hook #'js2-refactor-mode))
-  (setq js-indent-level 4
-        js2-basic-offset 4
-        js2-bounce-indent-p t
-        js2-strict-missing-semi-warning t
-        js2-strict-inconsistent-return-warning t
-        js2-concat-multiline-strings nil
-        js2-include-node-externs t
-        js2-skip-preprocessor-directives t
-        js2-strict-inconsistent-return-warning nil))
 
 (use-package web-beautify ;; npm -g install js-beautify
   :config
@@ -508,20 +498,56 @@
 
 
 ;;--------------------
+;; JavaScript
+
+(use-package js2-mode
+  :mode ("\\.js$" . js2-mode)
+  :init
+  (use-package js2-refactor
+    :config
+    (setq js2-skip-preprocessor-directives t)
+    (js2r-add-keybindings-with-prefix "C-c C-r")
+    (add-hook 'js2-mode-hook #'js2-refactor-mode))
+  (setq js-indent-level 2
+        js2-basic-offset 2
+        js2-bounce-indent-p t
+        js2-strict-missing-semi-warning t
+        js2-strict-inconsistent-return-warning t
+        js2-concat-multiline-strings nil
+        js2-include-node-externs t
+        js2-skip-preprocessor-directives t
+        js2-strict-inconsistent-return-warning nil))
+
+
+;;--------------------
 ;; TypeScript
 
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (tide-hl-identifier-mode +1)
+  (setq-default tide-format-options
+                '(:indentSize 2 :tabSize 2))
+  (add-hook 'before-save-hook 'tide-format-before-save))
+
 (use-package typescript-mode
+  :mode ("\\.ts$" . typescript-mode))
+
+(use-package tide
   :mode ("\\.ts$" . typescript-mode)
   :config
-  (use-package tide
-    :init
-    (add-hook 'typescript-mode-hook
-              (lambda ()
-                (tide-setup)
-                (tide-hl-identifier-mode +1)
-                ;; (setq tide-format-options
-                ;;       '(:indentSize 2 :tabSize 2))
-                (add-hook 'before-save-hook 'tide-format-before-save)))))
+  (add-hook 'typescript-mode-hook #'setup-tide-mode))
+
+(use-package web-mode
+  :mode ("\\.tsx$" . web-mode)
+  :config
+  (remove-hook 'web-mode-hook 'beautify-html-hook)
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
+
+(use-package tide
+  :mode ("\\.tsx$" . web-mode)
+  :config
+  (add-hook 'web-mode-hook #'setup-tide-mode))
 
 
 ;;------------------
@@ -693,16 +719,3 @@
 ;; ------------------------
 
 (provide 'init)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (js2-refactor yaml-mode which-key web-mode web-beautify vue-mode visual-regexp-steroids use-package undo-tree tide tangotango-theme smartparens projectile parinfer package-utils neotree magit lispy lacarte js2-mode intero helm-smex helm-ls-git helm-ag hasky-stack hasky-extensions go-mode flycheck-popup-tip flycheck-haskell expand-region ess ensime elpy elm-mode doom-themes company-quickhelp company-jedi clojure-mode better-defaults aggressive-indent))))
-(custom-set-faces)
-;; custom-set-faces was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
