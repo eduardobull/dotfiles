@@ -337,17 +337,20 @@
   :bind ("M-p" . ace-window))
 
 (use-package neotree
+  :demand
   :bind ("<f8>" . neotree-toggle)
   :config
   (setq-default neo-dont-be-alone t
                 neo-window-position 'left
-                neo-window-fixed-size nil
+                neo-window-fixed-size t
                 neo-window-width 30
                 neo-toggle-window-keep-p t
                 neo-theme (if (display-graphic-p) 'arrow 'ascii)
                 neo-autorefresh t
+                neo-force-change-root t
                 neo-create-file-auto-open t
-                projectile-switch-project-action 'neotree-projectile-action))
+                projectile-switch-project-action 'neotree-projectile-action)
+  (add-hook 'after-init-hook #'neotree-show))
 
 (use-package magit
   :bind ("C-x g" . magit-status))
@@ -481,19 +484,31 @@
         web-mode-auto-close-style 2
         web-mode-enable-auto-expanding t))
 
+(defun beautify-js ()
+  (when (string-equal "js" (file-name-extension buffer-file-name))
+    (web-beautify-js-buffer)))
+
+(defun beautify-html ()
+  (when (string-equal "html" (file-name-extension buffer-file-name))
+    (web-beautify-html-buffer)))
+
+(defun beautify-css ()
+  (when (string-equal "css" (file-name-extension buffer-file-name))
+    (web-beautify-css-buffer)))
+
 (use-package web-beautify ;; npm -g install js-beautify
   :config
   (defun beautify-js-hook ()
-    (add-hook 'before-save-hook 'web-beautify-js-buffer t t))
+    (add-hook 'before-save-hook 'beautify-js t t))
   (add-hook 'js-mode-hook 'beautify-js-hook)
   (add-hook 'js2-mode-hook 'beautify-js-hook)
   (add-hook 'json-mode-hook 'beautify-js-hook)
   (defun beautify-html-hook ()
-    (add-hook 'before-save-hook 'web-beautify-html-buffer t t))
+    (add-hook 'before-save-hook 'beautify-html t t))
   (add-hook 'web-mode-hook 'beautify-html-hook)
   (add-hook 'html-mode-hook 'beautify-html-hook)
   (defun beautify-css-hook ()
-    (add-hook 'before-save-hook 'web-beautify-css-buffer t t))
+    (add-hook 'before-save-hook 'beautify-css t t))
   (add-hook 'css-mode-hook 'beautify-css-hook))
 
 
@@ -522,23 +537,31 @@
 ;;--------------------
 ;; TypeScript
 
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (tide-hl-identifier-mode +1)
+  (setq-default typescript-indent-level 2
+                tide-format-options '(:indentSize 2 :tabSize 2))
+  (add-hook 'before-save-hook 'tide-format-before-save))
+
+(use-package typescript-mode
+  :mode ("\\.ts$" . typescript-mode)
+  :config
+  (use-package tide
+    :config
+    (add-hook 'typescript-mode-hook #'setup-tide-mode)))
+
 (use-package web-mode
   :mode ("\\.tsx$" . web-mode)
   :config
-  (remove-hook 'web-mode-hook 'beautify-html-hook)
-  ;; (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (setq-default flycheck-checker 'typescript-tslint))
-
-(use-package tide
-  :init
-  (add-hook 'web-mode-hook
-            (lambda ()
-              (when (string-equqal "tsx" (file-name-extension buffer-file-name))
-                (tide-setup)
-                (tide-hl-identifier-mode +1)
-                (setq-default tide-format-options
-                              '(:indentSize 2 :tabSize 2))
-                (add-hook 'before-save-hook 'tide-format-before-save)))))
+  (use-package tide
+    :config
+    (add-hook 'web-mode-hook
+              (lambda ()
+                (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                  (setup-tide-mode)))))
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
 
 
 ;;------------------
