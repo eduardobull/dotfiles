@@ -629,13 +629,6 @@
 (use-package haskell-mode
   :mode "\\.hs$"
   :config
-  ;; (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
-  ;; (use-package ghc
-  ;;   :config
-  ;;   (autoload 'ghc-init "ghc" nil t)
-  ;;   (autoload 'ghc-debug "ghc" nil t)
-  ;;   (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-  ;;   (ghc-core-mode))
   (use-package intero
     :config (add-hook 'haskell-mode-hook 'intero-mode))
   (use-package hasky-extensions
@@ -729,17 +722,3 @@
 ;; ------------------------
 
 (provide 'init)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (markdown-mode yaml-mode which-key web-mode web-beautify vue-mode visual-regexp-steroids use-package undo-tree tide tangotango-theme smartparens rainbow-delimiters projectile parinfer package-utils neotree magit lispy lacarte js2-refactor intero helm-smex helm-ls-git helm-ag hasky-stack hasky-extensions go-mode flycheck-popup-tip flycheck-haskell expand-region ess ensime elpy elm-mode doom-themes company-quickhelp company-jedi clj-refactor better-defaults benchmark-init aggressive-indent))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
