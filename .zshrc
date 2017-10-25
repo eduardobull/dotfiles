@@ -113,9 +113,14 @@ alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
 alias un7z="7za e"
 # alias emacs="emacs -nw"
-alias ls="ls --color --group-directories-first -Fv"
-alias ll="ls -lh"
-alias la="ls -lhA"
+alias ls="ls -Fv --color --group-directories-first"
+alias ll="ls -lhFv --color --group-directories-first"
+alias la="ls -lhFvA --color --group-directories-first"
 alias less="less -S"
+
+alias glog='git log --graph --oneline --all'
+alias gadd='git add -p'
+alias gpush='git push'
+alias gpull='git pull'
 
 bindkey -e
