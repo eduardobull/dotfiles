@@ -57,10 +57,6 @@
 ;;------------------
 ;; Custom config
 
-;; Correct keys
-(define-key input-decode-map [?\C-m] [C-m])
-(define-key input-decode-map [?\C-i] [C-i])
-
 ;; Theme
 (global-hl-line-mode 1)
 (add-hook 'term-mode-hook
@@ -733,3 +729,17 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (markdown-mode yaml-mode which-key web-mode web-beautify vue-mode visual-regexp-steroids use-package undo-tree tide tangotango-theme smartparens rainbow-delimiters projectile parinfer package-utils neotree magit lispy lacarte js2-refactor intero helm-smex helm-ls-git helm-ag hasky-stack hasky-extensions go-mode flycheck-popup-tip flycheck-haskell expand-region ess ensime elpy elm-mode doom-themes company-quickhelp company-jedi clj-refactor better-defaults benchmark-init aggressive-indent))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
