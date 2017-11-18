@@ -103,11 +103,6 @@ elif [[ -x `which curl` ]]; then
     alias download="curl -O"
 fi
 
-if [[ -x `which lein`
-    && -x `which rlwrap` ]]; then
-    alias lein='rlwrap lein'
-fi
-
 alias tmux="tmux -2"
 alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
