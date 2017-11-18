@@ -302,7 +302,7 @@
   (setq-default flycheck-display-errors-delay 0.5
                 flycheck-disabled-checkers '(emacs-lisp-checkdoc)
                 flycheck-check-syntax-automatically '(mode-enabled save idle-change)
-                flycheck-idle-change-delay 1
+                flycheck-idle-change-delay 0.5
                 flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
   (global-flycheck-mode))
 
@@ -320,6 +320,7 @@
   :bind ("M-/" . company-complete)
   :config
   (setq-default company-minimum-prefix-length 10
+                company-async-timeout 5
                 company-tooltip-limit 15
                 company-tooltip-align-annotations t
                 company-idle-delay .0
