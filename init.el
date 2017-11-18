@@ -651,8 +651,14 @@
   :init
   (elpy-enable)
   :config
-  (use-package company-jedi)
-  (add-to-list 'company-backends 'company-jedi))
+  (setq-default python-indent-offset 4
+                python-eldoc-function-timeout 3
+                python-shell-interpreter "ipython"
+                python-shell-interpreter-args "--simple-prompt --pprint"
+                flycheck-flake8-maximum-line-length 120
+                elpy-modules '(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
+
+;; (use-package ein)
 
 
 ;;------------------
