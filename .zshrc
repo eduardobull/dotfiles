@@ -113,6 +113,7 @@ alias ll="ls -lhFv --color --group-directories-first"
 alias la="ls -lhFvA --color --group-directories-first"
 alias less="less -S"
 
+alias gst='git status --short'
 alias glog='git log --graph --oneline --all'
 alias gadd='git add -p'
 alias gpush='git push'
