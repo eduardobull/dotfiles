@@ -115,6 +115,7 @@ alias less="less -S"
 
 alias gst='git status --short'
 alias glog='git log --graph --oneline --all'
+alias ga='git add -p'
 alias gadd='git add -p'
 alias gpush='git push'
 alias gpull='git pull'
