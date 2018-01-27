@@ -72,6 +72,9 @@
 (setq-default cursor-type '(bar . 2))
 (set-cursor-color "#7AA3CC")
 
+;; Prevent emacs from opening another frame
+(custom-set-variables '(pop-up-frames nil))
+
 ;; Customize bell notification
 (defun my/terminal-visible-bell ()
   (invert-face 'mode-line)
@@ -651,12 +654,15 @@
   :init
   (elpy-enable)
   :config
+  (defun beautify-python-hook ()
+    (add-hook 'before-save-hook 'elpy-format-code t t))
+  (add-hook 'python-mode-hook 'beautify-python-hook)
   (setq-default python-indent-offset 4
                 python-eldoc-function-timeout 3
                 python-shell-interpreter "ipython"
                 python-shell-interpreter-args "--simple-prompt --pprint"
                 flycheck-flake8-maximum-line-length 120
-                elpy-modules '(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
+                elpy-modules '(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
 
 ;; (use-package ein)
 
