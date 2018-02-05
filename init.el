@@ -72,9 +72,6 @@
 (setq-default cursor-type '(bar . 2))
 (set-cursor-color "#7AA3CC")
 
-;; Prevent emacs from opening another frame
-(custom-set-variables '(pop-up-frames nil))
-
 ;; Customize bell notification
 (defun my/terminal-visible-bell ()
   (invert-face 'mode-line)
@@ -204,6 +201,19 @@
   (interactive "p")
   (delete-word (- arg)))
 
+(defun sudo-edit (&optional arg)
+  "Edit currently visited file as root.
+
+   With a prefix ARG prompt for a file to visit.
+   Will also prompt for a file to visit if current
+   buffer is not visiting a file."
+  (interactive "P")
+  (if (or arg (not buffer-file-name))
+      (find-file (concat "/sudo:root@localhost:"
+                         (ido-read-file-name "Find file(as root): ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(global-set-key (kbd "C-x C-r") 'sudo-edit)
 
 ;;------------------
 ;; Packages
@@ -735,3 +745,9 @@
 ;; ------------------------
 
 (provide 'init)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
