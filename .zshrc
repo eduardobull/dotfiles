@@ -50,7 +50,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux)
+plugins=(zsh-completions git tmux)
 
 # User configuration
 
@@ -80,6 +80,9 @@ unsetopt INC_APPEND_HISTORY
 if [ -f $HOME/.localrc ]; then
 	. $HOME/.localrc
 fi
+
+# zsh-completions
+autoload -U compinit && compinit
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
