@@ -110,7 +110,7 @@ fi
 alias tmux="tmux -2"
 alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
-alias un7z="7za e"
+alias un7z="7za x"
 # alias emacs="emacs -nw"
 alias ls="ls -Fv --color --group-directories-first"
 alias ll="ls -lhFv --color --group-directories-first"
