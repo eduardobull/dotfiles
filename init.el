@@ -38,7 +38,8 @@
 
 (use-package ample-theme
   :disabled
-  :init
+  :if (not window-system)
+  :config
   (load-theme 'ample t t)
   (enable-theme 'ample))
 
@@ -628,13 +629,28 @@
                 (ess-build-tags-for-directory "." "TAGS"))
               nil t))
   (add-hook 'ess-mode-hook #'auto-build-tags-hook)
+  (global-prettify-symbols-mode 0)
   (setq split-width-threshold 180
         split-height-threshold 80)
   (setq-default ess-watch-width-threshold 180
                 ess-watch-height-threshold 80
                 ess-set-style 'RStudio-
                 ess-indent-with-fancy-comments nil
-                ess-ask-for-ess-directory nil))
+                ess-ask-for-ess-directory nil)
+  :config
+  (setq ess-R-font-lock-keywords (quote
+                                  ((ess-R-fl-keyword:keywords . t)
+                                   (ess-R-fl-keyword:constants . t)
+                                   (ess-R-fl-keyword:modifiers . t)
+                                   (ess-R-fl-keyword:fun-defs . t)
+                                   (ess-R-fl-keyword:assign-ops . t)
+                                   (ess-R-fl-keyword:%op% . t)
+                                   (ess-fl-keyword:fun-calls . t)
+                                   (ess-fl-keyword:numbers . t)
+                                   (ess-fl-keyword:operators . t)
+                                   ;;(ess-fl-keyword:delimiters . t)
+                                   (ess-fl-keyword:= . t)
+                                   (ess-R-fl-keyword:F&T . t)))))
 
 
 ;;------------------
