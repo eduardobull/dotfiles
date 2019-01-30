@@ -1,16 +1,16 @@
-{:user {:plugins [[lein-ancient "0.6.10"]
+{:user {:plugins [[lein-ancient "0.6.15"]
                   [lein-try  "0.4.3"]
-                  [lein-kibit "0.1.5"]
-                  [lein-pprint  "1.1.2"]
-                  [jonase/eastwood  "0.2.4"]
-                  [venantius/ultra "0.5.1"]
-                  [com.palletops/lein-shorthand "0.4.0"]]
+                  [lein-kibit "0.1.6"]
+                  [lein-pprint  "1.2.0"]
+                  [jonase/eastwood  "0.3.3"]
+                  [venantius/ultra "0.5.2"]
+                  [com.gfredericks/lein-shorthand "0.4.1"]]
 
         :dependencies [[org.clojure/tools.nrepl "0.2.13"]
-                       [org.clojure/tools.trace "0.7.9"]
+                       [org.clojure/tools.trace "0.7.10"]
                        [org.clojure/tools.namespace "0.2.11"]
                        [criterium "0.4.4"]
-                       [pjstadig/humane-test-output "0.8.2"]
+                       [pjstadig/humane-test-output "0.9.0"]
                        [alembic "0.3.2"]]
 
         :injections [(require 'pjstadig.humane-test-output)
@@ -33,5 +33,5 @@
                        criterium.core/bench
                        criterium.core/quick-bench]}}
 
- :repl {:plugins [[refactor-nrepl "2.3.1"]
-                  [cider/cider-nrepl "0.15.0"]]}}
+ :repl {:plugins [[refactor-nrepl "2.4.0"]
+                  [cider/cider-nrepl "0.18.0"]]}}
