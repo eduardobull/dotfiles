@@ -50,8 +50,11 @@
 (use-package doom-themes
   :if window-system
   :config
-  (load-theme 'doom-one t) ;; M-x all-the-icons-install-fonts
-  (doom-themes-neotree-config))
+  (load-theme 'doom-one t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
+
+(use-package all-the-icons) ;; M-x all-the-icons-install-fonts
 
 
 ;;------------------
@@ -105,7 +108,7 @@
 (setq max-mini-window-height 0.75)
 
 ;; Minimum width for splitting windows sensibly
-(setq split-width-threshold 80)
+(setq split-width-threshold 9999)
 
 ;; Remove other window on startup
 ;;(add-hook 'emacs-startup-hook 'delete-other-windows)
@@ -121,6 +124,7 @@
 
 ;; Auto revert buffer on file change
 (global-auto-revert-mode t)
+(setq-default auto-revert-interval 1)
 
 ;; Kill whole lines
 (setq kill-whole-line t)
@@ -146,11 +150,24 @@
 (setq-default tags-revert-without-query t)
 
 ;; Misc
-(setq-default sentence-end-double-space nil)
+;; (setq-default sentence-end-double-space nil)
 
 ;; Enable upcase and downcase
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+;; Hide grep-mode header and footer
+(add-hook 'compilation-start-hook
+          (defun chunyang-compilation-trim-head (_)
+            (let ((inhibit-read-only t))
+              (erase-buffer))))
+
+(add-hook 'compilation-finish-functions
+          (defun chunyang-compilation-trim-tail (buffer _)
+            (with-current-buffer buffer
+              (let ((inhibit-read-only t))
+                (forward-line -2)
+                (delete-region (point) (point-max))))))
 
 ;; Unset C-z
 (global-unset-key (kbd "C-z"))
@@ -213,7 +230,6 @@
                          (ido-read-file-name "Find file(as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-(global-set-key (kbd "C-x C-r") 'sudo-edit)
 
 ;;------------------
 ;; Packages
@@ -233,14 +249,13 @@
    ("M-^" . previous-multiframe-window)
    ("C-x C-k" . kill-this-buffer)
    ("C-x C-a" . ido-write-file)
+   ("C-x C-r" . sudo-edit)
 
    ;; Navigation
    ("M-<up>" . (lambda () (interactive) (scroll-down 3)))
    ("M-<down>" . (lambda () (interactive) (scroll-up 3)))
    ("C-<right>" . right-word)
    ("C-<left>" . left-word)
-   ("C-f" . forward-word)
-   ("C-b" . backward-word)
    ("M-g l" . goto-line)
 
    ;; Marks
@@ -280,6 +295,10 @@
    ("C-x C-w <up>" . (lambda () (interactive) (enlarge-window 3)))
    ("C-x C-w <down>" . (lambda () (interactive) (shrink-window 3)))))
 
+(use-package session
+  :init
+  (add-hook 'after-init-hook 'session-initialize))
+
 (use-package org
   :bind (("C-c C-o l" . org-store-link)
          ("C-c C-o a" . org-agenda)
@@ -295,9 +314,13 @@
   :init
   (setq-default vr/engine 'python))
 
-(use-package projectile
-  :bind ("C-x p" . project-find-file)
-  :config (projectile-mode))
+(use-package rainbow-delimiters
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+;; (use-package projectile
+;;   :bind ("C-x p" . project-find-file)
+;;   :config (projectile-mode))
 
 (use-package package-utils
   :commands (package-utils-upgrade-all
@@ -330,7 +353,7 @@
   (setq-default eldoc-idle-delay 0.2))
 
 (use-package company
-  :bind ("M-/" . company-complete)
+  :bind ("C-/" . company-complete)
   :config
   (setq-default company-minimum-prefix-length 10
                 company-async-timeout 5
@@ -362,6 +385,56 @@
                 projectile-switch-project-action 'neotree-projectile-action)
   (add-hook 'after-init-hook #'neotree-show))
 
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-collapse-dirs              (if (executable-find "python") 7 0)
+          treemacs-file-event-delay           5000
+          treemacs-follow-after-init          t
+          treemacs-follow-recenter-distance   0.1
+          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-indentation                2
+          treemacs-indentation-string         " "
+          treemacs-is-never-other-window      nil
+          treemacs-no-png-images              nil
+          treemacs-project-follow-cleanup     t
+          treemacs-recenter-after-file-follow nil
+          treemacs-recenter-after-tag-follow  nil
+          treemacs-show-hidden-files          t
+          treemacs-silent-filewatch           nil
+          treemacs-silent-refresh             nil
+          treemacs-sorting                    'alphabetic-case-insensitive-desc
+          treemacs-tag-follow-cleanup         t
+          treemacs-tag-follow-delay           1.5
+          treemacs-width                      35)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'extended))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("<f9>"      . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
+
 (use-package magit
   :bind ("C-x g" . magit-status))
 
@@ -384,14 +457,19 @@
 
 (use-package helm
   :demand
-  :bind (("C-x b" . helm-buffers-list)
+  :bind (("C-x b" . helm-mini)
+         ("C-x p" . helm-browse-project)
          ("C-x C-f" . helm-find-files)
+         ("C-x C-l" . helm-locate)
          ("C-h a" . helm-apropos)
-         ("C-x C-l" . helm-locate))
-  :config
+         ("M-x" . helm-M-x)
+         ("M-/" . helm-dabbrev))
+  :init
   (setq-default helm-M-x-fuzzy-match t
                 helm-mode-fuzzy-match t
+                helm-completion-in-region-fuzzy-match t
                 helm-candidate-number-limit 100)
+  :config
   (helm-mode 1)
   (set-face-attribute 'helm-ff-directory nil :foreground "color-27" :weight 'bold :background (face-background 'default))
   (set-face-attribute 'helm-ff-dotted-directory nil :foreground "color-27" :weight 'bold :background (face-background 'default))
@@ -403,6 +481,10 @@
   :config
   (setq-default helm-display-header-line nil)
   (global-set-key [remap execute-extended-command] #'helm-smex))
+
+(use-package helm-projectile
+  :config
+  (helm-projectile-on))
 
 (use-package helm-ls-git
   :commands (helm-ls-git-ls
@@ -575,45 +657,39 @@
 
 
 ;;------------------
-;; Vue
-
-(use-package vue-mode
-  :mode ("\\.vue$" . vue-mode))
-
-
-;;--------------------
-;; Elm
-
-(use-package elm-mode
-  :mode ("\\.elm$" . elm-mode)
-  :config
-  (add-to-list 'company-backends 'company-elm)
-  (setq-default elm-tags-on-save t
-                elm-sort-imports-on-save t
-                elm-format-on-save t))
-
-
-;;------------------
 ;; Ensime (Scala)
 
 (use-package ensime
+  :pin melpa
   :commands ensime
   :init
   (setq-default ensime-startup-notification nil
                 ensime-startup-snapshot-notification nil
+                ensime-auto-generate-config t
                 ensime-auto-connect 'always
-                ensime-sbt-perform-on-save 'compile
+                ensime-search-interface 'helm
+                ;; ensime-sbt-perform-on-save 'compile
                 ensime-graphical-tooltips nil
                 ensime-implicit-gutter-icons nil
                 ensime-eldoc-hints 'all
+                ensime-refactor-preview-override-hunk 0
                 eldoc-idle-delay 0.8))
 
 (use-package sbt-mode
-  :mode ("\\.sbt$" . sbt-mode)
-  :commands sbt-start sbt-command)
+  :pin melpa
+  :interpreter ("sbt" . sbt-mode)
+  :init
+  (add-hook 'sbt-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'sbt-hydra:check-modified-buffers)
+              (setq prettify-symbols-alist
+                    `((,(expand-file-name (directory-file-name default-directory)) . ?⌂)
+                      (,(expand-file-name "~") . ?~)))
+              (prettify-symbols-mode t))))
 
 (use-package scala-mode
-  :mode ("\\.scala$" . scala-mode))
+  :pin melpa
+  :interpreter ("scala" . scala-mode))
 
 
 ;;------------------
@@ -745,9 +821,3 @@
 ;; ------------------------
 
 (provide 'init)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
