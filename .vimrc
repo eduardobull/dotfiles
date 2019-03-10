@@ -1,4 +1,27 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'itchyny/lightline.vim'
+Plugin 'morhetz/gruvbox'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom: custom vimrc settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,25 +31,30 @@ autocmd FileType * setlocal formatoptions-=cro
 filetype plugin on
 filetype indent on
 
+" Enable lightline.vim
+set laststatus=2
+set noshowmode
+
+" Enable syntax highlight
+syntax on
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" Color scheme
-set t_Co=256
-
 set background=dark
 try
-    colorscheme molokai
+    colorscheme gruvbox
+    let g:gruvbox_contrast_dark = 'hard'
 catch
 endtry
 
 " Fix background
-if &term =~ '256color'
+"if &term =~ '256color'
   " disable Background Color Erase (BCE) so that color schemes
   " render properly when inside 256-color tmux and GNU screen.
   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-  set t_ut=
-endif
+"  set t_ut=
+"endif
 
 
 " Set 3 lines to the cursor - when moving vertically using j/k
@@ -60,12 +88,16 @@ set completeopt-=preview
 " Disable switchbuf new tab
 set switchbuf-=newtab
 
+" Enable mouse support
+set mouse=a
+
 " Disable mouse support
-autocmd BufEnter * set mouse=
+"autocmd BufEnter * set mouse=
 
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
 "command! W w !sudo tee % > /dev/null
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings: custom mappings
