@@ -76,6 +76,9 @@ stty -ixon
 # Share history only after shell exits
 unsetopt INC_APPEND_HISTORY
 
+# Disable history expansion ("!")
+setopt nobanghist
+
 # Source local definitions
 if [ -f $HOME/.localrc ]; then
 	. $HOME/.localrc
