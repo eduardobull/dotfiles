@@ -2,11 +2,13 @@
                   [lein-try  "0.4.3"]
                   [lein-kibit "0.1.6"]
                   [lein-pprint  "1.2.0"]
-                  [jonase/eastwood  "0.3.3"]
-                  [venantius/ultra "0.5.2"]
-                  [com.gfredericks/lein-shorthand "0.4.1"]]
+                  [jonase/eastwood  "0.3.5"]
+                  [venantius/ultra "0.6.0"]
+                  [com.gfredericks/lein-shorthand "0.4.1"]
+                  [refactor-nrepl "2.4.0"]
+                  [cider/cider-nrepl "0.21.1"]]
 
-        :dependencies [[org.clojure/tools.nrepl "0.2.13"]
+        :dependencies [[nrepl "0.6.0"]
                        [org.clojure/tools.trace "0.7.10"]
                        [org.clojure/tools.namespace "0.2.11"]
                        [criterium "0.4.4"]
@@ -31,7 +33,4 @@
                        alembic.still/distill
                        alembic.still/lein
                        criterium.core/bench
-                       criterium.core/quick-bench]}}
-
- :repl {:plugins [[refactor-nrepl "2.4.0"]
-                  [cider/cider-nrepl "0.18.0"]]}}
+                       criterium.core/quick-bench]}}}
