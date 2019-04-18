@@ -402,7 +402,8 @@
   :demand
   :bind ("M-X" . helm-smex-major-mode-commands)
   :config
-  (setq-default helm-display-header-line nil)
+  (setq-default helm-display-header-line nil
+                helm-smex-show-bindings t)
   (global-set-key [remap execute-extended-command] #'helm-smex))
 
 (use-package helm-ls-git
