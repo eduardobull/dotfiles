@@ -660,7 +660,8 @@
 
 (use-package haskell-mode
   :mode "\\.hs$"
-  :config
+  :init
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
   (use-package intero
     :config (add-hook 'haskell-mode-hook 'intero-mode))
   (use-package hasky-extensions
