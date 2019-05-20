@@ -754,6 +754,10 @@
 
 ;; ------------------------
 
+;; Load custom variables
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
 ;; Load local file
 (load "~/emacs.d/local" t)
 
