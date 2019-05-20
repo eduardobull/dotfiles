@@ -1,6 +1,7 @@
 (require 'package)
 
 ;; Optimize GC while starting emacs
+(defvar default-gc-cons-threshold)
 (set 'default-gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold 10000000)
 
