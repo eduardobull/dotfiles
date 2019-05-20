@@ -630,7 +630,7 @@
               (lambda ()
                 (ess-build-tags-for-directory "." "TAGS"))
               nil t))
-  (add-hook 'ess-mode-hook #'auto-build-tags-hook)
+  ;;(add-hook 'ess-mode-hook #'auto-build-tags-hook)
   (global-prettify-symbols-mode 0)
   (setq split-width-threshold 180
         split-height-threshold 80)
@@ -767,9 +767,3 @@
 ;; ------------------------
 
 (provide 'init)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
