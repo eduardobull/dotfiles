@@ -6,7 +6,8 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in $HOME/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+#ZSH_THEME="robbyrussell"
+ZSH_THEME="custom"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -76,6 +77,9 @@ stty -ixon
 # Share history only after shell exits
 unsetopt INC_APPEND_HISTORY
 
+# Disable history expansion ("!")
+setopt nobanghist
+
 # Source local definitions
 if [ -f $HOME/.localrc ]; then
 	. $HOME/.localrc
@@ -109,21 +113,25 @@ elif [[ -x `which curl` ]]; then
     alias download="curl -O"
 fi
 
+if [[ -x `which ag` ]]; then
+    alias ag="ag -C1"
+fi
+
 alias tmux="tmux -2"
 alias ungzip="tar -xvzf"
 alias untar="tar -zxvf"
-alias un7z="7za e"
+alias un7z="7za x"
 # alias emacs="emacs -nw"
 alias ls="ls -Fv --color --group-directories-first"
 alias ll="ls -lhFv --color --group-directories-first"
 alias la="ls -lhFvA --color --group-directories-first"
 alias less="less -S"
 
-alias gst='git status --short'
-alias glog='git log --graph --oneline --all'
-alias ga='git add -p'
-alias gadd='git add -p'
-alias gpush='git push'
-alias gpull='git pull'
+alias gst="git status --short"
+alias glog="git log --graph --oneline --all"
+alias ga="git add -p"
+alias gadd="git add -p"
+alias gpush="git push"
+alias gpull="git pull"
 
 bindkey -e

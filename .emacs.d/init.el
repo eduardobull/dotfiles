@@ -1,6 +1,7 @@
 (require 'package)
 
 ;; Optimize GC while starting emacs
+(defvar default-gc-cons-threshold)
 (set 'default-gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold 10000000)
 
@@ -38,7 +39,8 @@
 
 (use-package ample-theme
   :disabled
-  :init
+  :if (not window-system)
+  :config
   (load-theme 'ample t t)
   (enable-theme 'ample))
 
@@ -336,7 +338,7 @@
 (use-package flycheck
   :config
   (setq-default flycheck-display-errors-delay 0.5
-                flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+                flycheck-disabled-checkers '(emacs-lisp-checkdoc r-lintr)
                 flycheck-check-syntax-automatically '(mode-enabled save idle-change)
                 flycheck-idle-change-delay 0.5
                 flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
@@ -479,7 +481,8 @@
   :demand
   :bind ("M-X" . helm-smex-major-mode-commands)
   :config
-  (setq-default helm-display-header-line nil)
+  (setq-default helm-display-header-line nil
+                helm-smex-show-bindings t)
   (global-set-key [remap execute-extended-command] #'helm-smex))
 
 (use-package helm-projectile
@@ -703,14 +706,29 @@
               (lambda ()
                 (ess-build-tags-for-directory "." "TAGS"))
               nil t))
-  (add-hook 'ess-mode-hook #'auto-build-tags-hook)
+  ;;(add-hook 'ess-mode-hook #'auto-build-tags-hook)
+  (global-prettify-symbols-mode 0)
   (setq split-width-threshold 180
         split-height-threshold 80)
   (setq-default ess-watch-width-threshold 180
                 ess-watch-height-threshold 80
                 ess-set-style 'RStudio-
                 ess-indent-with-fancy-comments nil
-                ess-ask-for-ess-directory nil))
+                ess-ask-for-ess-directory nil)
+  :config
+  (setq ess-R-font-lock-keywords (quote
+                                  ((ess-R-fl-keyword:keywords . t)
+                                   (ess-R-fl-keyword:constants . t)
+                                   (ess-R-fl-keyword:modifiers . t)
+                                   (ess-R-fl-keyword:fun-defs . t)
+                                   (ess-R-fl-keyword:assign-ops . t)
+                                   (ess-R-fl-keyword:%op% . t)
+                                   (ess-fl-keyword:fun-calls . t)
+                                   (ess-fl-keyword:numbers . t)
+                                   (ess-fl-keyword:operators . t)
+                                   ;;(ess-fl-keyword:delimiters . t)
+                                   (ess-fl-keyword:= . t)
+                                   (ess-R-fl-keyword:F&T . t)))))
 
 
 ;;------------------
@@ -718,7 +736,8 @@
 
 (use-package haskell-mode
   :mode "\\.hs$"
-  :config
+  :init
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
   (use-package intero
     :config (add-hook 'haskell-mode-hook 'intero-mode))
   (use-package hasky-extensions
@@ -811,6 +830,10 @@
                 (cljr-add-keybindings-with-prefix "C-c C-r")))))
 
 ;; ------------------------
+
+;; Load custom variables
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 ;; Load local file
 (load "~/emacs.d/local" t)
