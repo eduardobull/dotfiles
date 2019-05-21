@@ -84,6 +84,9 @@ fi
 # zsh-completions
 autoload -U compinit && compinit
 
+# Rehash on completion
+zstyle ":completion:*:commands" rehash 1
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
