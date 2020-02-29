@@ -4,7 +4,8 @@
           prompt = "R> ",
           digits = 4,
           stringsAsFactors = FALSE,
-          show.signif.stars = FALSE)
+          show.signif.stars = FALSE,
+          datatable.print.nrows = 20)
 
   # Print a welcome message
   message("\nWelcome back ", Sys.getenv("USER"),"! (", getwd(), ")\n")
