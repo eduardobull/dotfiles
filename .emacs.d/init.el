@@ -22,10 +22,15 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(eval-when-compile
-  (require 'use-package))
+(require 'use-package)
 
-(setq-default use-package-always-ensure t)
+;; (eval-when-compile
+;;   (require 'use-package))
+
+(setq use-package-always-defer t
+      use-package-always-ensure t)
+
+;; (setq-default use-package-always-ensure t)
 
 
 ;; benchmark emacs initialization
@@ -560,21 +565,17 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :init
-  (setq-default lsp-prefer-flymake nil))
+  :hook (scala-mode . lsp)
+  :init (setq-default lsp-prefer-flymake nil))
 
 ;; optionally
-(use-package lsp-ui
-  :commands lsp-ui-mode)
+(use-package lsp-ui)
 
-(use-package company-lsp
-  :commands company-lsp)
+(use-package company-lsp)
 
-(use-package helm-lsp
-  :commands helm-lsp-workspace-symbol)
+(use-package helm-lsp)
 
-(use-package lsp-treemacs
-  :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs)
 
 
 ;;------------------
@@ -688,38 +689,58 @@
 
 
 ;;------------------
-;; Ensime (Scala)
-
-(use-package ensime
-  :pin melpa
-  :commands ensime
-  :init
-  (setq-default ensime-startup-notification nil
-                ensime-startup-snapshot-notification nil
-                ensime-auto-generate-config t
-                ensime-auto-connect 'always
-                ensime-search-interface 'helm
-                ;; ensime-sbt-perform-on-save 'compile
-                ensime-graphical-tooltips nil
-                ensime-implicit-gutter-icons nil
-                ensime-eldoc-hints 'all
-                ensime-refactor-preview-override-hunk 0))
-
-(use-package sbt-mode
-  :pin melpa
-  :interpreter ("sbt" . sbt-mode)
-  :init
-  (add-hook 'sbt-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook 'sbt-hydra:check-modified-buffers)
-              (setq prettify-symbols-alist
-                    `((,(expand-file-name (directory-file-name default-directory)) . ?⌂)
-                      (,(expand-file-name "~") . ?~)))
-              (prettify-symbols-mode t))))
+;; Metals (Scala)
 
 (use-package scala-mode
-  :pin melpa
-  :interpreter ("scala" . scala-mode))
+  :mode "\\.s\\(cala\\|c\\|bt\\)$")
+
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map
+   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+   (setq sbt:program-options '("-Dsbt.supershell=false"))))
+
+
+;;------------------
+;; Ensime (Scala)
+
+;; (use-package ensime
+;;   :pin melpa
+;;   :commands ensime
+;;   :init
+;;   (setq-default ensime-startup-notification nil
+;;                 ensime-startup-snapshot-notification nil
+;;                 ensime-auto-generate-config t
+;;                 ensime-auto-connect 'always
+;;                 ensime-search-interface 'helm
+;;                 ;; ensime-sbt-perform-on-save 'compile
+;;                 ensime-graphical-tooltips nil
+;;                 ensime-implicit-gutter-icons nil
+;;                 ensime-eldoc-hints 'all
+;;                 ensime-refactor-preview-override-hunk 0
+;;                 eldoc-idle-delay 0.8))
+
+;; (use-package sbt-mode
+;;   :pin melpa
+;;   :interpreter ("sbt" . sbt-mode)
+;;   :init
+;;   (add-hook 'sbt-mode-hook
+;;             (lambda ()
+;;               (add-hook 'before-save-hook 'sbt-hydra:check-modified-buffers)
+;;               (setq prettify-symbols-alist
+;;                     `((,(expand-file-name (directory-file-name default-directory)) . ?⌂)
+;;                       (,(expand-file-name "~") . ?~)))
+;;               (prettify-symbols-mode t))))
+
+;; (use-package scala-mode
+;;   :pin melpa
+;;   :interpreter ("scala" . scala-mode))
 
 
 ;;------------------
