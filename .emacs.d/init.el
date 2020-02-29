@@ -336,19 +336,22 @@
   :bind ("ESC M-x" . lacarte-execute-menu-command))
 
 (use-package flycheck
+  :init
+  (use-package flycheck-pos-tip
+    :init (flycheck-pos-tip-mode))
   :config
-  (setq-default flycheck-display-errors-delay 0.5
+  (setq-default flycheck-check-syntax-automatically '(mode-enabled save idle-change)
                 flycheck-disabled-checkers '(emacs-lisp-checkdoc r-lintr)
-                flycheck-check-syntax-automatically '(mode-enabled save idle-change)
                 flycheck-idle-change-delay 0.5
+                flycheck-display-errors-delay 0.5
                 flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
   (global-flycheck-mode))
 
-(use-package flycheck-popup-tip
-  ;; :if (not window-system)
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-popup-tip-mode)
-  (setq-default flycheck-popup-tip-error-prefix "* "))
+;; (use-package flycheck-popup-tip
+;;   ;; :if (not window-system)
+;;   :init
+;;   (add-hook 'flycheck-mode-hook 'flycheck-popup-tip-mode)
+;;   (setq-default flycheck-popup-tip-error-prefix "* "))
 
 (use-package eldoc
   :config
@@ -366,7 +369,10 @@
   (global-company-mode)
   ;; (load "~/.emacs.d/company-sql.el")
   (use-package company-quickhelp
-    :config (company-quickhelp-mode 1)))
+    :config
+    (company-quickhelp-mode 1)
+    (setq-default company-quickhelp-delay 0
+                  company-quickhelp-use-propertized-text t)))
 
 (use-package ace-window
   :bind ("M-p" . ace-window))
@@ -550,6 +556,28 @@
 
 
 ;;------------------
+;; Language Server Protocol
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq-default lsp-prefer-flymake nil))
+
+;; optionally
+(use-package lsp-ui
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :commands company-lsp)
+
+(use-package helm-lsp
+  :commands helm-lsp-workspace-symbol)
+
+(use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list)
+
+
+;;------------------
 ;; Yaml
 
 (use-package yaml-mode
@@ -675,8 +703,7 @@
                 ensime-graphical-tooltips nil
                 ensime-implicit-gutter-icons nil
                 ensime-eldoc-hints 'all
-                ensime-refactor-preview-override-hunk 0
-                eldoc-idle-delay 0.8))
+                ensime-refactor-preview-override-hunk 0))
 
 (use-package sbt-mode
   :pin melpa
@@ -778,10 +805,8 @@
 (use-package go-mode
   :mode ("\\.go$" . go-mode)
   :init
-  (setq gofmt-command "goimports")
+  (add-hook 'go-mode-hook 'lsp-deferred)
   :config
-  (use-package company-go)
-  (use-package go-eldoc)
   (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 
