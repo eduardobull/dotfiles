@@ -51,7 +51,16 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to $HOME/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-completions git tmux colored-man-pages)
+# Plugins:
+#   zsh-completions: git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+#   zsh-autosuggestions: git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+plugins=(git tmux colored-man-pages zsh-completions zsh-autosuggestions)
+
+# zsh-completions
+autoload -U compinit && compinit
+
+# zsh-autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 # User configuration
 
@@ -84,9 +93,6 @@ setopt nobanghist
 if [ -f $HOME/.localrc ]; then
     . $HOME/.localrc
 fi
-
-# zsh-completions
-autoload -U compinit && compinit
 
 # Rehash on completion
 zstyle ":completion:*:commands" rehash 1
