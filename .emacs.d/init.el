@@ -8,7 +8,7 @@
 (setq package-archives
       '(("melpa"        . "https://melpa.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("marmalade"    . "http://marmalade-repo.org/packages/")
+        ("marmalade"    . "https://marmalade-repo.org/packages/")
         ("gnu-elpa"     . "http://elpa.gnu.org/packages/"))
       package-archive-priorities
       '(("melpa"        . 10)
@@ -29,9 +29,6 @@
 
 (setq use-package-always-defer t
       use-package-always-ensure t)
-
-;; (setq-default use-package-always-ensure t)
-
 
 ;; benchmark emacs initialization
 (use-package benchmark-init
