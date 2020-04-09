@@ -1,9 +1,4 @@
-(require 'package)
-
-;; Optimize GC while starting emacs
-(defvar default-gc-cons-threshold)
-(set 'default-gc-cons-threshold gc-cons-threshold)
-(setq gc-cons-threshold 10000000)
+(package-initialize)
 
 (setq package-archives
       '(("melpa"        . "https://melpa.org/packages/")
@@ -16,16 +11,12 @@
         ("marmalade"    . 5)
         ("gnu-elpa"     . 1)))
 
-(package-initialize)
-
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(require 'use-package)
-
-;; (eval-when-compile
-;;   (require 'use-package))
+(eval-when-compile
+  (require 'use-package))
 
 (setq use-package-always-defer t
       use-package-always-ensure t)
@@ -42,19 +33,20 @@
 (use-package ample-theme
   :disabled
   :if (not window-system)
-  :config
+  :init
   (load-theme 'ample t t)
   (enable-theme 'ample))
 
 (use-package tangotango-theme
   :if (not window-system)
-  :config
+  :init
   (load-theme 'tangotango t))
 
 (use-package doom-themes
   :if window-system
-  :config
+  :init
   (load-theme 'doom-one t)
+  :config
   (doom-themes-neotree-config)
   (doom-themes-org-config))
 
@@ -278,7 +270,7 @@
    ("C-c r C-w" . kill-rectangle)
    ("C-c r M-w" . copy-rectangle-as-kill)
    ("C-c r C-y" . yank-rectangle)
-   ("C-c r DEL" . delete-rectangle)
+   ("C-c r <deletechar>" . delete-rectangle)
    ("C-c r d" . delete-rectangle)
    ("C-c r c" . clear-rectangle)
 
@@ -880,10 +872,3 @@
 
 ;; Load local file
 (load "~/emacs.d/local" t)
-
-;; Set GC back to it's original value
-(setq gc-cons-threshold default-gc-cons-threshold)
-
-;; ------------------------
-
-(provide 'init)
