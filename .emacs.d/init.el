@@ -7,8 +7,8 @@
         ("gnu-elpa"     . "http://elpa.gnu.org/packages/"))
       package-archive-priorities
       '(("melpa"        . 10)
-        ("melpa-stable" . 8)
-        ("marmalade"    . 5)
+        ("marmalade"    . 8)
+        ("melpa-stable" . 5)
         ("gnu-elpa"     . 1)))
 
 (unless (package-installed-p 'use-package)
@@ -30,25 +30,29 @@
 ;;------------------
 ;; Themes
 
-(use-package ample-theme
-  :disabled
-  :if (not window-system)
+(use-package material-theme
   :init
-  (load-theme 'ample t t)
-  (enable-theme 'ample))
+  (load-theme 'material t))
 
-(use-package tangotango-theme
-  :if (not window-system)
-  :init
-  (load-theme 'tangotango t))
 
-(use-package doom-themes
-  :if window-system
-  :init
-  (load-theme 'doom-one t)
-  :config
-  (doom-themes-neotree-config)
-  (doom-themes-org-config))
+;; (use-package ample-theme
+;;   :if (not window-system)
+;;   :init
+;;   (load-theme 'ample t t)
+;;   (enable-theme 'ample))
+
+;; (use-package tangotango-theme
+;;   :if (not window-system)
+;;   :init
+;;   (load-theme 'tangotango t))
+
+;; (use-package doom-themes
+;;   :if window-system
+;;   :init
+;;   (load-theme 'doom-one t)
+;;   :config
+;;   (doom-themes-neotree-config)
+;;   (doom-themes-org-config))
 
 (use-package all-the-icons) ;; M-x all-the-icons-install-fonts
 
@@ -69,7 +73,7 @@
 
 ;; Cursor
 (setq-default cursor-type '(bar . 2))
-(set-cursor-color "#7AA3CC")
+;; (set-cursor-color "#7AA3CC")
 
 ;; Customize bell notification
 (defun my/terminal-visible-bell ()
@@ -188,9 +192,59 @@
 (setq-default show-paren-delay 0)
 (show-paren-mode 1)
 
+;; Change buffer names for files with the same name
+(require 'uniquify)
+(setq uniquify-separator "/"               ;; The separator in buffer names.
+      uniquify-buffer-name-style 'forward) ;; names/in/this/style
+
 
 ;;------------------
 ;; Functions
+
+(defun my-save-buffers-kill-emacs (&optional arg)
+  "Offer to save each buffer, then kill this Emacs process.
+With prefix ARG, silently save all file-visiting buffers without asking.
+If there are active processes where `process-query-on-exit-flag'
+returns non-nil and `confirm-kill-processes' is non-nil,
+asks whether processes should be killed.
+Runs the members of `kill-emacs-query-functions' in turn and stops
+if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
+  (interactive "P")
+  ;; Don't use save-some-buffers-default-predicate, because we want
+  ;; to ask about all the buffers before killing Emacs.
+  (save-some-buffers arg t)
+  (let ((confirm confirm-kill-emacs))
+    (and
+     (or (not (fboundp 'process-list))
+         ;; process-list is not defined on MSDOS.
+         (not confirm-kill-processes)
+         (let ((processes (process-list))
+               active)
+           (while processes
+             (and (memq (process-status (car processes)) '(run stop open listen))
+                  (process-query-on-exit-flag (car processes))
+                  (setq active t))
+             (setq processes (cdr processes)))
+           (or (not active)
+               (with-displayed-buffer-window
+                (get-buffer-create "*Process List*")
+                '(display-buffer--maybe-at-bottom)
+                #'(lambda (window _value)
+                    (with-selected-window window
+                      (unwind-protect
+                          (progn
+                            (setq confirm nil)
+                            (yes-or-no-p "Active processes exist; kill them and exit anyway? "))
+                        (when (window-live-p window)
+                          (quit-restore-window window 'kill)))))
+                (list-processes t)))))
+     ;; Query the user for other things, perhaps.
+     (run-hook-with-args-until-failure 'kill-emacs-query-functions)
+     (or (null confirm)
+         (funcall confirm "Really exit Emacs? "))
+     (kill-emacs))))
+
+(global-set-key (kbd "C-x C-c") 'my-save-buffers-kill-emacs)
 
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
@@ -231,6 +285,9 @@
 ;; Packages
 
 (use-package better-defaults)
+
+(use-package diminish
+  :defer 5)
 
 (use-package bind-key
   :config
@@ -326,8 +383,8 @@
              package-utils-remove-by-name
              package-utils-list-upgrades))
 
-(use-package lacarte
-  :bind ("ESC M-x" . lacarte-execute-menu-command))
+;; (use-package lacarte
+;;   :bind ("ESC M-x" . lacarte-execute-menu-command))
 
 (use-package flycheck
   :init
@@ -352,7 +409,8 @@
   (setq-default eldoc-idle-delay 0.2))
 
 (use-package company
-  :bind ("C-/" . company-complete)
+  :bind (("M-/" . company-complete)
+         ("C-/" . company-complete))
   :config
   (setq-default company-minimum-prefix-length 10
                 company-async-timeout 5
@@ -449,6 +507,7 @@
   (global-undo-tree-mode))
 
 (use-package which-key
+  :diminish
   :config (which-key-mode))
 
 (use-package expand-region
@@ -458,14 +517,24 @@
   :bind (("C-c C-s" . avy-goto-char-timer)))
 
 (use-package helm
-  :demand
-  :bind (("C-x b" . helm-mini)
-         ("C-x p" . helm-browse-project)
+  :diminish
+  :bind (("M-x"     . helm-M-x)
          ("C-x C-f" . helm-find-files)
-         ("C-x C-l" . helm-locate)
-         ("C-h a" . helm-apropos)
-         ("M-x" . helm-M-x)
-         ("M-/" . helm-dabbrev))
+         ("C-x b"   . helm-mini)     ;; See buffers & recent files; more useful.
+         ("C-x r b" . helm-filtered-bookmarks)
+         ("C-x C-r" . helm-recentf)  ;; Search for recently edited files
+         ("C-c i"   . helm-imenu)
+         ("C-h a"   . helm-apropos)
+         ("C-M-/" . helm-dabbrev)
+         ;; Look at what was cut recently & paste it in.
+         ("M-y" . helm-show-kill-ring)
+
+         :map helm-map
+         ;; We can list ‘actions’ on the currently selected item by C-z.
+         ("C-z" . helm-select-action)
+         ;; Let's keep tab-completetion anyhow.
+         ("TAB"   . helm-execute-persistent-action)
+         ("<tab>" . helm-execute-persistent-action))
   :init
   (setq-default helm-M-x-fuzzy-match t
                 helm-mode-fuzzy-match t
@@ -495,6 +564,7 @@
 
 (use-package helm-ag
   :commands (helm-ag helm-do-ag helm-ag-project-root helm-do-ag-project-root)
+  :bind (("M-s a" . helm-ag))
   :init
   (setq helm-follow-mode-persistent t))
 
@@ -550,28 +620,84 @@
 
 
 ;;------------------
+;; Yasnippet
+
+(use-package yasnippet
+  :commands yas-minor-mode
+  :hook (go-mode . yas-minor-mode))
+
+
+;;------------------
 ;; Language Server Protocol
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook (scala-mode . lsp)
-  :init (setq-default lsp-prefer-flymake nil))
+;; (use-package lsp-mode
+;;   :commands (lsp lsp-deferred)
+;;   :hook ((scala-mode . lsp)
+;;          (go-mode . lsp-deferred))
+;;   :init (setq-default lsp-prefer-flymake nil))
 
 ;; optionally
-(use-package lsp-ui)
+(use-package lsp-ui
+  :config
+  ;(setq lsp-ui-doc-alignment (quote window))
+  ;(setq lsp-ui-doc-position (quote top))
+  (setq lsp-ui-sideline-enable nil))
 
 (use-package company-lsp)
 
-(use-package helm-lsp)
+(use-package helm-lsp
+  :config
+  (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol))
 
 (use-package lsp-treemacs)
+
+
+;;------------------
+;; Rust
+
+;; (use-package rust-mode
+;;   :hook (rust-mode . lsp))
+(use-package rustic
+  :mode ("\\.rs$" . rustic-mode)
+  :config
+  (setq-default lsp-rust-analyzer-display-chaining-hints t)
+  (setq-default lsp-rust-analyzer-display-parameter-hints nil)
+  (setq-default lsp-rust-analyzer-macro-expansion-method (quote rustic-analyzer-macro-expand))
+  (setq-default lsp-rust-analyzer-server-display-inlay-hints nil)
+  (setq-default lsp-rust-full-docs t)
+  (setq-default lsp-rust-server (quote rust-analyzer))
+  (setq-default lsp-rust-analyzer-server-command '("~/.cargo/bin/rust-analyzer")))
+
+;; Add keybindings for interacting with Cargo
+(use-package cargo
+  :hook (rust-mode . cargo-minor-mode))
+
+(use-package flycheck-rust
+  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+
+;;------------------
+;; Golang
+
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 
 ;;------------------
 ;; Yaml
 
 (use-package yaml-mode
-  :mode ("\\.yaml$" . yaml-mode))
+  :mode (("\\.yaml$" . yaml-mode)
+         ("\\.yml$"  . yaml-mode)))
+
+
+;;------------------
+;; Toml
+
+(use-package toml-mode
+  :mode ("\\.toml$" . yaml-mode))
 
 
 ;;--------------------
@@ -807,17 +933,6 @@
                 elpy-modules '(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
 
 ;; (use-package ein)
-
-
-;;------------------
-;; Golang
-
-(use-package go-mode
-  :mode ("\\.go$" . go-mode)
-  :init
-  (add-hook 'go-mode-hook 'lsp-deferred)
-  :config
-  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 
 ;;------------------

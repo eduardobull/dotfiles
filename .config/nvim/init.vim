@@ -1,5 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim)
+" Plugins: git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -16,10 +16,12 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-surround'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'scrooloose/syntastic'
-Plugin 'valloric/youcompleteme'
-Plugin 'tpope/vim-fugitive'
+Plugin 'farmergreg/vim-lastplace'
+"Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdcommenter'
+"Plugin 'preservim/nerdtree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -36,30 +38,24 @@ autocmd FileType * setlocal formatoptions-=cro
 filetype plugin on
 filetype indent on
 
-" Enable syntax highlight
-syntax on
+if exists('+termguicolors')
+	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+	set termguicolors
+endif
 
-" Set to auto read when a file is changed from the outside
-set autoread
-
-"set background=dark
-set cursorline
 set t_Co=256
-set background=dark
 try
-    colorscheme onehalfdark
-    let g:airline_theme='onehalfdark'
+	colorscheme onehalfdark
+	let g:airline_theme='onehalfdark'
 catch
 endtry
 
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
-
 " Set 3 lines to the cursor - when moving vertically using j/k
 set so=3
+
+" Highlight current line
+set cursorline
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -72,14 +68,12 @@ let g:maplocalleader = ";"
 set ignorecase
 set smartcase
 
+" Tabs
+set tabstop=4
+set shiftwidth=0
+
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set writebackup
-
-" Height of the command bar
-set cmdheight=1
-
-" Add a bit extra margin to the left
-set foldcolumn=0
 
 " Turn on line numbers
 set number
@@ -109,24 +103,28 @@ set hlsearch
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Buffers navigation
-nmap <C-b><right> :bn<cr>
-nmap <C-b><left> :bp<cr>
+nmap <C-b><right> :bn<CR>
+nmap <C-b><left> :bp<CR>
 
 " Close buffer
-nmap <C-x> :bp\|bd #<cr>
+nmap <C-x> :bp\|bd #<CR>
 
 " Disable command history window
 nnoremap q: <NOP>
 
 " Fast resizing
-nmap <C-w>> :vertical resize +8<cr>
-nmap <C-w>< :vertical resize -8<cr>
+nmap <C-w>> :vertical resize +8<CR>
+nmap <C-w>< :vertical resize -8<CR>
 
-" Map <C-space> to disable search highlight
-nnoremap <NUL> :noh<cr>
+" Map <ESC> and Enter to disable search highlight
+nnoremap <ESC> :noh<CR><C-L>
+nnoremap <CR> :noh<CR><C-L>
+
+" Press F4 to toggle highlighting on/off, and show current value.
+noremap <F4> :set hlsearch! hlsearch?<CR>
 
 " Add new line from Normal mode
-nmap <CR> O<Esc><down>
+"nmap <CR> O<Esc><down>
 
 " Toggle paste mode
 set pastetoggle=<F2>
@@ -135,6 +133,17 @@ set pastetoggle=<F2>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins: misc plugins options
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" -------------------------
+" NERDTree
+" -------------------------
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" -------------------------
+" deoplete
+" -------------------------
+let g:deoplete#enable_at_startup = 1
 
 " -------------------------
 " Syntastic
