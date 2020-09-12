@@ -75,12 +75,22 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -x `which emacs` ]]; then
-	export EDITOR='emacs'
+if [[ -x `which nvim` ]]; then
+	export EDITOR='nvim'
+	alias v='nvim'
+	alias n='nvim'
 elif [[ -x `which vim` ]]; then
 	export EDITOR='vim'
+elif [[ -x `which emacs` ]]; then
+	export EDITOR='emacs'
 elif [[ -x `which nano` ]]; then
 	export EDITOR='nano'
+fi
+
+if [[ -x `which delta` ]]; then
+	export DIFF='delta'
+else
+	export DIFF='diff'
 fi
 
 # Disable terminal flow control keystrokes <Ctrl-S> and <Ctrl-Q>
@@ -114,8 +124,9 @@ bindkey -e
 
 # alias tmux="tmux -2"
 alias zstdtar="tar -I zstd -cvf"
+alias unzstdtar="tar -I zstd -xvf"
 alias ungzip="tar -xvzf"
-alias untar="tar -zxvf"
+alias untar="tar -xvzf"
 alias un7z="7za x"
 
 alias ls="ls -Fv --color --group-directories-first"
@@ -133,6 +144,7 @@ alias gpull="git pull"
 alias ..='cd ..'
 alias emacs='emacs --no-window-system'
 alias fd='fd --hidden --no-ignore'
+alias merge='diff --line-format %L'
 
 if [[ -x `which aria2c` ]]; then
 	alias download="aria2c --continue -x5"
@@ -150,16 +162,17 @@ fi
 
 if [[ -x `which bat` ]]; then
 	alias cat="bat -pp --theme=\"OneHalfDark\""
-	alias bat="/usr/bin/bat --theme=\"OneHalfDark\""
+	alias bat="bat --theme=\"OneHalfDark\""
 fi
 
 if [[ -x `which yay` ]]; then
 	alias yayrm='yay -Rcns'
 	alias yayorph='yay -Qtd'
+	alias yays='yay -Ss'
 fi
 
 if [[ -x `which rsync` ]]; then
-	alias copy='rsync -aP'
+	alias copy='rsync -aPX'
 fi
 
 if [[ -x `which exa` ]]; then
@@ -172,6 +185,16 @@ fi
 
 if [[ -x `which dust` ]]; then
 	alias dust='dust -rx'
+fi
+
+if [[ -x `which just` ]]; then
+	alias j='just'
+fi
+
+if [[ -x `which fzf` ]]; then
+    if [[ -x `which fd` ]]; then
+		export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+	fi
 fi
 
 # Source local definitions

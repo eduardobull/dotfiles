@@ -24,7 +24,7 @@
 ;; benchmark emacs initialization
 (use-package benchmark-init
   :disabled
-  :init (benchmark-init/activate))
+  :config (benchmark-init/activate))
 
 
 ;;------------------
@@ -37,18 +37,18 @@
 
 ;; (use-package ample-theme
 ;;   :if (not window-system)
-;;   :init
+;;   :config
 ;;   (load-theme 'ample t t)
 ;;   (enable-theme 'ample))
 
 ;; (use-package tangotango-theme
 ;;   :if (not window-system)
-;;   :init
+;;   :config
 ;;   (load-theme 'tangotango t))
 
 ;; (use-package doom-themes
 ;;   :if window-system
-;;   :init
+;;   :config
 ;;   (load-theme 'doom-one t)
 ;;   :config
 ;;   (doom-themes-neotree-config)
@@ -81,7 +81,7 @@
   (run-with-timer 0.1 nil 'invert-face 'mode-line))
 
 (setq-default visible-bell nil
-              ring-bell-function #'my/terminal-visible-bell)
+	      ring-bell-function #'my/terminal-visible-bell)
 
 ;; Enable mouse mode
 (xterm-mouse-mode)
@@ -349,7 +349,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
    ("C-x C-w <down>" . (lambda () (interactive) (shrink-window 3)))))
 
 (use-package session
-  :init
+  :config
   (add-hook 'after-init-hook 'session-initialize))
 
 (use-package org
@@ -359,12 +359,11 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
          ("C-c C-o b" . org-iswitchb)))
 
 (use-package visual-regexp-steroids
-  :demand
   :commands (vr/replace
              vr/query-replace
              vr/mc-mark)
   :bind ("C-M-%" . vr/query-replace)
-  :init
+  :config
   (setq-default vr/engine 'python))
 
 (use-package rainbow-delimiters
@@ -376,6 +375,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 ;;   :config (projectile-mode))
 
 (use-package package-utils
+  :defer t
   :commands (package-utils-upgrade-all
              package-utils-upgrade-all-no-fetch
              package-utils-upgrade-by-name
@@ -387,10 +387,9 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 ;;   :bind ("ESC M-x" . lacarte-execute-menu-command))
 
 (use-package flycheck
-  :init
-  (use-package flycheck-pos-tip
-    :init (flycheck-pos-tip-mode))
   :config
+  (use-package flycheck-pos-tip
+    :config (flycheck-pos-tip-mode))
   (setq-default flycheck-check-syntax-automatically '(mode-enabled save idle-change)
                 flycheck-disabled-checkers '(emacs-lisp-checkdoc r-lintr)
                 flycheck-idle-change-delay 0.5
@@ -400,7 +399,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 ;; (use-package flycheck-popup-tip
 ;;   ;; :if (not window-system)
-;;   :init
+;;   :config
 ;;   (add-hook 'flycheck-mode-hook 'flycheck-popup-tip-mode)
 ;;   (setq-default flycheck-popup-tip-error-prefix "* "))
 
@@ -448,7 +447,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 (use-package treemacs
   :ensure t
   :defer t
-  :init
+  :config
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
@@ -535,7 +534,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
          ;; Let's keep tab-completetion anyhow.
          ("TAB"   . helm-execute-persistent-action)
          ("<tab>" . helm-execute-persistent-action))
-  :init
+  :config
   (setq-default helm-M-x-fuzzy-match t
                 helm-mode-fuzzy-match t
                 helm-completion-in-region-fuzzy-match t
@@ -565,11 +564,11 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 (use-package helm-ag
   :commands (helm-ag helm-do-ag helm-ag-project-root helm-do-ag-project-root)
   :bind (("M-s a" . helm-ag))
-  :init
+  :config
   (setq helm-follow-mode-persistent t))
 
 (use-package smartparens
-  :init
+  :config
   ;; (add-hook 'prog-mode-hook #'smartparens-mode)
   :config
   (sp-with-modes '(clojure-mode clojurescript-mode emacs-lisp-mode lisp-mode racket-mode scheme-mode)
@@ -589,7 +588,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 (use-package parinfer
   :bind ("C-," . parinfer-toggle-mode)
-  :init
+  :config
   (use-package lispy)
   (progn
     (setq parinfer--mode 'indent)
@@ -634,7 +633,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 ;;   :commands (lsp lsp-deferred)
 ;;   :hook ((scala-mode . lsp)
 ;;          (go-mode . lsp-deferred))
-;;   :init (setq-default lsp-prefer-flymake nil))
+;;   :config (setq-default lsp-prefer-flymake nil))
 
 ;; optionally
 (use-package lsp-ui
@@ -708,7 +707,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
   :mode (("README\\.md$" . gfm-mode)
          ("\\.md$" . markdown-mode)
          ("\\.markdown$" . markdown-mode))
-  :init
+  :config
   (setq-default markdown-command "multimarkdown"))
 
 
@@ -717,7 +716,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
-  :init
+  :config
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
         web-mode-auto-close-style 2
@@ -756,7 +755,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
-  :init
+  :config
   (use-package js2-refactor
     :config
     (setq js2-skip-preprocessor-directives t)
@@ -828,7 +827,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 ;; (use-package ensime
 ;;   :pin melpa
 ;;   :commands ensime
-;;   :init
+;;   :config
 ;;   (setq-default ensime-startup-notification nil
 ;;                 ensime-startup-snapshot-notification nil
 ;;                 ensime-auto-generate-config t
@@ -844,7 +843,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 ;; (use-package sbt-mode
 ;;   :pin melpa
 ;;   :interpreter ("sbt" . sbt-mode)
-;;   :init
+;;   :config
 ;;   (add-hook 'sbt-mode-hook
 ;;             (lambda ()
 ;;               (add-hook 'before-save-hook 'sbt-hydra:check-modified-buffers)
@@ -863,7 +862,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 (use-package ess
   :mode ("\\.r$" . ess-mode)
-  :init
+  :config
   (defun auto-build-tags-hook ()
     (add-hook 'after-save-hook
               (lambda ()
@@ -899,7 +898,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 (use-package haskell-mode
   :mode "\\.hs$"
-  :init
+  :config
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
   (use-package intero
     :config (add-hook 'haskell-mode-hook 'intero-mode))
@@ -919,7 +918,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 
 (use-package elpy
   :mode ("\\.py$" . python-mode)
-  :init
+  :config
   (elpy-enable)
   :config
   (defun beautify-python-hook ()
@@ -945,7 +944,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
          ("\\.edn$" . clojure-mode)
          ("\\.boot$" . clojure-mode)
          ("lein-env" . enh-ruby-mode))
-  :init
+  :config
   (add-hook 'clojure-mode-hook #'subword-mode)
   :config
   (define-clojure-indent
@@ -959,7 +958,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
     (context 2))
   (use-package cider
     :pin melpa-stable
-    :init
+    :config
     (setq-default cider-prompt-for-symbol nil
                   cider-repl-pop-to-buffer-on-connect t
                   cider-show-error-buffer t
@@ -971,7 +970,7 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
     (add-hook 'cider-mode-hook #'eldoc-mode))
   (use-package clj-refactor
     :pin melpa-stable
-    :init
+    :config
     (setq cljr-warn-on-eval nil)
     (add-hook 'clojure-mode-hook
               (lambda ()
